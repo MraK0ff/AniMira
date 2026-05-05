@@ -7,7 +7,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.responses import Response, StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
-from urllib.parse import urljoin
+from urllib.parse import urljoin, quote
 import httpx
 
 from app.config_loader import ConfigLoader
@@ -113,7 +113,7 @@ async def proxy_media(url: str, referer: str = ""):
             if line and not line.startswith("#"):
                 abs_url = urljoin(url, line)
                 # Proxy the segment too
-                proxy_url = f"/api/proxy?url={abs_url}&referer={referer}"
+                proxy_url = f"/api/proxy?url={quote(abs_url, safe='')}&referer={quote(referer, safe='')}"
                 lines.append(proxy_url)
             elif line.startswith("#EXT-X-STREAM-INF") or line.startswith("#EXT-X-I-FRAME-STREAM-INF"):
                 lines.append(line)
@@ -127,7 +127,7 @@ async def proxy_media(url: str, referer: str = ""):
                         inner = m.group(1)
                         if not inner.startswith("data:"):
                             abs_url = urljoin(url, inner)
-                            return f'URI="/api/proxy?url={abs_url}&referer={referer}"'
+                            return f'URI="/api/proxy?url={quote(abs_url, safe="")}&referer={quote(referer, safe="")}"'
                         return m.group(0)
                     line = re.sub(r'URI="([^"]+)"', replace_uri, line)
                 lines.append(line)
