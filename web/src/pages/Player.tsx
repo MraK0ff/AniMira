@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import { useSearchParams, useNavigate, useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getVideoInfo } from '../api/client';
@@ -21,20 +21,29 @@ export default function Player() {
   const [showSettings, setShowSettings] = useState(false);
 
   // Build qualities array
-  const qualities: { name: string; url: string }[] = [];
-  if (episode?.url720) qualities.push({ name: '720p', url: episode.url720 });
-  if (episode?.url360) qualities.push({ name: '360p', url: episode.url360 });
-  if (episode?.links) {
-    episode.links.forEach(l => {
-      // Avoid duplicates
-      if (!qualities.some(q => q.url === l.url)) qualities.push(l);
-    });
-  }
-  if (qualities.length === 0 && fallbackEpisodeUrl) {
-    qualities.push({ name: 'Default', url: fallbackEpisodeUrl });
-  }
+  const qualities = useMemo(() => {
+    const q: { name: string; url: string }[] = [];
+    if (episode?.url720) q.push({ name: '720p', url: episode.url720 });
+    if (episode?.url360) q.push({ name: '360p', url: episode.url360 });
+    if (episode?.links) {
+      episode.links.forEach(l => {
+        if (!q.some(existing => existing.url === l.url)) q.push(l);
+      });
+    }
+    if (q.length === 0 && fallbackEpisodeUrl) {
+      q.push({ name: 'Default', url: fallbackEpisodeUrl });
+    }
+    return q;
+  }, [episode, fallbackEpisodeUrl]);
 
   const [activeUrl, setActiveUrl] = useState<string>(qualities[0]?.url || fallbackEpisodeUrl!);
+
+  // Sync activeUrl when qualities list changes (e.g. user manually changed URL params)
+  useEffect(() => {
+    if (qualities.length > 0 && !qualities.some(q => q.url === activeUrl)) {
+      setActiveUrl(qualities[0].url);
+    }
+  }, [qualities, activeUrl]);
 
   const { data: videoInfo, isLoading } = useQuery({
     queryKey: ['video', source, activeUrl],
