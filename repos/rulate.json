@@ -1,0 +1,2696 @@
+{
+    "id": 70501,
+    "migration_id": 40117,
+    "version": 46,
+    "title": "Rulate",
+    "host": "https://tl.rulate.ru",
+    "public_link": "https://tl.rulate.ru",
+    "hash_tag": "rulate",
+    "folder": "rulate",
+    "name": "rulate",
+    "language": "ru",
+    "content_type": "light_novel",
+    "chapters_order": true,
+    "items_order": true,
+    "icon_link": "http://images.mangawatcherx.com/parser/icon/light_novel/rulate.png",
+    "self_link": "https://api.anilabx.xyz/v3/parser/get?type=light_novel&parser=rulate",
+    "author": {
+        "name": "AniLabX Team",
+        "email": "anilabx.supp@gmail.com"
+    },
+    "custom_settings": {
+        "use_cookie_manager_cookies": "false"
+    },
+    "authorization_complete": {
+        "!logo": "http://images.mangawatcherx.com/parser/logo/light_novel/rulate_logo.png",
+        "registration": "https://tl.rulate.ru/register",
+        "webview_auth_supported": true,
+        "disable_classic_auth": true,
+        "expires": 31536000,
+        "is_redirect": true,
+        "!values": {
+            "login[login]": {
+                "label": "Логин",
+                "hint": "Введите логин с сайта Rulate!",
+                "kind": "text"
+            },
+            "login[pass]": {
+                "label": "Пароль",
+                "hint": "Введите пароль с сайта Rulate!",
+                "kind": "password"
+            },
+            "mature": {
+                "forward": "cookie",
+                "value": "c3a2ed4b199a1a15f5a5483504c7a75a7030dc4bi%3A1%3B"
+            }
+        },
+        "values": {
+            "mature": {
+                "forward": "cookie",
+                "value": "c3a2ed4b199a1a15f5a5483504c7a75a7030dc4bi%3A1%3B"
+            }
+        },
+        "request": {
+            "method": "POST",
+            "url": "https://tl.rulate.ru/"
+        },
+        "response_check": {
+            "headers": {
+                "Set-Cookie": "@%22login"
+            }
+        }
+    },
+    "manga_search_complete": {
+        "search_link": "$scheme$//$hostname$/search/index/t/$query$/cat/0/s_lang/0/t_lang/0/sort/4/n_chapters//Book_page/$page$",
+        "query_type": "GET",
+        "add_manga": {
+            "start": "<ul class='search-results'>",
+            "next": "class='th'>",
+            "link": {
+                "skip": "<a",
+                "token1": "href='/book/",
+                "token2": "'>",
+                "replace": {
+                    "prefix": "$scheme$//$hostname$/book/"
+                }
+            },
+            "title": {
+                "skip": "href='",
+                "token1": "'>",
+                "token2": "</",
+                "replace": {
+                    "match": "/.*$",
+                    "text": ""
+                }
+            },
+            "additional_title": {
+                "skip": "href='",
+                "token1": "'>",
+                "token2": "</",
+                "replace": [
+                    {
+                        "match": "^.*/",
+                        "text": ""
+                    },
+                    {
+                        "match": "(Завершено)",
+                        "text": "",
+                        "trim": true
+                    }
+                ]
+            },
+            "cover": {
+                "after": "<img",
+                "token1": "src='",
+                "token2": "'",
+                "replace": {
+                    "prefix": "$scheme$//$hostname$/"
+                }
+            },
+            "status": {
+                "complete": {
+                    "start": "состояние перевода:<",
+                    "values": [
+                        ">Завершён",
+                        ">Переведена"
+                    ],
+                    "end": "</span>"
+                },
+                "ongoing": {
+                    "start": "состояние перевода:<",
+                    "values": [
+                        ">В работе",
+                        ">Ожидание",
+                        ">Перерыв"
+                    ],
+                    "end": "</span>"
+                },
+                "empty": {
+                    "start": "состояние перевода:<",
+                    "value": "не создано",
+                    "end": "</span>"
+                }
+            },
+            "is_mature": {
+                "start": ">жанры:",
+                "values": [
+                    "этти",
+                    "ужасы"
+                ],
+                "end": "</div>"
+            },
+            "is_adult": {
+                "start": ">жанры:",
+                "values": [
+                    "+18",
+                    "18+",
+                    "эротика"
+                ],
+                "end": "</div>"
+            },
+            "content_type": {
+                "default": "light_novel"
+            },
+            "add_genres": {
+                "start": ">жанры:",
+                "next": "href=\"/genre/",
+                "token1": "\">",
+                "token2": "</",
+                "end": ">тэги:"
+            }
+        }
+    },
+    "manga_list_filters_complete": {
+        "base_link": "$scheme$//$hostname$/search?Book_page=$page$",
+        "default_values": {
+            "path": {
+                "$filter$": ""
+            },
+            "query": {
+                "order_by": "0",
+                "cat": "2"
+            }
+        },
+        "filters": {
+            "11_sort": {
+                "name": "Сортировка",
+                "choice_mode": "single",
+                "filter_type": "get_query",
+                "query_name": "sort",
+                "values": [
+                    {
+                        "value": "0",
+                        "name": "По степени готовности"
+                    },
+                    {
+                        "value": "1",
+                        "name": "По названию на языке оригинала"
+                    },
+                    {
+                        "value": "2",
+                        "name": "По названию на языке перевода"
+                    },
+                    {
+                        "value": "3",
+                        "name": "По дате создания"
+                    },
+                    {
+                        "value": "4",
+                        "name": "По дате последней активности"
+                    },
+                    {
+                        "value": "5",
+                        "name": "По просмотрам"
+                    },
+                    {
+                        "value": "6",
+                        "name": "По рейтингу"
+                    },
+                    {
+                        "value": "7",
+                        "name": "По кол-ву переведённых глав"
+                    },
+                    {
+                        "value": "8",
+                        "name": "По кол-ву лайков"
+                    },
+                    {
+                        "value": "9",
+                        "name": "Случайно"
+                    },
+                    {
+                        "value": "10",
+                        "name": "По кол-ву страниц"
+                    },
+                    {
+                        "value": "11",
+                        "name": "По кол-ву бесплатных глав"
+                    },
+                    {
+                        "value": "12",
+                        "name": "По кол-ву рецензий"
+                    }
+                ]
+            },
+            "12_filter": {
+                "name": "Возрастные ограничения",
+                "choice_mode": "single",
+                "filter_type": "get_query",
+                "query_name": "adult",
+                "concat_query_values": false,
+                "values": [
+                    {
+                        "name": "Весь контент",
+                        "value": "0"
+                    },
+                    {
+                        "name": "Скрыть 18+",
+                        "value": "1"
+                    },
+                    {
+                        "name": "Только 18+",
+                        "value": "2",
+                        "color": "#d35400"
+                    }
+                ]
+            },
+            "13_filter": {
+                "name": "Разделы",
+                "choice_mode": "single",
+                "filter_type": "get_query",
+                "query_name": "cat",
+                "concat_query_values": false,
+                "values": [
+                    {
+                        "value": "12",
+                        "name": "Новеллы и ранобэ"
+                    },
+                    {
+                        "value": "5",
+                        "name": "Китайские"
+                    },
+                    {
+                        "value": "7",
+                        "name": "Корейские"
+                    },
+                    {
+                        "value": "6",
+                        "name": "Японские"
+                    },
+                    {
+                        "value": "18",
+                        "name": "Авторские"
+                    },
+                    {
+                        "value": "19",
+                        "name": "Фанфики"
+                    },
+                    {
+                        "value": "40",
+                        "name": "Наруто"
+                    },
+                    {
+                        "value": "41",
+                        "name": "Ван-Пис"
+                    },
+                    {
+                        "value": "42",
+                        "name": "Блич"
+                    },
+                    {
+                        "value": "43",
+                        "name": "Марвел"
+                    },
+                    {
+                        "value": "28",
+                        "name": "Английские"
+                    },
+                    {
+                        "value": "39",
+                        "name": "Вьетнамские"
+                    }
+                ]
+            },
+            "14_filter": {
+                "name": "Язык оригинала",
+                "choice_mode": "single",
+                "filter_type": "get_query",
+                "query_name": "s_lang",
+                "concat_query_values": false,
+                "is_sort_values": true,
+                "is_exclude_first_from_sort": true,
+                "values": [
+                    {
+                        "value": "0",
+                        "name": "Не важно"
+                    },
+                    {
+                        "value": "2",
+                        "name": "английский"
+                    },
+                    {
+                        "value": "6",
+                        "name": "испанский"
+                    },
+                    {
+                        "value": "5",
+                        "name": "итальянский"
+                    },
+                    {
+                        "value": "3",
+                        "name": "немецкий"
+                    },
+                    {
+                        "value": "1",
+                        "name": "русский"
+                    },
+                    {
+                        "value": "4",
+                        "name": "французский"
+                    },
+                    {
+                        "value": "20",
+                        "name": "абхазский"
+                    },
+                    {
+                        "value": "21",
+                        "name": "аварский"
+                    },
+                    {
+                        "value": "22",
+                        "name": "азербайджанский"
+                    },
+                    {
+                        "value": "30",
+                        "name": "армянский"
+                    },
+                    {
+                        "value": "40",
+                        "name": "башкирский"
+                    },
+                    {
+                        "value": "10",
+                        "name": "белорусский"
+                    },
+                    {
+                        "value": "64",
+                        "name": "грузинский"
+                    },
+                    {
+                        "value": "83",
+                        "name": "казахский"
+                    },
+                    {
+                        "value": "235",
+                        "name": "калмыцкий"
+                    },
+                    {
+                        "value": "93",
+                        "name": "киргизский"
+                    },
+                    {
+                        "value": "95",
+                        "name": "коми"
+                    },
+                    {
+                        "value": "233",
+                        "name": "лакский"
+                    },
+                    {
+                        "value": "111",
+                        "name": "латышский"
+                    },
+                    {
+                        "value": "112",
+                        "name": "лезгинский"
+                    },
+                    {
+                        "value": "115",
+                        "name": "литовский"
+                    },
+                    {
+                        "value": "232",
+                        "name": "марийский"
+                    },
+                    {
+                        "value": "11",
+                        "name": "молдавский"
+                    },
+                    {
+                        "value": "147",
+                        "name": "осетинский"
+                    },
+                    {
+                        "value": "178",
+                        "name": "таджикский"
+                    },
+                    {
+                        "value": "12",
+                        "name": "татарский"
+                    },
+                    {
+                        "value": "194",
+                        "name": "туркменский"
+                    },
+                    {
+                        "value": "196",
+                        "name": "удмуртский"
+                    },
+                    {
+                        "value": "197",
+                        "name": "узбекский"
+                    },
+                    {
+                        "value": "9",
+                        "name": "украинский"
+                    },
+                    {
+                        "value": "213",
+                        "name": "чеченский"
+                    },
+                    {
+                        "value": "217",
+                        "name": "чувашский"
+                    },
+                    {
+                        "value": "223",
+                        "name": "эскимосский"
+                    },
+                    {
+                        "value": "224",
+                        "name": "эстонский"
+                    },
+                    {
+                        "value": "25",
+                        "name": "албанский"
+                    },
+                    {
+                        "value": "28",
+                        "name": "арагонский"
+                    },
+                    {
+                        "value": "29",
+                        "name": "арберешский"
+                    },
+                    {
+                        "value": "32",
+                        "name": "астурийский"
+                    },
+                    {
+                        "value": "36",
+                        "name": "баварский"
+                    },
+                    {
+                        "value": "39",
+                        "name": "баскский"
+                    },
+                    {
+                        "value": "45",
+                        "name": "болгарский"
+                    },
+                    {
+                        "value": "234",
+                        "name": "боснийский"
+                    },
+                    {
+                        "value": "47",
+                        "name": "бретонский"
+                    },
+                    {
+                        "value": "48",
+                        "name": "валенсийский"
+                    },
+                    {
+                        "value": "49",
+                        "name": "валлийский"
+                    },
+                    {
+                        "value": "50",
+                        "name": "валлонский"
+                    },
+                    {
+                        "value": "51",
+                        "name": "венгерский"
+                    },
+                    {
+                        "value": "53",
+                        "name": "венетский"
+                    },
+                    {
+                        "value": "54",
+                        "name": "верхнелужицкий"
+                    },
+                    {
+                        "value": "60",
+                        "name": "галисийский"
+                    },
+                    {
+                        "value": "62",
+                        "name": "голландский"
+                    },
+                    {
+                        "value": "63",
+                        "name": "греческий"
+                    },
+                    {
+                        "value": "19",
+                        "name": "датский"
+                    },
+                    {
+                        "value": "70",
+                        "name": "западно-фламандский"
+                    },
+                    {
+                        "value": "79",
+                        "name": "ирландский"
+                    },
+                    {
+                        "value": "80",
+                        "name": "исландский"
+                    },
+                    {
+                        "value": "87",
+                        "name": "каталанский"
+                    },
+                    {
+                        "value": "100",
+                        "name": "корсиканский"
+                    },
+                    {
+                        "value": "113",
+                        "name": "лимбургский"
+                    },
+                    {
+                        "value": "120",
+                        "name": "люксембургский"
+                    },
+                    {
+                        "value": "121",
+                        "name": "македонский"
+                    },
+                    {
+                        "value": "126",
+                        "name": "мальтийский"
+                    },
+                    {
+                        "value": "139",
+                        "name": "неаполитанский"
+                    },
+                    {
+                        "value": "18",
+                        "name": "норвежский"
+                    },
+                    {
+                        "value": "152",
+                        "name": "польский"
+                    },
+                    {
+                        "value": "153",
+                        "name": "португальский"
+                    },
+                    {
+                        "value": "158",
+                        "name": "румынский"
+                    },
+                    {
+                        "value": "164",
+                        "name": "сардинский"
+                    },
+                    {
+                        "value": "166",
+                        "name": "сербохорватский"
+                    },
+                    {
+                        "value": "170",
+                        "name": "словацкий"
+                    },
+                    {
+                        "value": "171",
+                        "name": "словенский"
+                    },
+                    {
+                        "value": "17",
+                        "name": "финский"
+                    },
+                    {
+                        "value": "203",
+                        "name": "фризский"
+                    },
+                    {
+                        "value": "13",
+                        "name": "чешский"
+                    },
+                    {
+                        "value": "16",
+                        "name": "шведский"
+                    },
+                    {
+                        "value": "218",
+                        "name": "швейцарский немецкий"
+                    },
+                    {
+                        "value": "67",
+                        "name": "шотландский"
+                    },
+                    {
+                        "value": "27",
+                        "name": "арабский"
+                    },
+                    {
+                        "value": "31",
+                        "name": "ассамский"
+                    },
+                    {
+                        "value": "41",
+                        "name": "бенгальский"
+                    },
+                    {
+                        "value": "42",
+                        "name": "бирманский"
+                    },
+                    {
+                        "value": "44",
+                        "name": "бихари"
+                    },
+                    {
+                        "value": "57",
+                        "name": "вьетнамский"
+                    },
+                    {
+                        "value": "66",
+                        "name": "гуджарати"
+                    },
+                    {
+                        "value": "68",
+                        "name": "дзонг-кэ"
+                    },
+                    {
+                        "value": "15",
+                        "name": "иврит"
+                    },
+                    {
+                        "value": "74",
+                        "name": "илоко"
+                    },
+                    {
+                        "value": "75",
+                        "name": "индонезийский"
+                    },
+                    {
+                        "value": "84",
+                        "name": "каннада"
+                    },
+                    {
+                        "value": "85",
+                        "name": "кантонский юэ"
+                    },
+                    {
+                        "value": "88",
+                        "name": "кашмири"
+                    },
+                    {
+                        "value": "7",
+                        "name": "китайский"
+                    },
+                    {
+                        "value": "97",
+                        "name": "конкани"
+                    },
+                    {
+                        "value": "98",
+                        "name": "корейский"
+                    },
+                    {
+                        "value": "105",
+                        "name": "курдский"
+                    },
+                    {
+                        "value": "107",
+                        "name": "кхмерский"
+                    },
+                    {
+                        "value": "109",
+                        "name": "лаосский"
+                    },
+                    {
+                        "value": "123",
+                        "name": "малайский"
+                    },
+                    {
+                        "value": "125",
+                        "name": "мальдивский"
+                    },
+                    {
+                        "value": "133",
+                        "name": "монгольский"
+                    },
+                    {
+                        "value": "209",
+                        "name": "мяо (хмонг)"
+                    },
+                    {
+                        "value": "230",
+                        "name": "пакистанский"
+                    },
+                    {
+                        "value": "149",
+                        "name": "пенджабский"
+                    },
+                    {
+                        "value": "151",
+                        "name": "персидский"
+                    },
+                    {
+                        "value": "163",
+                        "name": "санскрит"
+                    },
+                    {
+                        "value": "176",
+                        "name": "сунданский"
+                    },
+                    {
+                        "value": "177",
+                        "name": "тагальский"
+                    },
+                    {
+                        "value": "180",
+                        "name": "тайваньский"
+                    },
+                    {
+                        "value": "181",
+                        "name": "тайский"
+                    },
+                    {
+                        "value": "182",
+                        "name": "тамильский"
+                    },
+                    {
+                        "value": "184",
+                        "name": "телугу"
+                    },
+                    {
+                        "value": "185",
+                        "name": "тибетский"
+                    },
+                    {
+                        "value": "193",
+                        "name": "турецкий"
+                    },
+                    {
+                        "value": "198",
+                        "name": "уйгурский"
+                    },
+                    {
+                        "value": "229",
+                        "name": "филиппинский"
+                    },
+                    {
+                        "value": "207",
+                        "name": "хинди"
+                    },
+                    {
+                        "value": "231",
+                        "name": "южно-корейский"
+                    },
+                    {
+                        "value": "227",
+                        "name": "яванский"
+                    },
+                    {
+                        "value": "8",
+                        "name": "японский"
+                    },
+                    {
+                        "value": "23",
+                        "name": "аймара"
+                    },
+                    {
+                        "value": "35",
+                        "name": "ацтекский"
+                    },
+                    {
+                        "value": "59",
+                        "name": "гаитянский"
+                    },
+                    {
+                        "value": "65",
+                        "name": "гуарани"
+                    },
+                    {
+                        "value": "77",
+                        "name": "инуктитут"
+                    },
+                    {
+                        "value": "78",
+                        "name": "инупиак"
+                    },
+                    {
+                        "value": "90",
+                        "name": "кечуа"
+                    },
+                    {
+                        "value": "102",
+                        "name": "кри"
+                    },
+                    {
+                        "value": "135",
+                        "name": "навахо"
+                    },
+                    {
+                        "value": "225",
+                        "name": "юкатекский"
+                    },
+                    {
+                        "value": "24",
+                        "name": "акан"
+                    },
+                    {
+                        "value": "26",
+                        "name": "амхарский"
+                    },
+                    {
+                        "value": "33",
+                        "name": "афарский"
+                    },
+                    {
+                        "value": "34",
+                        "name": "африкаанс"
+                    },
+                    {
+                        "value": "37",
+                        "name": "бамбарийский"
+                    },
+                    {
+                        "value": "52",
+                        "name": "венда"
+                    },
+                    {
+                        "value": "55",
+                        "name": "волоф"
+                    },
+                    {
+                        "value": "61",
+                        "name": "гереро"
+                    },
+                    {
+                        "value": "71",
+                        "name": "зулу"
+                    },
+                    {
+                        "value": "72",
+                        "name": "игбо"
+                    },
+                    {
+                        "value": "81",
+                        "name": "йоруба"
+                    },
+                    {
+                        "value": "82",
+                        "name": "кабильский"
+                    },
+                    {
+                        "value": "86",
+                        "name": "канури"
+                    },
+                    {
+                        "value": "91",
+                        "name": "кикуйю"
+                    },
+                    {
+                        "value": "92",
+                        "name": "киньяруанда"
+                    },
+                    {
+                        "value": "96",
+                        "name": "конго"
+                    },
+                    {
+                        "value": "114",
+                        "name": "лингала"
+                    },
+                    {
+                        "value": "118",
+                        "name": "луба"
+                    },
+                    {
+                        "value": "119",
+                        "name": "луганда"
+                    },
+                    {
+                        "value": "122",
+                        "name": "малагасийский"
+                    },
+                    {
+                        "value": "140",
+                        "name": "непальский"
+                    },
+                    {
+                        "value": "172",
+                        "name": "сомали"
+                    },
+                    {
+                        "value": "175",
+                        "name": "суахили"
+                    },
+                    {
+                        "value": "186",
+                        "name": "тигринья"
+                    },
+                    {
+                        "value": "191",
+                        "name": "тсвана"
+                    },
+                    {
+                        "value": "192",
+                        "name": "тсонга"
+                    },
+                    {
+                        "value": "204",
+                        "name": "фулах"
+                    },
+                    {
+                        "value": "206",
+                        "name": "хауса"
+                    },
+                    {
+                        "value": "219",
+                        "name": "шона"
+                    },
+                    {
+                        "value": "221",
+                        "name": "эве"
+                    },
+                    {
+                        "value": "43",
+                        "name": "бислама"
+                    },
+                    {
+                        "value": "58",
+                        "name": "гавайский"
+                    },
+                    {
+                        "value": "127",
+                        "name": "маори"
+                    },
+                    {
+                        "value": "130",
+                        "name": "маршалльский"
+                    },
+                    {
+                        "value": "179",
+                        "name": "таитянский"
+                    },
+                    {
+                        "value": "187",
+                        "name": "ток-писин"
+                    },
+                    {
+                        "value": "189",
+                        "name": "тонганский"
+                    },
+                    {
+                        "value": "201",
+                        "name": "фиджийский"
+                    },
+                    {
+                        "value": "208",
+                        "name": "хири-моту"
+                    },
+                    {
+                        "value": "69",
+                        "name": "древнегреческий"
+                    },
+                    {
+                        "value": "73",
+                        "name": "идиш"
+                    },
+                    {
+                        "value": "76",
+                        "name": "интерлингва"
+                    },
+                    {
+                        "value": "94",
+                        "name": "клингонский"
+                    },
+                    {
+                        "value": "101",
+                        "name": "котава"
+                    },
+                    {
+                        "value": "110",
+                        "name": "латынь"
+                    },
+                    {
+                        "value": "174",
+                        "name": "старотурецкий"
+                    },
+                    {
+                        "value": "188",
+                        "name": "токи пона"
+                    },
+                    {
+                        "value": "14",
+                        "name": "эсперанто"
+                    }
+                ]
+            },
+            "15_filter": {
+                "name": "Язык перевода",
+                "choice_mode": "single",
+                "filter_type": "get_query",
+                "query_name": "t_lang",
+                "concat_query_values": false,
+                "is_sort_values": true,
+                "is_exclude_first_from_sort": true,
+                "values": [
+                    {
+                        "value": "0",
+                        "name": "Не важно"
+                    },
+                    {
+                        "value": "2",
+                        "name": "английский"
+                    },
+                    {
+                        "value": "6",
+                        "name": "испанский"
+                    },
+                    {
+                        "value": "5",
+                        "name": "итальянский"
+                    },
+                    {
+                        "value": "3",
+                        "name": "немецкий"
+                    },
+                    {
+                        "value": "1",
+                        "name": "русский"
+                    },
+                    {
+                        "value": "4",
+                        "name": "французский"
+                    },
+                    {
+                        "value": "20",
+                        "name": "абхазский"
+                    },
+                    {
+                        "value": "21",
+                        "name": "аварский"
+                    },
+                    {
+                        "value": "22",
+                        "name": "азербайджанский"
+                    },
+                    {
+                        "value": "30",
+                        "name": "армянский"
+                    },
+                    {
+                        "value": "40",
+                        "name": "башкирский"
+                    },
+                    {
+                        "value": "10",
+                        "name": "белорусский"
+                    },
+                    {
+                        "value": "64",
+                        "name": "грузинский"
+                    },
+                    {
+                        "value": "83",
+                        "name": "казахский"
+                    },
+                    {
+                        "value": "235",
+                        "name": "калмыцкий"
+                    },
+                    {
+                        "value": "93",
+                        "name": "киргизский"
+                    },
+                    {
+                        "value": "95",
+                        "name": "коми"
+                    },
+                    {
+                        "value": "233",
+                        "name": "лакский"
+                    },
+                    {
+                        "value": "111",
+                        "name": "латышский"
+                    },
+                    {
+                        "value": "112",
+                        "name": "лезгинский"
+                    },
+                    {
+                        "value": "115",
+                        "name": "литовский"
+                    },
+                    {
+                        "value": "232",
+                        "name": "марийский"
+                    },
+                    {
+                        "value": "11",
+                        "name": "молдавский"
+                    },
+                    {
+                        "value": "147",
+                        "name": "осетинский"
+                    },
+                    {
+                        "value": "178",
+                        "name": "таджикский"
+                    },
+                    {
+                        "value": "12",
+                        "name": "татарский"
+                    },
+                    {
+                        "value": "194",
+                        "name": "туркменский"
+                    },
+                    {
+                        "value": "196",
+                        "name": "удмуртский"
+                    },
+                    {
+                        "value": "197",
+                        "name": "узбекский"
+                    },
+                    {
+                        "value": "9",
+                        "name": "украинский"
+                    },
+                    {
+                        "value": "213",
+                        "name": "чеченский"
+                    },
+                    {
+                        "value": "217",
+                        "name": "чувашский"
+                    },
+                    {
+                        "value": "223",
+                        "name": "эскимосский"
+                    },
+                    {
+                        "value": "224",
+                        "name": "эстонский"
+                    },
+                    {
+                        "value": "25",
+                        "name": "албанский"
+                    },
+                    {
+                        "value": "28",
+                        "name": "арагонский"
+                    },
+                    {
+                        "value": "29",
+                        "name": "арберешский"
+                    },
+                    {
+                        "value": "32",
+                        "name": "астурийский"
+                    },
+                    {
+                        "value": "36",
+                        "name": "баварский"
+                    },
+                    {
+                        "value": "39",
+                        "name": "баскский"
+                    },
+                    {
+                        "value": "45",
+                        "name": "болгарский"
+                    },
+                    {
+                        "value": "234",
+                        "name": "боснийский"
+                    },
+                    {
+                        "value": "47",
+                        "name": "бретонский"
+                    },
+                    {
+                        "value": "48",
+                        "name": "валенсийский"
+                    },
+                    {
+                        "value": "49",
+                        "name": "валлийский"
+                    },
+                    {
+                        "value": "50",
+                        "name": "валлонский"
+                    },
+                    {
+                        "value": "51",
+                        "name": "венгерский"
+                    },
+                    {
+                        "value": "53",
+                        "name": "венетский"
+                    },
+                    {
+                        "value": "54",
+                        "name": "верхнелужицкий"
+                    },
+                    {
+                        "value": "60",
+                        "name": "галисийский"
+                    },
+                    {
+                        "value": "62",
+                        "name": "голландский"
+                    },
+                    {
+                        "value": "63",
+                        "name": "греческий"
+                    },
+                    {
+                        "value": "19",
+                        "name": "датский"
+                    },
+                    {
+                        "value": "70",
+                        "name": "западно-фламандский"
+                    },
+                    {
+                        "value": "79",
+                        "name": "ирландский"
+                    },
+                    {
+                        "value": "80",
+                        "name": "исландский"
+                    },
+                    {
+                        "value": "87",
+                        "name": "каталанский"
+                    },
+                    {
+                        "value": "100",
+                        "name": "корсиканский"
+                    },
+                    {
+                        "value": "113",
+                        "name": "лимбургский"
+                    },
+                    {
+                        "value": "120",
+                        "name": "люксембургский"
+                    },
+                    {
+                        "value": "121",
+                        "name": "македонский"
+                    },
+                    {
+                        "value": "126",
+                        "name": "мальтийский"
+                    },
+                    {
+                        "value": "139",
+                        "name": "неаполитанский"
+                    },
+                    {
+                        "value": "18",
+                        "name": "норвежский"
+                    },
+                    {
+                        "value": "152",
+                        "name": "польский"
+                    },
+                    {
+                        "value": "153",
+                        "name": "португальский"
+                    },
+                    {
+                        "value": "158",
+                        "name": "румынский"
+                    },
+                    {
+                        "value": "164",
+                        "name": "сардинский"
+                    },
+                    {
+                        "value": "166",
+                        "name": "сербохорватский"
+                    },
+                    {
+                        "value": "170",
+                        "name": "словацкий"
+                    },
+                    {
+                        "value": "171",
+                        "name": "словенский"
+                    },
+                    {
+                        "value": "17",
+                        "name": "финский"
+                    },
+                    {
+                        "value": "203",
+                        "name": "фризский"
+                    },
+                    {
+                        "value": "13",
+                        "name": "чешский"
+                    },
+                    {
+                        "value": "16",
+                        "name": "шведский"
+                    },
+                    {
+                        "value": "218",
+                        "name": "швейцарский немецкий"
+                    },
+                    {
+                        "value": "67",
+                        "name": "шотландский"
+                    },
+                    {
+                        "value": "27",
+                        "name": "арабский"
+                    },
+                    {
+                        "value": "31",
+                        "name": "ассамский"
+                    },
+                    {
+                        "value": "41",
+                        "name": "бенгальский"
+                    },
+                    {
+                        "value": "42",
+                        "name": "бирманский"
+                    },
+                    {
+                        "value": "44",
+                        "name": "бихари"
+                    },
+                    {
+                        "value": "57",
+                        "name": "вьетнамский"
+                    },
+                    {
+                        "value": "66",
+                        "name": "гуджарати"
+                    },
+                    {
+                        "value": "68",
+                        "name": "дзонг-кэ"
+                    },
+                    {
+                        "value": "15",
+                        "name": "иврит"
+                    },
+                    {
+                        "value": "74",
+                        "name": "илоко"
+                    },
+                    {
+                        "value": "75",
+                        "name": "индонезийский"
+                    },
+                    {
+                        "value": "84",
+                        "name": "каннада"
+                    },
+                    {
+                        "value": "85",
+                        "name": "кантонский юэ"
+                    },
+                    {
+                        "value": "88",
+                        "name": "кашмири"
+                    },
+                    {
+                        "value": "7",
+                        "name": "китайский"
+                    },
+                    {
+                        "value": "97",
+                        "name": "конкани"
+                    },
+                    {
+                        "value": "98",
+                        "name": "корейский"
+                    },
+                    {
+                        "value": "105",
+                        "name": "курдский"
+                    },
+                    {
+                        "value": "107",
+                        "name": "кхмерский"
+                    },
+                    {
+                        "value": "109",
+                        "name": "лаосский"
+                    },
+                    {
+                        "value": "123",
+                        "name": "малайский"
+                    },
+                    {
+                        "value": "125",
+                        "name": "мальдивский"
+                    },
+                    {
+                        "value": "133",
+                        "name": "монгольский"
+                    },
+                    {
+                        "value": "209",
+                        "name": "мяо (хмонг)"
+                    },
+                    {
+                        "value": "230",
+                        "name": "пакистанский"
+                    },
+                    {
+                        "value": "149",
+                        "name": "пенджабский"
+                    },
+                    {
+                        "value": "151",
+                        "name": "персидский"
+                    },
+                    {
+                        "value": "163",
+                        "name": "санскрит"
+                    },
+                    {
+                        "value": "176",
+                        "name": "сунданский"
+                    },
+                    {
+                        "value": "177",
+                        "name": "тагальский"
+                    },
+                    {
+                        "value": "180",
+                        "name": "тайваньский"
+                    },
+                    {
+                        "value": "181",
+                        "name": "тайский"
+                    },
+                    {
+                        "value": "182",
+                        "name": "тамильский"
+                    },
+                    {
+                        "value": "184",
+                        "name": "телугу"
+                    },
+                    {
+                        "value": "185",
+                        "name": "тибетский"
+                    },
+                    {
+                        "value": "193",
+                        "name": "турецкий"
+                    },
+                    {
+                        "value": "198",
+                        "name": "уйгурский"
+                    },
+                    {
+                        "value": "229",
+                        "name": "филиппинский"
+                    },
+                    {
+                        "value": "207",
+                        "name": "хинди"
+                    },
+                    {
+                        "value": "231",
+                        "name": "южно-корейский"
+                    },
+                    {
+                        "value": "227",
+                        "name": "яванский"
+                    },
+                    {
+                        "value": "8",
+                        "name": "японский"
+                    },
+                    {
+                        "value": "23",
+                        "name": "аймара"
+                    },
+                    {
+                        "value": "35",
+                        "name": "ацтекский"
+                    },
+                    {
+                        "value": "59",
+                        "name": "гаитянский"
+                    },
+                    {
+                        "value": "65",
+                        "name": "гуарани"
+                    },
+                    {
+                        "value": "77",
+                        "name": "инуктитут"
+                    },
+                    {
+                        "value": "78",
+                        "name": "инупиак"
+                    },
+                    {
+                        "value": "90",
+                        "name": "кечуа"
+                    },
+                    {
+                        "value": "102",
+                        "name": "кри"
+                    },
+                    {
+                        "value": "135",
+                        "name": "навахо"
+                    },
+                    {
+                        "value": "225",
+                        "name": "юкатекский"
+                    },
+                    {
+                        "value": "24",
+                        "name": "акан"
+                    },
+                    {
+                        "value": "26",
+                        "name": "амхарский"
+                    },
+                    {
+                        "value": "33",
+                        "name": "афарский"
+                    },
+                    {
+                        "value": "34",
+                        "name": "африкаанс"
+                    },
+                    {
+                        "value": "37",
+                        "name": "бамбарийский"
+                    },
+                    {
+                        "value": "52",
+                        "name": "венда"
+                    },
+                    {
+                        "value": "55",
+                        "name": "волоф"
+                    },
+                    {
+                        "value": "61",
+                        "name": "гереро"
+                    },
+                    {
+                        "value": "71",
+                        "name": "зулу"
+                    },
+                    {
+                        "value": "72",
+                        "name": "игбо"
+                    },
+                    {
+                        "value": "81",
+                        "name": "йоруба"
+                    },
+                    {
+                        "value": "82",
+                        "name": "кабильский"
+                    },
+                    {
+                        "value": "86",
+                        "name": "канури"
+                    },
+                    {
+                        "value": "91",
+                        "name": "кикуйю"
+                    },
+                    {
+                        "value": "92",
+                        "name": "киньяруанда"
+                    },
+                    {
+                        "value": "96",
+                        "name": "конго"
+                    },
+                    {
+                        "value": "114",
+                        "name": "лингала"
+                    },
+                    {
+                        "value": "118",
+                        "name": "луба"
+                    },
+                    {
+                        "value": "119",
+                        "name": "луганда"
+                    },
+                    {
+                        "value": "122",
+                        "name": "малагасийский"
+                    },
+                    {
+                        "value": "140",
+                        "name": "непальский"
+                    },
+                    {
+                        "value": "172",
+                        "name": "сомали"
+                    },
+                    {
+                        "value": "175",
+                        "name": "суахили"
+                    },
+                    {
+                        "value": "186",
+                        "name": "тигринья"
+                    },
+                    {
+                        "value": "191",
+                        "name": "тсвана"
+                    },
+                    {
+                        "value": "192",
+                        "name": "тсонга"
+                    },
+                    {
+                        "value": "204",
+                        "name": "фулах"
+                    },
+                    {
+                        "value": "206",
+                        "name": "хауса"
+                    },
+                    {
+                        "value": "219",
+                        "name": "шона"
+                    },
+                    {
+                        "value": "221",
+                        "name": "эве"
+                    },
+                    {
+                        "value": "43",
+                        "name": "бислама"
+                    },
+                    {
+                        "value": "58",
+                        "name": "гавайский"
+                    },
+                    {
+                        "value": "127",
+                        "name": "маори"
+                    },
+                    {
+                        "value": "130",
+                        "name": "маршалльский"
+                    },
+                    {
+                        "value": "179",
+                        "name": "таитянский"
+                    },
+                    {
+                        "value": "187",
+                        "name": "ток-писин"
+                    },
+                    {
+                        "value": "189",
+                        "name": "тонганский"
+                    },
+                    {
+                        "value": "201",
+                        "name": "фиджийский"
+                    },
+                    {
+                        "value": "208",
+                        "name": "хири-моту"
+                    },
+                    {
+                        "value": "69",
+                        "name": "древнегреческий"
+                    },
+                    {
+                        "value": "73",
+                        "name": "идиш"
+                    },
+                    {
+                        "value": "76",
+                        "name": "интерлингва"
+                    },
+                    {
+                        "value": "94",
+                        "name": "клингонский"
+                    },
+                    {
+                        "value": "101",
+                        "name": "котава"
+                    },
+                    {
+                        "value": "110",
+                        "name": "латынь"
+                    },
+                    {
+                        "value": "174",
+                        "name": "старотурецкий"
+                    },
+                    {
+                        "value": "188",
+                        "name": "токи пона"
+                    },
+                    {
+                        "value": "14",
+                        "name": "эсперанто"
+                    }
+                ]
+            },
+            "16_filter": {
+                "name": "Тип",
+                "choice_mode": "single",
+                "filter_type": "get_query",
+                "query_name": "type",
+                "concat_query_values": false,
+                "values": [
+                    {
+                        "name": "Все",
+                        "value": "0"
+                    },
+                    {
+                        "name": "Только переводы",
+                        "value": "1"
+                    },
+                    {
+                        "name": "Только авторские",
+                        "value": "2"
+                    }
+                ]
+            },
+            "17_genres": {
+                "name": "Жанры",
+                "choice_mode": "multiple_exclude",
+                "filter_type": "get_query",
+                "query_name": "genres%5B%5D",
+                "query_exclude_name": "genres_ex%5B%5D",
+                "concat_query_values": false,
+                "is_sort_values": true,
+                "is_exclude_first_from_sort": true,
+                "values": [
+                    {
+                        "value": "0",
+                        "name": "все жанры"
+                    },
+                    {
+                        "value": "1",
+                        "name": "арт"
+                    },
+                    {
+                        "value": "2",
+                        "name": "боевик"
+                    },
+                    {
+                        "value": "3",
+                        "name": "боевые искусства"
+                    },
+                    {
+                        "value": "4",
+                        "name": "вампиры"
+                    },
+                    {
+                        "value": "5",
+                        "name": "гарем"
+                    },
+                    {
+                        "value": "6",
+                        "name": "гендерная интрига"
+                    },
+                    {
+                        "value": "7",
+                        "name": "героическое фэнтези"
+                    },
+                    {
+                        "value": "8",
+                        "name": "детектив"
+                    },
+                    {
+                        "value": "9",
+                        "name": "дзёсэй"
+                    },
+                    {
+                        "value": "10",
+                        "name": "додзинси"
+                    },
+                    {
+                        "value": "11",
+                        "name": "драма"
+                    },
+                    {
+                        "value": "12",
+                        "name": "игра"
+                    },
+                    {
+                        "value": "13",
+                        "name": "история"
+                    },
+                    {
+                        "value": "46",
+                        "name": "киберпанк"
+                    },
+                    {
+                        "value": "14",
+                        "name": "кодомо"
+                    },
+                    {
+                        "value": "15",
+                        "name": "комедия"
+                    },
+                    {
+                        "value": "16",
+                        "name": "махо-сёдзё"
+                    },
+                    {
+                        "value": "17",
+                        "name": "меха"
+                    },
+                    {
+                        "value": "18",
+                        "name": "мистика"
+                    },
+                    {
+                        "value": "19",
+                        "name": "научная фантастика"
+                    },
+                    {
+                        "value": "20",
+                        "name": "повседневность"
+                    },
+                    {
+                        "value": "21",
+                        "name": "постапокалиптика"
+                    },
+                    {
+                        "value": "22",
+                        "name": "приключения"
+                    },
+                    {
+                        "value": "23",
+                        "name": "психология"
+                    },
+                    {
+                        "value": "24",
+                        "name": "романтика"
+                    },
+                    {
+                        "value": "25",
+                        "name": "самурайский боевик"
+                    },
+                    {
+                        "value": "26",
+                        "name": "сверхъестественное"
+                    },
+                    {
+                        "value": "27",
+                        "name": "сёдзё"
+                    },
+                    {
+                        "value": "28",
+                        "name": "сёдзё-ай"
+                    },
+                    {
+                        "value": "29",
+                        "name": "сёнэн"
+                    },
+                    {
+                        "value": "30",
+                        "name": "сёнэн-ай"
+                    },
+                    {
+                        "value": "45",
+                        "name": "смат"
+                    },
+                    {
+                        "value": "31",
+                        "name": "спорт"
+                    },
+                    {
+                        "value": "32",
+                        "name": "сэйнэн"
+                    },
+                    {
+                        "value": "44",
+                        "name": "сюаньхуа"
+                    },
+                    {
+                        "value": "42",
+                        "name": "сянься (XianXia)"
+                    },
+                    {
+                        "value": "33",
+                        "name": "трагедия"
+                    },
+                    {
+                        "value": "34",
+                        "name": "триллер"
+                    },
+                    {
+                        "value": "35",
+                        "name": "ужасы"
+                    },
+                    {
+                        "value": "41",
+                        "name": "уся (wuxia)"
+                    },
+                    {
+                        "value": "36",
+                        "name": "фантастика"
+                    },
+                    {
+                        "value": "37",
+                        "name": "фэнтези"
+                    },
+                    {
+                        "value": "38",
+                        "name": "школа"
+                    },
+                    {
+                        "value": "39",
+                        "name": "этти"
+                    },
+                    {
+                        "value": "40",
+                        "name": "юри"
+                    },
+                    {
+                        "value": "43",
+                        "name": "яой"
+                    }
+                ]
+            },
+            "18_filter": {
+                "name": "Количество глав (от)",
+                "choice_mode": "single",
+                "filter_type": "get_query",
+                "query_name": "n_chapters",
+                "concat_query_values": false,
+                "values": [
+                    {
+                        "name": "10",
+                        "value": "10"
+                    },
+                    {
+                        "name": "20",
+                        "value": "20"
+                    },
+                    {
+                        "name": "30",
+                        "value": "30"
+                    },
+                    {
+                        "name": "40",
+                        "value": "40"
+                    },
+                    {
+                        "name": "50",
+                        "value": "50"
+                    },
+                    {
+                        "name": "60",
+                        "value": "60"
+                    },
+                    {
+                        "name": "70",
+                        "value": "70"
+                    },
+                    {
+                        "name": "80",
+                        "value": "80"
+                    },
+                    {
+                        "name": "90",
+                        "value": "90"
+                    },
+                    {
+                        "name": "100",
+                        "value": "100"
+                    },
+                    {
+                        "name": "150",
+                        "value": "150"
+                    },
+                    {
+                        "name": "200",
+                        "value": "200"
+                    },
+                    {
+                        "name": "250",
+                        "value": "250"
+                    },
+                    {
+                        "name": "300",
+                        "value": "300"
+                    },
+                    {
+                        "name": "350",
+                        "value": "350"
+                    },
+                    {
+                        "name": "400",
+                        "value": "400"
+                    },
+                    {
+                        "name": "450",
+                        "value": "450"
+                    },
+                    {
+                        "name": "500",
+                        "value": "500"
+                    },
+                    {
+                        "name": "600",
+                        "value": "600"
+                    },
+                    {
+                        "name": "700",
+                        "value": "700"
+                    },
+                    {
+                        "name": "800",
+                        "value": "800"
+                    },
+                    {
+                        "name": "900",
+                        "value": "900"
+                    },
+                    {
+                        "name": "1000",
+                        "value": "1000"
+                    },
+                    {
+                        "name": "1500",
+                        "value": "1500"
+                    },
+                    {
+                        "name": "2000",
+                        "value": "2000"
+                    },
+                    {
+                        "name": "2500",
+                        "value": "2500"
+                    },
+                    {
+                        "name": "3000",
+                        "value": "3000"
+                    },
+                    {
+                        "name": "4000",
+                        "value": "4000"
+                    },
+                    {
+                        "name": "5000",
+                        "value": "5000"
+                    },
+                    {
+                        "name": "6000",
+                        "value": "6000"
+                    },
+                    {
+                        "name": "7000",
+                        "value": "7000"
+                    },
+                    {
+                        "name": "8000",
+                        "value": "8000"
+                    },
+                    {
+                        "name": "9000",
+                        "value": "9000"
+                    },
+                    {
+                        "name": "10000",
+                        "value": "10000"
+                    }
+                ]
+            }
+        },
+        "add_manga": {
+            "next": "<div class='th'>",
+            "link": {
+                "token1": "href='/book/",
+                "token2": "'>",
+                "replace": {
+                    "prefix": "$scheme$//$hostname$/book/"
+                }
+            },
+            "title": {
+                "skip": "href='",
+                "token1": "'>",
+                "token2": "</",
+                "replace": {
+                    "match": "/.*$",
+                    "text": ""
+                }
+            },
+            "additional_title": {
+                "skip": "href='",
+                "token1": "'>",
+                "token2": "</",
+                "replace": [
+                    {
+                        "match": "^.*/",
+                        "text": ""
+                    },
+                    {
+                        "match": "(Завершено)",
+                        "text": "",
+                        "trim": true
+                    }
+                ]
+            },
+            "cover": {
+                "after": "<img",
+                "before": " alt=",
+                "token1": "src='/i/book/",
+                "token2": "'",
+                "replace": {
+                    "prefix": "$scheme$//$hostname$/i/book/"
+                }
+            },
+            "chapters_released": {
+                "skip": "href='",
+                "token1": "<i class=\"icon-book icon-white\"></i>",
+                "token2": "</span"
+            },
+            "content_type": {
+                "default": "light_novel"
+            },
+            "is_mature": {
+                "start": ">жанры:",
+                "values": [
+                    "этти",
+                    "ужасы"
+                ],
+                "end": "</div>"
+            },
+            "is_adult": {
+                "start": ">жанры:",
+                "values": [
+                    "+18",
+                    "18+",
+                    "эротика"
+                ],
+                "end": "</div>"
+            }
+        }
+    },
+    "manga_list_complete": {
+        "iterator": [
+            {
+                "category": {
+                    "tag": "main",
+                    "name": "Популярные"
+                },
+                "base_url": "$scheme$//$hostname$/search/index/cat/2/Book_page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 1170,
+                    "step": 1
+                }
+            },
+            {
+                "category": {
+                    "tag": "complete",
+                    "name": "Законченные"
+                },
+                "base_url": "$scheme$//$hostname$/search/index/t//cat/2/s_lang/0/t_lang/0/adult/0/wealth/1/sort/5/n_chapters//Book_page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 1170,
+                    "step": 1
+                }
+            },
+            {
+                "category": {
+                    "tag": "new",
+                    "name": "Новые работы"
+                },
+                "base_url": "$scheme$//$hostname$/search/index/t//cat/2/s_lang/0/t_lang/0/adult/0/sort/3/n_chapters/1/Book_page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 1170,
+                    "step": 1
+                }
+            }
+        ],
+        "add_manga": {
+            "next": "<div class='th'>",
+            "link": {
+                "token1": "href='/book/",
+                "token2": "'>",
+                "replace": {
+                    "prefix": "$scheme$//$hostname$/book/"
+                }
+            },
+            "title": {
+                "skip": "href='",
+                "token1": "'>",
+                "token2": "</",
+                "replace": {
+                    "match": "/.*$",
+                    "text": ""
+                }
+            },
+            "additional_title": {
+                "skip": "href='",
+                "token1": "'>",
+                "token2": "</",
+                "replace": [
+                    {
+                        "match": "^.*/",
+                        "text": ""
+                    },
+                    {
+                        "match": "(Завершено)",
+                        "text": "",
+                        "trim": true
+                    }
+                ]
+            },
+            "cover": {
+                "after": "<img",
+                "before": " alt=",
+                "token1": "src='/i/book/",
+                "token2": "'",
+                "replace": {
+                    "prefix": "$scheme$//$hostname$/i/book/"
+                }
+            },
+            "chapters_released": {
+                "skip": "href='",
+                "token1": "<i class=\"icon-book icon-white\"></i>",
+                "token2": "</span"
+            },
+            "content_type": {
+                "default": "light_novel"
+            },
+            "is_mature": {
+                "start": ">жанры:",
+                "values": [
+                    "этти",
+                    "ужасы"
+                ],
+                "end": "</div>"
+            },
+            "is_adult": {
+                "start": ">жанры:",
+                "values": [
+                    "+18",
+                    "18+",
+                    "эротика"
+                ],
+                "end": "</div>"
+            }
+        }
+    },
+    "manga_complete": {
+        "headers": {
+            "Cookie": "mature=c3a2ed4b199a1a15f5a5483504c7a75a7030dc4bi%3A1%3B"
+        },
+        "title": {
+            "skip": "var Book = new CBook",
+            "token1": "s_title: '",
+            "token2": "',",
+            "replace": [
+                {
+                    "match": "\\\\'",
+                    "text": "'"
+                },
+                {
+                    "match": "\\'",
+                    "text": "'"
+                }
+            ]
+        },
+        "additional_title": {
+            "skip": "var Book = new CBook",
+            "token1": "t_title: '",
+            "token2": "',",
+            "replace": [
+                {
+                    "match": "\\(Завершено\\)",
+                    "text": "",
+                    "trim": true
+                },
+                {
+                    "match": "\\\\'",
+                    "text": "'"
+                },
+                {
+                    "match": "\\'",
+                    "text": "'"
+                }
+            ]
+        },
+        "summary": {
+            "skip": ">Начать чтение<",
+            "token1": "<div style=\"margin: 20px 0 0 0\">",
+            "token2": "<h3>",
+            "replace": [
+                {
+                    "match": "<.*?>",
+                    "text": " "
+                },
+                {
+                    "match": "> ",
+                    "text": ""
+                },
+                {
+                    "match": ">",
+                    "text": ""
+                },
+                {
+                    "match": "Описание: ",
+                    "text": ""
+                },
+                {
+                    "match": "(  +)",
+                    "text": " "
+                },
+                {
+                    "match": "/a",
+                    "text": ""
+                },
+                {
+                    "match": " В закладки.*Прочитал ",
+                    "text": ""
+                },
+                {
+                    "match": "Использование: \n \n.*\n.*\n.*\n.*\n.*",
+                    "text": ""
+                },
+                {
+                    "match": "^function save_note.*",
+                    "text": ""
+                },
+                {
+                    "match": "^var text.*",
+                    "text": ""
+                },
+                {
+                    "match": "^\\$\\.ajax.*",
+                    "text": ""
+                },
+                {
+                    "match": "^url:.*",
+                    "text": ""
+                },
+                {
+                    "match": "^method:.*",
+                    "text": ""
+                },
+                {
+                    "match": "^data:.*",
+                    "text": ""
+                },
+                {
+                    "match": "^text:.*",
+                    "text": ""
+                },
+                {
+                    "match": "^\n\\}.*",
+                    "text": ""
+                },
+                {
+                    "match": "^\\}.*",
+                    "text": ""
+                },
+                {
+                    "match": "\\}\\);\n\\}",
+                    "text": ""
+                },
+                {
+                    "match": "×",
+                    "text": ""
+                },
+                {
+                    "trim": true
+                }
+            ]
+        },
+        "author": {
+            "skip": ">Автор:</",
+            "token1": "'>",
+            "token2": "</a"
+        },
+        "cover": {
+            "skip": "og:image",
+            "token1": "content=\"",
+            "token2": "\""
+        },
+        "country": {
+            "skip": ">Новеллы и ранобэ</",
+            "before": ">Произведение:</",
+            "token1": "'>",
+            "token2": "</a",
+            "replace": [
+                {
+                    "match": "Китайские",
+                    "text": "Китай"
+                },
+                {
+                    "match": "Английские",
+                    "text": "Америка"
+                },
+                {
+                    "match": "Авторские",
+                    "text": "Россия"
+                },
+                {
+                    "match": "Корейские",
+                    "text": "Корея"
+                },
+                {
+                    "match": "Японские",
+                    "text": "Япония"
+                }
+            ]
+        },
+        "production_year": {
+            "skip": ">Год выпуска",
+            "token1": "em>",
+            "token2": "</em"
+        },
+        "add_genre": {
+            "after": "href=\"/search?genres",
+            "token1": "\">",
+            "token2": "</"
+        },
+        "add_tag": {
+            "after": "href=\"/search?tags",
+            "token1": "\">",
+            "token2": "</"
+        },
+        "is_mature": {
+            "start": ">Жанры:<",
+            "end": ">Ваш статус:<",
+            "values": [
+                "этти",
+                "ужасы"
+            ]
+        },
+        "is_adult": {
+            "start": ">Тэги:<",
+            "end": ">Ваш статус:<",
+            "values": [
+                "+18",
+                "18+",
+                "эротика"
+            ]
+        },
+        "content_type": {
+            "default": "light_novel"
+        },
+        "status": {
+            "complete": {
+                "start": ">Выпуск:",
+                "end": "<p>",
+                "value": "завершён"
+            },
+            "ongoing": {
+                "start": ">Выпуск:",
+                "end": "<p>",
+                "value": "продолжается"
+            }
+        },
+        "translation_status": {
+            "empty": {
+                "start": "<div class='alert alert-info'",
+                "end": "id=\"Chapters\">",
+                "value": "В этом переводе ещё не создано ни одной главы."
+            },
+            "complete": {
+                "start": "dt>Состояние перевода:</dt",
+                "end": "dt>Перевод:</dt",
+                "values": [
+                    ">Завершён",
+                    ">Переведена"
+                ]
+            },
+            "ongoing": {
+                "start": "dt>Состояние перевода:</dt",
+                "end": "dt>Перевод:</dt",
+                "values": [
+                    ">В работе",
+                    ">Ожидание",
+                    ">Перерыв"
+                ]
+            },
+            "default": "unknown"
+        },
+        "add_chapter": {
+            "is_ebook": true,
+            "start": "<tr id",
+            "end": "<div class=\"form-actions\"",
+            "next": "<td class=",
+            "link": {
+                "before": "title='Получить",
+                "token1": "href='",
+                "token2": "'"
+            },
+            "uniq": {
+                "before": "title='Получить",
+                "token1": "'t'>",
+                "token2": "</a",
+                "replace": [
+                    {
+                        "match": "<.*>",
+                        "text": ""
+                    },
+                    {
+                        "prefix": {
+                            "before": "title='Получить",
+                            "after": "class='volume_helper",
+                            "token1": "<strong>",
+                            "token2": "</",
+                            "replace": {
+                                "sufix": "-"
+                            }
+                        }
+                    },
+                    {
+                        "match": "Зарегистрироваться-",
+                        "text": ""
+                    }
+                ]
+            },
+            "title": {
+                "before": "title='Получить",
+                "token1": "'t'>",
+                "token2": "</a",
+                "replace": [
+                    {
+                        "match": "<.*>",
+                        "text": ""
+                    },
+                    {
+                        "match": "Главы",
+                        "text": "Глава"
+                    },
+                    {
+                        "match": "\\u2013",
+                        "text": " - "
+                    },
+                    {
+                        "prefix": {
+                            "before": "title='Получить",
+                            "after": "class='volume_helper",
+                            "token1": "<strong>",
+                            "token2": "</",
+                            "replace": {
+                                "sufix": ": "
+                            }
+                        }
+                    },
+                    {
+                        "match": "Зарегистрироваться: ",
+                        "text": ""
+                    }
+                ]
+            }
+        }
+    },
+    "chapter_complete": {
+        "headers": {
+            "Cookie": "mature=c3a2ed4b199a1a15f5a5483504c7a75a7030dc4bi%3A1%3B; mwatcher_d=sldotndjssf"
+        },
+        "images": true,
+        "add_pages": {
+            "start": ">Настройки</",
+            "token1": "action=\"/book/",
+            "token2": "/ready",
+            "end": "</html>"
+        },
+        "prefix": "https://tl.rulate.ru/book/",
+        "sufix": "/download?format=f&enc=UTF-8&key=qwerty&title=/ranobe.fb2",
+        "link_corrector": [
+            {
+                "match": "http://",
+                "text": "https://"
+            }
+        ]
+    },
+    "test": [
+        {
+            "proc": "manga_list_complete",
+            "testpages": "3",
+            "assert": {
+                "mangas": [
+                    {
+                        "title": "@^(\\p{L}+)",
+                        "link": "@https://tl.rulate.ru/",
+                        "uniq": "@^(\\d+)"
+                    }
+                ],
+                "mangas_count": ">=60"
+            }
+        },
+        {
+            "proc": "manga_complete",
+            "link": "https://tl.rulate.ru/book/22",
+            "title": "Xian Ni / Renegade Immortal",
+            "assert": {
+                "cover": "https://tl.rulate.ru/i/book/25/3/436.jpg",
+                "summary": "@^(Чертовски правдивая история о том)",
+                "genres": "@fantasy",
+                "status": "complete",
+                "chapters_count": ">=300",
+                "genres_count": ">=2",
+                "chapters": [
+                    {
+                        "folder": "Глава 1-30/",
+                        "link": "https://tl.rulate.ru/book/22/101/ready_new",
+                        "title": "Глава 1-30"
+                    },
+                    {
+                        "folder": "Постскриптум/",
+                        "link": "https://tl.rulate.ru/book/22/783374/ready_new",
+                        "title": "Постскриптум"
+                    }
+                ]
+            }
+        },
+        {
+            "proc": "chapter_complete",
+            "link": "https://tl.rulate.ru/book/1689/250072/ready",
+            "assert": {
+                "pages": [
+                    {
+                        "image": "https://tl.rulate.ru/book/1689/250072/download?format=f&enc=UTF-8&key=qwerty&title=/ranobe.fb2"
+                    }
+                ]
+            }
+        },
+        {
+            "proc": "chapter_complete",
+            "link": "https://tl.rulate.ru/book/22/105/ready",
+            "assert": {
+                "pages": [
+                    {
+                        "image": "https://tl.rulate.ru/book/22/105/download?format=f&enc=UTF-8&key=qwerty&title=/ranobe.fb2"
+                    }
+                ]
+            }
+        }
+    ]
+}

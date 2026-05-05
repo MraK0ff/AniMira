@@ -1,0 +1,1503 @@
+{
+    "id": 20004,
+    "version": 186,
+    "title": "AnimeVost",
+    "host": "https://v13.vost.pw",
+    "public_link": "https://v13.vost.pw",
+    "hash_tag": "animevost",
+    "folder": "animevost",
+    "name": [
+        "animevost",
+        "agorov",
+        "vost"
+    ],
+    "language": "ru",
+    "content_type": "anime",
+    "episodes_order": true,
+    "icon_link": "http://images.mangawatcherx.com/parser/icon/anime/animevost.png",
+    "self_link": "https://api.anilabx.xyz/v3/parser/get?type=anime&parser=animevost",
+    "author": {
+        "name": "AniLabX Team",
+        "email": "anilabx.supp@gmail.com"
+    },
+    "custom_settings": {
+        "is_allow_host_mirroring": "true"
+    },
+    "anime_search_complete": {
+        "search_link": "$scheme$//$hostname$/index.php?do=search&subaction=search&search_start=$page$&full_search=0&result_from=1&story=$query$",
+        "query_type": "GET",
+        "add_anime": {
+            "start": "centerBlock",
+            "next": "shortstoryHead",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\">"
+            },
+            "title": {
+                "skip": "href=\"",
+                "token1": "\">",
+                "token2": "</",
+                "replace": [
+                    {
+                        "match": "\\[(.*?)\\]",
+                        "text": ""
+                    },
+                    {
+                        "match": ".*/ ",
+                        "text": ""
+                    }
+                ]
+            },
+            "additional_title": {
+                "skip": "href=\"",
+                "token1": "\">",
+                "token2": "</",
+                "replace": [
+                    {
+                        "match": "\\[(.*?)\\]",
+                        "text": ""
+                    },
+                    {
+                        "match": " /.*",
+                        "text": ""
+                    }
+                ]
+            },
+            "cover": {
+                "skip": "imgRadius",
+                "token1": "src=\"",
+                "token2": "\""
+            },
+            "episodes_aired": {
+                "skip": "href=\"",
+                "token1": "\">",
+                "token2": "</",
+                "replace": {
+                    "match": "\\[(.*?)\\]",
+                    "match_number": "1",
+                    "group": "1"
+                }
+            },
+            "next_episode_at": {
+                "skip": "href=\"",
+                "token1": "\">",
+                "token2": "</",
+                "replace": {
+                    "match": "\\[(.*?)\\]",
+                    "match_number": "2",
+                    "group": "1"
+                }
+            },
+            "end": "\"futer\""
+        }
+    },
+    "anime_list_filters_complete": {
+        "genre_filters": {
+            "link": "$scheme$//$hostname$/zhanr/$filter$/page/$page$/",
+            "filters": [
+                {
+                    "value": "boyevyye-iskusstva",
+                    "name": "Боевые искусства"
+                },
+                {
+                    "value": "voyna",
+                    "name": "Война"
+                },
+                {
+                    "value": "drama",
+                    "name": "Драма"
+                },
+                {
+                    "value": "detektiv",
+                    "name": "Детектив"
+                },
+                {
+                    "value": "istoriya",
+                    "name": "История"
+                },
+                {
+                    "value": "komediya",
+                    "name": "Комедия"
+                },
+                {
+                    "value": "mekha",
+                    "name": "Меха"
+                },
+                {
+                    "value": "mistika",
+                    "name": "Мистика"
+                },
+                {
+                    "value": "makho-sedze",
+                    "name": "Махо-сёдзё"
+                },
+                {
+                    "value": "muzykalnyy",
+                    "name": "Музыкальный"
+                },
+                {
+                    "value": "povsednevnost",
+                    "name": "Повседневность"
+                },
+                {
+                    "value": "priklyucheniya",
+                    "name": "Приключения"
+                },
+                {
+                    "value": "parodiya",
+                    "name": "Пародия"
+                },
+                {
+                    "value": "romantika",
+                    "name": "Романтика"
+                },
+                {
+                    "value": "senen",
+                    "name": "Сёнэн"
+                },
+                {
+                    "value": "sedze",
+                    "name": "Сёдзё"
+                },
+                {
+                    "value": "sport",
+                    "name": "Спорт"
+                },
+                {
+                    "value": "skazka",
+                    "name": "Сказка"
+                },
+                {
+                    "value": "sedze-ay",
+                    "name": "Сёдзё-ай"
+                },
+                {
+                    "value": "senen-ay",
+                    "name": "Сёнэн-ай"
+                },
+                {
+                    "value": "samurai",
+                    "name": "Самураи"
+                },
+                {
+                    "value": "triller",
+                    "name": "Триллер"
+                },
+                {
+                    "value": "uzhasy",
+                    "name": "Ужасы"
+                },
+                {
+                    "value": "fantastika",
+                    "name": "Фантастика"
+                },
+                {
+                    "value": "fentezi",
+                    "name": "Фэнтези"
+                },
+                {
+                    "value": "shkola",
+                    "name": "Школа"
+                },
+                {
+                    "value": "etti",
+                    "name": "Этти"
+                }
+            ]
+        },
+        "year_filters": {
+            "link": "$scheme$//$hostname$/god/$filter$/page/$page$/",
+            "filters": [
+                {
+                    "n_v": "2026"
+                },
+                {
+                    "n_v": "2025"
+                },
+                {
+                    "n_v": "2024"
+                },
+                {
+                    "n_v": "2023"
+                },
+                {
+                    "n_v": "2022"
+                },
+                {
+                    "n_v": "2021"
+                },
+                {
+                    "n_v": "2020"
+                },
+                {
+                    "n_v": "2019"
+                },
+                {
+                    "n_v": "2018"
+                },
+                {
+                    "n_v": "2017"
+                },
+                {
+                    "n_v": "2016"
+                },
+                {
+                    "n_v": "2015"
+                },
+                {
+                    "n_v": "2014"
+                },
+                {
+                    "n_v": "2013"
+                },
+                {
+                    "n_v": "2012"
+                },
+                {
+                    "n_v": "2011"
+                },
+                {
+                    "n_v": "2010"
+                },
+                {
+                    "n_v": "2009"
+                },
+                {
+                    "n_v": "2008"
+                },
+                {
+                    "n_v": "2007"
+                },
+                {
+                    "n_v": "2006"
+                },
+                {
+                    "n_v": "2005"
+                },
+                {
+                    "n_v": "2004"
+                },
+                {
+                    "n_v": "2003"
+                },
+                {
+                    "n_v": "2002"
+                },
+                {
+                    "n_v": "2001"
+                },
+                {
+                    "n_v": "2000"
+                },
+                {
+                    "n_v": "1999"
+                },
+                {
+                    "n_v": "1998"
+                },
+                {
+                    "n_v": "1997"
+                },
+                {
+                    "n_v": "1996"
+                },
+                {
+                    "n_v": "1995"
+                },
+                {
+                    "n_v": "1994"
+                },
+                {
+                    "n_v": "1993"
+                },
+                {
+                    "n_v": "1992"
+                },
+                {
+                    "n_v": "1991"
+                },
+                {
+                    "n_v": "1984"
+                },
+                {
+                    "n_v": "1980"
+                },
+                {
+                    "n_v": "1977"
+                },
+                {
+                    "n_v": "1971"
+                }
+            ]
+        },
+        "add_anime": {
+            "start": "centerBlock",
+            "next": "shortstoryHead",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\">"
+            },
+            "title": {
+                "skip": "href=\"",
+                "token1": "\">",
+                "token2": "</",
+                "replace": [
+                    {
+                        "match": "\\[(.*?)\\]",
+                        "text": ""
+                    },
+                    {
+                        "match": ".*/ ",
+                        "text": ""
+                    }
+                ]
+            },
+            "additional_title": {
+                "skip": "href=\"",
+                "token1": "\">",
+                "token2": "</",
+                "replace": [
+                    {
+                        "match": "\\[(.*?)\\]",
+                        "text": ""
+                    },
+                    {
+                        "match": " /.*",
+                        "text": ""
+                    }
+                ]
+            },
+            "cover": {
+                "skip": "imgRadius",
+                "token1": "src=\"",
+                "token2": "\""
+            },
+            "episodes_aired": {
+                "skip": "href=\"",
+                "token1": "\">",
+                "token2": "</",
+                "replace": {
+                    "match": "\\[(.*?)\\]",
+                    "match_number": "1",
+                    "group": "1"
+                }
+            },
+            "next_episode_at": {
+                "skip": "href=\"",
+                "token1": "\">",
+                "token2": "</",
+                "replace": {
+                    "match": "\\[(.*?)\\]",
+                    "match_number": "2",
+                    "group": "1"
+                }
+            },
+            "end": "\"futer\""
+        }
+    },
+    "anime_list_complete": {
+        "iterator": [
+            {
+                "category": {
+                    "tag": "main",
+                    "name": "Последние"
+                },
+                "first_page_url": "$scheme$//$hostname$",
+                "base_url": "$scheme$//$hostname$/page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 270,
+                    "step": 1
+                }
+            },
+            {
+                "category": {
+                    "tag": "ongoing",
+                    "name": "Онгоинги"
+                },
+                "first_page_url": "$scheme$//$hostname$/ongoing",
+                "base_url": "$scheme$//$hostname$/ongoing/page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 9,
+                    "step": 1,
+                    "sufix": "/"
+                }
+            },
+            {
+                "category": {
+                    "tag": "tv",
+                    "name": "ТВ"
+                },
+                "first_page_url": "$scheme$//$hostname$/tip/tv",
+                "base_url": "$scheme$//$hostname$/tip/tv/page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 200,
+                    "step": 1,
+                    "sufix": "/"
+                }
+            },
+            {
+                "category": {
+                    "tag": "tv-speshl",
+                    "name": "ТВ-спэшл"
+                },
+                "first_page_url": "$scheme$//$hostname$/tip/tv-speshl",
+                "base_url": "$scheme$//$hostname$/tip/tv-speshl/page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 4,
+                    "step": 1,
+                    "sufix": "/"
+                }
+            },
+            {
+                "category": {
+                    "tag": "ova",
+                    "name": "OVA"
+                },
+                "first_page_url": "$scheme$//$hostname$/tip/ova",
+                "base_url": "$scheme$//$hostname$/tip/ova/page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 27,
+                    "step": 1,
+                    "sufix": "/"
+                }
+            },
+            {
+                "category": {
+                    "tag": "ona",
+                    "name": "ONA"
+                },
+                "first_page_url": "$scheme$//$hostname$/tip/ona",
+                "base_url": "$scheme$//$hostname$/tip/ona/page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 5,
+                    "step": 1,
+                    "sufix": "/"
+                }
+            },
+            {
+                "category": {
+                    "tag": "polnometrazhnyy-film",
+                    "name": "Полнометражный фильм"
+                },
+                "first_page_url": "$scheme$//$hostname$/tip/polnometrazhnyy-film",
+                "base_url": "$scheme$//$hostname$/tip/polnometrazhnyy-film/page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 20,
+                    "step": 1,
+                    "sufix": "/"
+                }
+            },
+            {
+                "category": {
+                    "tag": "korotkometrazhnyy-film",
+                    "name": "Короткометражный фильм"
+                },
+                "first_page_url": "$scheme$//$hostname$/tip/korotkometrazhnyy-film",
+                "base_url": "$scheme$//$hostname$/tip/korotkometrazhnyy-film/page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 5,
+                    "step": 1,
+                    "sufix": "/"
+                }
+            }
+        ],
+        "add_anime": {
+            "start": "centerBlock",
+            "next": "shortstoryHead",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\">"
+            },
+            "title": {
+                "skip": "href=\"",
+                "token1": "\">",
+                "token2": "</",
+                "replace": [
+                    {
+                        "match": "\\[(.*?)\\]",
+                        "text": ""
+                    },
+                    {
+                        "match": ".*/ ",
+                        "text": ""
+                    }
+                ]
+            },
+            "additional_title": {
+                "skip": "href=\"",
+                "token1": "\">",
+                "token2": "</",
+                "replace": [
+                    {
+                        "match": "\\[(.*?)\\]",
+                        "text": ""
+                    },
+                    {
+                        "match": " /.*",
+                        "text": ""
+                    }
+                ]
+            },
+            "cover": {
+                "skip": "imgRadius",
+                "token1": "src=\"",
+                "token2": "\""
+            },
+            "episodes_aired": {
+                "skip": "href=\"",
+                "token1": "\">",
+                "token2": "</",
+                "replace": {
+                    "match": "\\[(.*?)\\]",
+                    "match_number": "1",
+                    "group": "1"
+                }
+            },
+            "next_episode_at": {
+                "skip": "href=\"",
+                "token1": "\">",
+                "token2": "</",
+                "replace": {
+                    "match": "\\[(.*?)\\]",
+                    "match_number": "2",
+                    "group": "1"
+                }
+            },
+            "end": "\"futer\""
+        }
+    },
+    "anime_complete": {
+        "title": {
+            "skip": "og:title",
+            "token1": " / ",
+            "token2": "\"",
+            "replace": {
+                "match": "\\[.*\\]",
+                "text": ""
+            }
+        },
+        "additional_title": {
+            "skip": "og:title",
+            "token1": "content=\"",
+            "token2": " / ",
+            "replace": {
+                "match": "\\[.*\\]",
+                "text": ""
+            }
+        },
+        "uniq": {
+            "skip": "og:title",
+            "token1": "content=\"",
+            "token2": "\"",
+            "replace": {
+                "match": "\\[.*\\]",
+                "text": ""
+            }
+        },
+        "cover": {
+            "skip": "imgRadius",
+            "token1": "src=\"",
+            "token2": "\""
+        },
+        "add_producers": {
+            "start": ">Режиссёр:",
+            "next": "a href",
+            "token1": "\">",
+            "token2": "</",
+            "end": "</p>"
+        },
+        "production_year": {
+            "skip": ">Год выхода:",
+            "token1": ">",
+            "token2": "</"
+        },
+        "episodes": {
+            "skip": ">Количество серий:",
+            "token1": ">",
+            "token2": "</"
+        },
+        "summary": {
+            "skip": ">Описание:",
+            "token1": ">",
+            "token2": "<br"
+        },
+        "status": {
+            "default": "unknown"
+        },
+        "content_type": {
+            "default": "anime"
+        },
+        "add_genres": {
+            "start": ">Жанр:",
+            "token1": "strong>",
+            "token2": "</p",
+            "split": ", ",
+            "end": "p>"
+        },
+        "related": {
+            "skip": "->Это аниме состоит из:<",
+            "token1": "\">",
+            "token2": "</div>",
+            "replace": [
+                {
+                    "match": "$host$",
+                    "text": ""
+                },
+                {
+                    "match": "href=\"",
+                    "text": "href=\"$host$"
+                }
+            ]
+        }
+    },
+    "seasons_complete": {
+        "get_translations": true
+    },
+    "translations_complete": {
+        "get_episodes": true
+    },
+    "episodes_complete": {
+        "add_episode": [
+            {
+                "!is_content_links": false,
+                "service": "newvost.org",
+                "start": "var data = {",
+                "next": {
+                    "value_regexp": "\"\\d+ серия"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/frame5.php?play=",
+                    "sufix": "&player=9"
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "service": "newvost.org",
+                "start": "var data = {",
+                "next": {
+                    "value_regexp": "\"\\d+ часть"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/frame5.php?play=",
+                    "sufix": "&player=9"
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "service": "newvost.org",
+                "start": "var data = {",
+                "next": {
+                    "value_regexp": "\"\\d+ фильм"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/frame5.php?play=",
+                    "sufix": "&player=9"
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "service": "newvost.org",
+                "start": "var data = {",
+                "next": {
+                    "value_regexp": "\"ОВА"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/frame5.php?play=",
+                    "sufix": "&player=9"
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "service": "newvost.org",
+                "start": "var data = {",
+                "next": {
+                    "value_regexp": "\"OVA"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/frame5.php?play=",
+                    "sufix": "&player=9"
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "service": "newvost.org",
+                "start": "var data = {",
+                "next": {
+                    "value_regexp": "\"Спэшл"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/frame5.php?play=",
+                    "sufix": "&player=9"
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "service": "newvost.org",
+                "start": "var data = {",
+                "next": {
+                    "value_regexp": "\"Фильм"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/frame5.php?play=",
+                    "sufix": "&player=9"
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "service": "newvost.org",
+                "start": "var data = {",
+                "next": {
+                    "value_regexp": "\"ТВ-спэшл"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/frame5.php?play=",
+                    "sufix": "&oplayer=9"
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "service": "newvost.org",
+                "start": "var data = {",
+                "next": {
+                    "value_regexp": "\"Спешл"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/frame5.php?play=",
+                    "sufix": "&player=9"
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "service": "newvost.org",
+                "start": "var data = {",
+                "next": {
+                    "value_regexp": "\"ТВ-спешл"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/frame5.php?play=",
+                    "sufix": "&oplayer=9"
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "service": "newvost.org",
+                "start": "var data = {",
+                "next": {
+                    "value_regexp": "\"1-2 серии"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/frame5.php?play=",
+                    "sufix": "&player=9"
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "service": "newvost.org",
+                "start": "var data = {",
+                "next": {
+                    "value_regexp": "\"1-5 серии"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/frame5.php?play=",
+                    "sufix": "&player=9"
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "start": "var data = {",
+                "next": {
+                    "value_regexp": "\"\\d+ серия"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/frame5.php?play=",
+                    "sufix": "&old=1"
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "start": "var data = {",
+                "next": {
+                    "value_regexp": "\"\\d+ часть"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/frame5.php?play=",
+                    "sufix": "&old=1"
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "start": "var data = {",
+                "next": {
+                    "value_regexp": "\"\\d+ фильм"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/frame5.php?play=",
+                    "sufix": "&old=1"
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "start": "var data = {",
+                "next": {
+                    "value_regexp": "\"ОВА"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/frame5.php?play=",
+                    "sufix": "&old=1"
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "start": "var data = {",
+                "next": {
+                    "value_regexp": "\"OVA"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/frame5.php?play=",
+                    "sufix": "&old=1"
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "start": "var data = {",
+                "next": {
+                    "value_regexp": "\"Спэшл"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/frame5.php?play=",
+                    "sufix": "&old=1"
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "start": "var data = {",
+                "next": {
+                    "value_regexp": "\"Фильм"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/frame5.php?play=",
+                    "sufix": "&old=1"
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "start": "var data = {",
+                "next": {
+                    "value_regexp": "\"ТВ-спэшл"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/frame5.php?play=",
+                    "sufix": "&old=1"
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "start": "var data = {",
+                "next": {
+                    "value_regexp": "\"Спешл"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/frame5.php?play=",
+                    "sufix": "&old=1"
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "start": "var data = {",
+                "next": {
+                    "value_regexp": "\"ТВ-спешл"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/frame5.php?play=",
+                    "sufix": "&old=1"
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "start": "var data = {",
+                "next": {
+                    "value_regexp": "\"1-2 серии"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/frame5.php?play=",
+                    "sufix": "&old=1"
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "start": "var data = {",
+                "next": {
+                    "value_regexp": "\"1-5 серии"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/frame5.php?play=",
+                    "sufix": "&old=1"
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "start": "!var data = {",
+                "next": {
+                    "value_regexp": "\"\\d+ серия"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/getlink.php?id="
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "start": "!var data = {",
+                "next": {
+                    "value_regexp": "\"\\d+ часть"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/getlink.php?id="
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "start": "!var data = {",
+                "next": {
+                    "value_regexp": "\"\\d+ фильм"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/getlink.php?id="
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "start": "!var data = {",
+                "next": {
+                    "value_regexp": "\"ОВА"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/getlink.php?id="
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "start": "!var data = {",
+                "next": {
+                    "value_regexp": "\"OVA"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/getlink.php?id="
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "start": "!var data = {",
+                "next": {
+                    "value_regexp": "\"Спэшл"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/getlink.php?id="
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "start": "!var data = {",
+                "next": {
+                    "value_regexp": "\"Фильм"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/getlink.php?id="
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "start": "!var data = {",
+                "next": {
+                    "value_regexp": "\"ТВ-спэшл"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/getlink.php?id="
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "start": "!var data = {",
+                "next": {
+                    "value_regexp": "\"Спешл"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/getlink.php?id="
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "start": "!var data = {",
+                "next": {
+                    "value_regexp": "\"ТВ-спешл"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/getlink.php?id="
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "start": "!var data = {",
+                "next": {
+                    "value_regexp": "\"1-2 серии"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/getlink.php?id="
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            },
+            {
+                "!is_content_links": false,
+                "start": "!var data = {",
+                "next": {
+                    "value_regexp": "\"1-5 серии"
+                },
+                "link": {
+                    "token1": ":\"",
+                    "token2": "\",",
+                    "prefix": "$scheme$//$hostname$/getlink.php?id="
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                }
+            }
+        ]
+    },
+    "episode_complete": {
+        "!direct_links": true,
+        "!add_links": [
+            {
+                "name": "default",
+                "link": {
+                    "token1": "htt",
+                    "token2": " or",
+                    "prefix": "htt"
+                }
+            },
+            {
+                "name": "480p",
+                "link": {
+                    "token1": "htt",
+                    "token2": " or",
+                    "prefix": "htt"
+                }
+            },
+            {
+                "name": "720p",
+                "link": {
+                    "token1": " or ",
+                    "token2": "&ip"
+                }
+            }
+        ]
+    },
+    "test": [
+        {
+            "proc": "anime_list_complete",
+            "testpages": 3,
+            "assert": {
+                "animes": [
+                    {
+                        "title": "@^(\\w+)",
+                        "link": "@https://v13.vost.pw/",
+                        "uniq": "@^(\\w+)"
+                    }
+                ],
+                "animes_count": ">=30"
+            }
+        },
+        {
+            "proc": "anime_complete",
+            "link": "https://v13.vost.pw/tip/tv/2118-jojo-no-kimyou-na-bouken-ougon-no-kaze.html",
+            "assert": {
+                "title": "JoJo no Kimyou na Bouken: Ougon no Kaze",
+                "alt_title": "Невероятные приключения Джоджо (пятый сезон)",
+                "cover": "@https://v13.vost.pw/uploads/posts/2018-10/1539249431_1.jpg.*",
+                "producers": "[Цуда Наокацу]",
+                "year": "2018",
+                "episodes": "39 (25 мин.)",
+                "content_type": "anime",
+                "genres": "@fantasy",
+                "genres_count": ">=2",
+                "summary": "@^(Узнал бы мир одного из)"
+            }
+        },
+        {
+            "proc": "anime_complete",
+            "link": "https://v13.vost.pw/tip/tv/2031-basilisk-ouka-ninpouchou.html",
+            "assert": {
+                "title": "Basilisk: Ouka Ninpouchou",
+                "alt_title": "Василиск: Легенда об Оке",
+                "cover": "@https://v13.vost.pw/uploads/posts/2018-02/1518634386_legenda_ob_oke.jpg.*",
+                "producers": "[нисимура дзюндзи]",
+                "year": "2018",
+                "episodes": "12+ (25 мин.)",
+                "content_type": "anime",
+                "genres": "@romance",
+                "genres_count": ">=4",
+                "summary": "@^(Трагичная история любви)"
+            }
+        }
+    ]
+}

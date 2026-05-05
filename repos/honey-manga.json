@@ -1,0 +1,419 @@
+{
+    "id": 40062,
+    "version": 3,
+    "title": "Honey-Manga",
+    "host": "https://honey-manga.com.ua/",
+    "public_link": "https://honey-manga.com.ua",
+    "api": "honey-manga",
+    "hash_tag": "honey-manga",
+    "folder": "honey-manga",
+    "name": "honey-manga",
+    "language": "uk",
+    "content_type": "manga",
+    "chapters_order": false,
+    "icon_link": "http://images.mangawatcherx.com/parser/icon/manga/honey-manga.png",
+    "self_link": "https://api.anilabx.xyz/v3/parser/get?type=manga&parser=honey-manga",
+    "custom_settings": {
+        "is_has_paid_content": true,
+        "hm_img_url": "https://hmvolumestorage.b-cdn.net/public-resources/"
+    },
+    "manga_search_complete": {
+        "search_link": "https://honey-manga.com.ua/search/?search=$query$",
+        "query_type": "GET",
+        "add_manga": {
+            "start": "<ul class=\"novel-list grid col col2\">",
+            "next": "class=\"novel-item\">",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "title": {
+                "token1": "title=\"",
+                "token2": "\""
+            },
+            "cover": {
+                "token1": "data-src='",
+                "token2": "'"
+            },
+            "end": "</ul>"
+        }
+    },
+    "manga_list_complete": {
+        "iterator": [
+            {
+                "category": {
+                    "tag": "main",
+                    "name": "Latest"
+                },
+                "base_url": "https://honey-manga.com.ua/browse-comics/?rfilter=Updated&esults=1",
+                "append_nums": {
+                    "from": 0,
+                    "to": 125,
+                    "step": 1
+                }
+            }
+        ],
+        "add_manga": {
+            "start": "<ul class=\"novel-list grid col col2\">",
+            "next": "class=\"novel-item\">",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "title": {
+                "token1": "title=\"",
+                "token2": "\""
+            },
+            "cover": {
+                "token1": "data-src=\"",
+                "token2": "\""
+            },
+            "end": "</ul>"
+        }
+    },
+    "!manga_list_filters_complete": {
+        "base_link": "https://honey-manga.com.ua/browse-comics/?results=$page$&filter=Updated",
+        "filters": {
+            "01_order": {
+                "name": "Order",
+                "choice_mode": "single",
+                "filter_type": "get_query",
+                "query_name": "filter",
+                "values": [
+                    {
+                        "n_v": "Random"
+                    },
+                    {
+                        "n_v": "Updated"
+                    },
+                    {
+                        "n_v": "New"
+                    },
+                    {
+                        "n_v": "Views"
+                    }
+                ]
+            },
+            "02_genres": {
+                "name": "Genre",
+                "choice_mode": "single",
+                "filter_type": "get_query",
+                "query_name": "genre",
+                "values": [
+                    {
+                        "value": "Action",
+                        "name": "Action"
+                    },
+                    {
+                        "value": "Adult",
+                        "name": "Adult"
+                    },
+                    {
+                        "value": "Adventure",
+                        "name": "Adventure"
+                    },
+                    {
+                        "value": "Comedy",
+                        "name": "Comedy"
+                    },
+                    {
+                        "value": "Cooking",
+                        "name": "Cooking"
+                    },
+                    {
+                        "value": "Doujinshi",
+                        "name": "Doujinshi"
+                    },
+                    {
+                        "value": "Drama",
+                        "name": "Drama"
+                    },
+                    {
+                        "value": "Ecchi",
+                        "name": "Ecchi"
+                    },
+                    {
+                        "value": "Fantasy",
+                        "name": "Fantasy"
+                    },
+                    {
+                        "value": "Gender bender",
+                        "name": "Gender bender"
+                    },
+                    {
+                        "value": "Harem",
+                        "name": "Harem"
+                    },
+                    {
+                        "value": "Historical",
+                        "name": "Historical"
+                    },
+                    {
+                        "value": "Horror",
+                        "name": "Horror"
+                    },
+                    {
+                        "value": "Isekai",
+                        "name": "Isekai"
+                    },
+                    {
+                        "value": "Josei",
+                        "name": "Josei"
+                    },
+                    {
+                        "value": "Manhua",
+                        "name": "Manhua"
+                    },
+                    {
+                        "value": "Manhwa",
+                        "name": "Manhwa"
+                    },
+                    {
+                        "value": "Martial arts",
+                        "name": "Martial arts"
+                    },
+                    {
+                        "value": "Mature",
+                        "name": "Mature"
+                    },
+                    {
+                        "value": "Mecha",
+                        "name": "Mecha"
+                    },
+                    {
+                        "value": "Medical",
+                        "name": "Medical"
+                    },
+                    {
+                        "value": "Mystery",
+                        "name": "Mystery"
+                    },
+                    {
+                        "value": "One shot",
+                        "name": "One shot"
+                    },
+                    {
+                        "value": "Psychological",
+                        "name": "Psychological"
+                    },
+                    {
+                        "value": "Romance",
+                        "name": "Romance"
+                    },
+                    {
+                        "value": "School life",
+                        "name": "School life"
+                    },
+                    {
+                        "value": "Sci fi",
+                        "name": "Sci fi"
+                    },
+                    {
+                        "value": "Seinen",
+                        "name": "Seinen"
+                    },
+                    {
+                        "value": "Shoujo",
+                        "name": "Shoujo"
+                    },
+                    {
+                        "value": "Shounen",
+                        "name": "Shounen"
+                    },
+                    {
+                        "value": "Slice of life",
+                        "name": "Slice of life"
+                    },
+                    {
+                        "value": "Sports",
+                        "name": "Sports"
+                    },
+                    {
+                        "value": "Supernatural",
+                        "name": "Supernatural"
+                    },
+                    {
+                        "value": "Tragedy",
+                        "name": "Tragedy"
+                    },
+                    {
+                        "value": "Webtoons",
+                        "name": "Webtoons"
+                    },
+                    {
+                        "value": "ladies",
+                        "name": "ladies"
+                    }
+                ]
+            }
+        },
+        "add_manga": {
+            "start": "<header id=\"Result\">",
+            "end": "<span class=\"copyright\">",
+            "next": "class=\"novel-item\">",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "title": {
+                "token1": "title=\"",
+                "token2": "\""
+            }
+        }
+    },
+    "manga_complete": {
+        "title": {
+            "after": "<h1 itemprop=\"name\"",
+            "token1": "\">",
+            "token2": "</",
+            "replace": [
+                {
+                    "match": "\\[All Chapters\\]",
+                    "text": ""
+                },
+                {
+                    "trim": true
+                }
+            ]
+        },
+        "alt_title": {
+            "skip": "alternative-title",
+            "token1": "\">",
+            "token2": "</"
+        },
+        "cover": {
+            "after": "property=\"og:image\"",
+            "token1": "content=\"",
+            "token2": "\""
+        },
+        "author": {
+            "token1": "<span itemprop=\"author\">",
+            "token2": "</"
+        },
+        "summary": {
+            "after": "<p class=\"description",
+            "token1": ">",
+            "token2": "</p>",
+            "replace": {
+                "match": "<.*?>",
+                "text": ""
+            }
+        },
+        "status": {
+            "complete": "<strong class=\"completed\">",
+            "ongoing": "<strong class=\"ongoing\">"
+        },
+        "add_genre": {
+            "after": "/?genre=",
+            "token1": "\">",
+            "token2": "</"
+        },
+        "add_tag": {
+            "after": "/?tag=",
+            "token1": "\">",
+            "token2": "</"
+        },
+        "add_chapter": {
+            "next": "<li data-chapterno",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\"",
+                "replace": [
+                    {
+                        "match": "www.mcreader.net",
+                        "text": "honey-manga.com.ua"
+                    },
+                    {
+                        "match": "https://www.readmcreader.com/manga/read\\?comic=",
+                        "text": ""
+                    },
+                    {
+                        "match": "www.novel-fast.club",
+                        "text": "honey-manga.com.ua"
+                    }
+                ]
+            },
+            "title": {
+                "skip": "href=\"",
+                "token1": "class=\"chapter-title\">",
+                "token2": "</"
+            },
+            "uniq": {
+                "skip": "href=\"",
+                "token1": "class=\"chapter-title\">",
+                "token2": "</"
+            }
+        }
+    },
+    "chapter_complete": {
+        "add_images": {
+            "start": "id=\"chapter-reader",
+            "token1": "<img src=\"",
+            "token2": "\"",
+            "end": "<div style"
+        }
+    },
+    "test": [
+        {
+            "proc": "manga_search_complete",
+            "query": "sword",
+            "assert": {
+                "mangas": [
+                    {
+                        "title": "@^(\\p{L}+)",
+                        "link": "@https://honey-manga.com.ua/",
+                        "uniq": "@^(\\w+)"
+                    }
+                ],
+                "mangas_count": ">=5"
+            }
+        },
+        {
+            "proc": "manga_list_complete",
+            "assert": {
+                "mangas": [
+                    {
+                        "title": "@^(\\p{L}+)",
+                        "link": "@https://honey-manga.com.ua/",
+                        "uniq": "@^(\\w+)"
+                    }
+                ],
+                "mangas_count": ">=5"
+            }
+        },
+        {
+            "proc": "manga_complete",
+            "link": "https://honey-manga.com.ua/manga/miracle-hero/",
+            "assert": {
+                "title": "Miracle Hero!",
+                "alt_title": "미라클! 용사님",
+                "author": "Jeongha",
+                "cover": "https://honey-manga.com.ua/media/manga_covers/miracle-hero.jpg",
+                "summary": "@^(Miracle Hero)",
+                "genres": "@comedy",
+                "status": "ongoing",
+                "genres_count": ">=6",
+                "chapters_count": ">=100",
+                "chapters": [
+                    {
+                        "folder": "99-eng-li/",
+                        "link": "https://honey-manga.com.ua/reader/en/miracle-hero-chapter-99-eng-li/",
+                        "title": "99-eng-li"
+                    }
+                ]
+            }
+        },
+        {
+            "proc": "chapter_complete",
+            "link": "https://honey-manga.com.ua/reader/en/miracle-hero-chapter-16-eng-li/",
+            "assert": {
+                "pages": [
+                    {
+                        "image": "https://www.toonix.xyz/cdn_mangaraw/miracle-hero/chapter-16/1.jpg"
+                    }
+                ],
+                "pages_count": "31"
+            }
+        }
+    ]
+}

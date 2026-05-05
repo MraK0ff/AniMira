@@ -1,0 +1,1728 @@
+{
+    "id": 20003,
+    "version": 251,
+    "title": "AniStar",
+    "host": "https://v24.astar.bz",
+    "public_link": "https://v24.astar.bz",
+    "hash_tag": "anistar",
+    "folder": "anistar",
+    "name": [
+        "anistar",
+        "anistar1",
+        "online-stars",
+        "online-star",
+        "astar"
+    ],
+    "language": "ru",
+    "encoding": "Windows-1251",
+    "content_type": "anime",
+    "episodes_order": true,
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+    "icon_link": "http://images.mangawatcherx.com/parser/icon/anime/anistar.png",
+    "self_link": "https://api.anilabx.xyz/v3/parser/get?type=anime&parser=anistar",
+    "author": {
+        "name": "AniLabX Team",
+        "email": "anilabx.supp@gmail.com"
+    },
+    "custom_settings": {
+        "is_allow_host_mirroring": "true",
+        "is_allow_kitten_patch": "true",
+        "use_okhttp_client": false,
+        "on_catalog_loading_error_hint": "<b>Подсказка:</b> Если каталог не работает, попробуйте войти в аккаунт AniStar или отключить опцию в <b>Настройки</b> > <b>Соединение</b> > <b>Использовать Conscrypt для TLSv1.3 и валидации SSL-сертификатов</b>, если включена"
+    },
+    "authorization_complete": {
+        "registration": "$scheme$//$hostname$/index.php?do=register",
+        "auth_required": false,
+        "webview_auth_supported": true,
+        "disable_classic_auth": true,
+        "expires": 31449600000,
+        "values": {
+            "remember": "on"
+        },
+        "request": {
+            "method": "post",
+            "url": "$scheme$//$hostname$/"
+        },
+        "response_check": {
+            "cookies": {
+                "dle_user_id": "@\\d+"
+            },
+            "headers": {
+                "Set-Cookie": "@dle_user_id=\\d+"
+            }
+        }
+    },
+    "anime_search_complete": {
+        "search_link": "$scheme$//$hostname$/index.php?do=search&subaction=search&search_start=$page$&full_search=0&result_from=1&story=$query$",
+        "query_type": "GET",
+        "add_anime": {
+            "headers": {
+                "Cookie": "3d3b81c3810f50abfa556d8a468c805b=1"
+            },
+            "start": "dle-content",
+            "next": "news_header",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "additional_title": {
+                "skip": "href=\"",
+                "token1": "\" >",
+                "token2": "</",
+                "replace": {
+                    "match": " /.*",
+                    "text": ""
+                }
+            },
+            "title": {
+                "skip": "href=\"",
+                "token1": "\" >",
+                "token2": "</",
+                "replace": {
+                    "match": ".*/ ",
+                    "text": ""
+                }
+            },
+            "cover": {
+                "skip": "news_avatar",
+                "token1": "src=\"",
+                "token2": "\""
+            },
+            "season": {
+                "token1": "ratingValue\">",
+                "token2": "<",
+                "prefix": "★"
+            },
+            "!end": "По Вашему запросу",
+            "skip_anime": {
+                "contains": {
+                    "start": ">Категория:",
+                    "values": [
+                        ">Новости сайта<",
+                        ">Хентай<",
+                        ">хентай<"
+                    ],
+                    "end": "</p>"
+                },
+                "link_contains": [
+                    "liga-angelov-2-zhdet-svoih-novyh-geroev",
+                    "hunter-x-rpg",
+                    "pirate-king",
+                    "igra-dlya-vzroslyh-fap-titans-v-stile-anime",
+                    "6930-igra-dlya-vzroslyh-v-stile-anime-fap-titans",
+                    "igra-dlya-nastoyaschih",
+                    "lyubish-anime-saga-o-vinlande",
+                    "mmorpg-igra-po-anime-van-pis-bloody",
+                    "7013-primite",
+                    "igra-cunt-wars",
+                    "igra-po-anime-sword-art-online",
+                    "krutaya-anime-igra-closers",
+                    "novuyu-hentay-igru",
+                    "6500-rub-pri-pervom",
+                    "poprobuy-novuyu-hentay-igru-18",
+                    "-krutaya-",
+                    "-kazino-",
+                    "v-etu-igru-",
+                    "seksualnye-malyshki-v-stile",
+                    "7156",
+                    "7122",
+                    "7148",
+                    "7066",
+                    "7187",
+                    "7197",
+                    "8657",
+                    "8591",
+                    "8747",
+                    "1650",
+                    "1579",
+                    "1578"
+                ]
+            }
+        }
+    },
+    "anime_list_filters_complete": {
+        "base_link": "$scheme$//$hostname$/$filter$/page/$page$/",
+        "filters": {
+            "1_genre": {
+                "name": "Жанр",
+                "uniq": "filter",
+                "choice_mode": "single",
+                "filter_type": "path",
+                "path_name": "$filter$",
+                "values": [
+                    {
+                        "value": "thriller",
+                        "name": "Боевики"
+                    },
+                    {
+                        "value": "vampires",
+                        "name": "Вампиры"
+                    },
+                    {
+                        "value": "ani-garem",
+                        "name": "Гарем"
+                    },
+                    {
+                        "value": "detective",
+                        "name": "Детектив"
+                    },
+                    {
+                        "value": "drama",
+                        "name": "Драма"
+                    },
+                    {
+                        "value": "history",
+                        "name": "История"
+                    },
+                    {
+                        "value": "cyberpunk",
+                        "name": "Киберпанк"
+                    },
+                    {
+                        "value": "comedy",
+                        "name": "Комедия"
+                    },
+                    {
+                        "value": "maho-shoujo",
+                        "name": "Махо-седзе"
+                    },
+                    {
+                        "value": "fur",
+                        "name": "Меха"
+                    },
+                    {
+                        "value": "parodies",
+                        "name": "Пародии"
+                    },
+                    {
+                        "value": "senen",
+                        "name": "Сёнен"
+                    },
+                    {
+                        "value": "sports",
+                        "name": "Спорт"
+                    },
+                    {
+                        "value": "mysticism",
+                        "name": "Мистика"
+                    },
+                    {
+                        "value": "music",
+                        "name": "Музыкальное"
+                    },
+                    {
+                        "value": "everyday-life",
+                        "name": "Повседневность"
+                    },
+                    {
+                        "value": "adventures",
+                        "name": "Приключения"
+                    },
+                    {
+                        "value": "romance",
+                        "name": "Романтика"
+                    },
+                    {
+                        "value": "shoujo",
+                        "name": "Cедзе"
+                    },
+                    {
+                        "value": "senen-ay",
+                        "name": "Сёнен-ай"
+                    },
+                    {
+                        "value": "horror",
+                        "name": "Триллер"
+                    },
+                    {
+                        "value": "horor",
+                        "name": "Ужасы"
+                    },
+                    {
+                        "value": "fantasy",
+                        "name": "Фантастика"
+                    },
+                    {
+                        "value": "fentezi",
+                        "name": "Фэнтeзи"
+                    },
+                    {
+                        "value": "school",
+                        "name": "Школа"
+                    },
+                    {
+                        "value": "echchi-erotic",
+                        "name": "Эччи"
+                    }
+                ]
+            },
+            "2_year": {
+                "name": "Год",
+                "uniq": "filter",
+                "choice_mode": "single",
+                "filter_type": "path",
+                "path_name": "$filter$",
+                "values": [
+                    {
+                        "value": "filter/year/2026",
+                        "name": "2026"
+                    },
+                    {
+                        "value": "filter/year/2025",
+                        "name": "2025"
+                    },
+                    {
+                        "value": "filter/year/2024",
+                        "name": "2024"
+                    },
+                    {
+                        "value": "filter/year/2023",
+                        "name": "2023"
+                    },
+                    {
+                        "value": "filter/year/2022",
+                        "name": "2022"
+                    },
+                    {
+                        "value": "filter/year/2021",
+                        "name": "2021"
+                    },
+                    {
+                        "value": "filter/year/2020",
+                        "name": "2020"
+                    },
+                    {
+                        "value": "filter/year/2019",
+                        "name": "2019"
+                    },
+                    {
+                        "value": "filter/year/2018",
+                        "name": "2018"
+                    },
+                    {
+                        "value": "filter/year/2017",
+                        "name": "2017"
+                    },
+                    {
+                        "value": "filter/year/2016",
+                        "name": "2016"
+                    },
+                    {
+                        "value": "filter/year/2015",
+                        "name": "2015"
+                    },
+                    {
+                        "value": "filter/year/2014",
+                        "name": "2014"
+                    },
+                    {
+                        "value": "filter/year/2013",
+                        "name": "2013"
+                    },
+                    {
+                        "value": "filter/year/2012",
+                        "name": "2012"
+                    },
+                    {
+                        "value": "filter/year/2011",
+                        "name": "2011"
+                    },
+                    {
+                        "value": "filter/year/2010",
+                        "name": "2010"
+                    },
+                    {
+                        "value": "filter/year/2009",
+                        "name": "2009"
+                    },
+                    {
+                        "value": "filter/year/2008",
+                        "name": "2008"
+                    },
+                    {
+                        "value": "filter/year/2007",
+                        "name": "2007"
+                    },
+                    {
+                        "value": "filter/year/2006",
+                        "name": "2006"
+                    },
+                    {
+                        "value": "filter/year/2005",
+                        "name": "2005"
+                    },
+                    {
+                        "value": "filter/year/2004",
+                        "name": "2004"
+                    },
+                    {
+                        "value": "filter/year/2003",
+                        "name": "2003"
+                    },
+                    {
+                        "value": "filter/year/2002",
+                        "name": "2002"
+                    },
+                    {
+                        "value": "filter/year/2001",
+                        "name": "2001"
+                    },
+                    {
+                        "value": "filter/year/2000",
+                        "name": "2000"
+                    }
+                ]
+            },
+            "3_type": {
+                "name": "Тип",
+                "uniq": "filter",
+                "choice_mode": "single",
+                "filter_type": "path",
+                "path_name": "$filter$",
+                "values": [
+                    {
+                        "value": "dorams",
+                        "name": "Дорамы"
+                    },
+                    {
+                        "value": "new",
+                        "name": "Новинки"
+                    },
+                    {
+                        "value": "rpg",
+                        "name": "RPG"
+                    },
+                    {
+                        "value": "next",
+                        "name": "Скоро"
+                    },
+                    {
+                        "value": "filter/strana/Китай",
+                        "name": "Китай"
+                    }
+                ]
+            }
+        },
+        "genre_filters": {
+            "link": "$scheme$//$hostname$/anime/$filter$/page/$page$/",
+            "filters": [
+                {
+                    "value": "thriller",
+                    "name": "Боевики"
+                },
+                {
+                    "value": "vampires",
+                    "name": "Вампиры"
+                },
+                {
+                    "value": "ani-garem",
+                    "name": "Гарем"
+                },
+                {
+                    "value": "detective",
+                    "name": "Детектив"
+                },
+                {
+                    "value": "drama",
+                    "name": "Драма"
+                },
+                {
+                    "value": "history",
+                    "name": "История"
+                },
+                {
+                    "value": "cyberpunk",
+                    "name": "Киберпанк"
+                },
+                {
+                    "value": "comedy",
+                    "name": "Комедия"
+                },
+                {
+                    "value": "maho-shoujo",
+                    "name": "Махо-седзе"
+                },
+                {
+                    "value": "fur",
+                    "name": "Меха"
+                },
+                {
+                    "value": "parodies",
+                    "name": "Пародии"
+                },
+                {
+                    "value": "senen",
+                    "name": "Сёнен"
+                },
+                {
+                    "value": "sports",
+                    "name": "Спорт"
+                },
+                {
+                    "value": "mysticism",
+                    "name": "Мистика"
+                },
+                {
+                    "value": "music",
+                    "name": "Музыкальное"
+                },
+                {
+                    "value": "everyday-life",
+                    "name": "Повседневность"
+                },
+                {
+                    "value": "adventures",
+                    "name": "Приключения"
+                },
+                {
+                    "value": "romance",
+                    "name": "Романтика"
+                },
+                {
+                    "value": "shoujo",
+                    "name": "Cедзе"
+                },
+                {
+                    "value": "senen-ay",
+                    "name": "Сёнен-ай"
+                },
+                {
+                    "value": "horror",
+                    "name": "Триллер"
+                },
+                {
+                    "value": "horor",
+                    "name": "Ужасы"
+                },
+                {
+                    "value": "fantasy",
+                    "name": "Фантастика"
+                },
+                {
+                    "value": "fentezi",
+                    "name": "Фэнтeзи"
+                },
+                {
+                    "value": "school",
+                    "name": "Школа"
+                },
+                {
+                    "value": "echchi-erotic",
+                    "name": "Эччи"
+                }
+            ]
+        },
+        "year_filters": {
+            "link": "$scheme$//$hostname$/index.php?cstart=$page$&do=xfsearch&type=year&r=anime&xf=$filter$",
+            "filters": [
+                {
+                    "n_v": "2026"
+                },
+                {
+                    "n_v": "2025"
+                },
+                {
+                    "n_v": "2024"
+                },
+                {
+                    "n_v": "2023"
+                },
+                {
+                    "n_v": "2022"
+                },
+                {
+                    "n_v": "2021"
+                },
+                {
+                    "n_v": "2020"
+                },
+                {
+                    "n_v": "2019"
+                },
+                {
+                    "n_v": "2018"
+                },
+                {
+                    "n_v": "2017"
+                },
+                {
+                    "n_v": "2016"
+                },
+                {
+                    "n_v": "2015"
+                },
+                {
+                    "n_v": "2014"
+                },
+                {
+                    "n_v": "2013"
+                },
+                {
+                    "n_v": "2012"
+                },
+                {
+                    "n_v": "2011"
+                },
+                {
+                    "n_v": "2010"
+                },
+                {
+                    "n_v": "2009"
+                },
+                {
+                    "n_v": "2008"
+                },
+                {
+                    "n_v": "2007"
+                },
+                {
+                    "n_v": "2006"
+                },
+                {
+                    "n_v": "2005"
+                },
+                {
+                    "n_v": "2004"
+                },
+                {
+                    "n_v": "2003"
+                },
+                {
+                    "n_v": "2002"
+                },
+                {
+                    "n_v": "2001"
+                },
+                {
+                    "n_v": "2000"
+                }
+            ]
+        },
+        "add_anime": {
+            "start": "class=\"short\"",
+            "next": "news_header",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\">"
+            },
+            "title": {
+                "skip": "href=\"",
+                "token1": "\">",
+                "token2": "</",
+                "replace": {
+                    "match": ".*/ ",
+                    "text": ""
+                }
+            },
+            "additional_title": {
+                "skip": "href=\"",
+                "token1": "\">",
+                "token2": "</",
+                "replace": {
+                    "match": " /.*",
+                    "text": ""
+                }
+            },
+            "uniq": {
+                "token1": "href=\"",
+                "token2": "\">"
+            },
+            "cover": {
+                "skip": "news_avatar",
+                "token1": "src=\"",
+                "token2": "\""
+            },
+            "season": {
+                "token1": "ratingValue\">",
+                "token2": "<",
+                "prefix": "★"
+            },
+            "end": "</div><div class=\"pagenav\"",
+            "skip_anime": {
+                "contains": {
+                    "start": ">Категория:",
+                    "values": [
+                        ">Новости сайта<",
+                        ">Хентай<",
+                        ">хентай<"
+                    ],
+                    "end": "</p>"
+                },
+                "link_contains": [
+                    "liga-angelov-2-zhdet-svoih-novyh-geroev",
+                    "hunter-x-rpg",
+                    "pirate-king",
+                    "igra-dlya-vzroslyh-fap-titans-v-stile-anime",
+                    "6930-igra-dlya-vzroslyh-v-stile-anime-fap-titans",
+                    "igra-dlya-nastoyaschih",
+                    "lyubish-anime-saga-o-vinlande",
+                    "mmorpg-igra-po-anime-van-pis-bloody",
+                    "7013-primite",
+                    "igra-cunt-wars",
+                    "igra-po-anime-sword-art-online",
+                    "krutaya-anime-igra-closers",
+                    "novuyu-hentay-igru",
+                    "6500-rub-pri-pervom",
+                    "poprobuy-novuyu-hentay-igru-18",
+                    "-krutaya-",
+                    "-kazino-",
+                    "v-etu-igru-",
+                    "seksualnye-malyshki-v-stile",
+                    "7156",
+                    "7122",
+                    "7148",
+                    "7066",
+                    "7187",
+                    "7197",
+                    "8657",
+                    "8591",
+                    "8747"
+                ]
+            }
+        }
+    },
+    "anime_list_complete": {
+        "allow_redirected_code": true,
+        "iterator": [
+            {
+                "category": {
+                    "tag": "main",
+                    "name": "Последние"
+                },
+                "first_page_url": "$scheme$//$hostname$/anime/",
+                "base_url": "$scheme$//$hostname$/anime/page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 430,
+                    "step": 1
+                }
+            },
+            {
+                "category": {
+                    "tag": "dorama",
+                    "name": "Дорамы"
+                },
+                "base_url": "$scheme$//$hostname$/dorams/page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 5,
+                    "step": 1,
+                    "sufix": "/"
+                }
+            },
+            {
+                "category": {
+                    "tag": "new",
+                    "name": "Новинки"
+                },
+                "base_url": "$scheme$//$hostname$/new/page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 20,
+                    "step": 1,
+                    "sufix": "/"
+                }
+            },
+            {
+                "category": {
+                    "tag": "rpg",
+                    "name": "RPG"
+                },
+                "base_url": "$scheme$//$hostname$/anime/rpg/page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 2,
+                    "step": 1,
+                    "sufix": "/"
+                }
+            },
+            {
+                "category": {
+                    "tag": "china",
+                    "name": "Китай"
+                },
+                "base_url": "$scheme$//$hostname$/filter/strana/%CA%E8%F2%E0%E9/page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 2,
+                    "step": 1,
+                    "sufix": "/"
+                }
+            }
+        ],
+        "add_anime": {
+            "headers": {
+                "Cookie": "3d3b81c3810f50abfa556d8a468c805b=1"
+            },
+            "start": "class=\"short\"",
+            "next": "news_header",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\">"
+            },
+            "title": {
+                "skip": "href=\"",
+                "token1": "\">",
+                "token2": "</",
+                "replace": {
+                    "match": ".*/ ",
+                    "text": ""
+                }
+            },
+            "additional_title": {
+                "skip": "href=\"",
+                "token1": "\">",
+                "token2": "</",
+                "replace": {
+                    "match": " /.*",
+                    "text": ""
+                }
+            },
+            "uniq": {
+                "token1": "href=\"",
+                "token2": "\">"
+            },
+            "cover": {
+                "skip": "news_avatar",
+                "token1": "src=\"",
+                "token2": "\""
+            },
+            "season": {
+                "token1": "ratingValue\">",
+                "token2": "<",
+                "prefix": "★"
+            },
+            "end": "</div><div class=\"pagenav\"",
+            "skip_anime": {
+                "contains": {
+                    "start": ">Категория:",
+                    "values": [
+                        ">Новости сайта<",
+                        ">Хентай<",
+                        ">хентай<"
+                    ],
+                    "end": "</p>"
+                },
+                "link_contains": [
+                    "liga-angelov-2-zhdet-svoih-novyh-geroev",
+                    "hunter-x-rpg",
+                    "pirate-king",
+                    "igra-dlya-vzroslyh-fap-titans-v-stile-anime",
+                    "6930-igra-dlya-vzroslyh-v-stile-anime-fap-titans",
+                    "igra-dlya-nastoyaschih",
+                    "lyubish-anime-saga-o-vinlande",
+                    "mmorpg-igra-po-anime-van-pis-bloody",
+                    "7013-primite",
+                    "igra-cunt-wars",
+                    "igra-po-anime-sword-art-online",
+                    "krutaya-anime-igra-closers",
+                    "novuyu-hentay-igru",
+                    "6500-rub-pri-pervom",
+                    "poprobuy-novuyu-hentay-igru-18",
+                    "-krutaya-",
+                    "-kazino-",
+                    "v-etu-igru-",
+                    "seksualnye-malyshki-v-stile",
+                    "7156",
+                    "7122",
+                    "7148",
+                    "7066",
+                    "7187",
+                    "7197",
+                    "8657",
+                    "8591",
+                    "8747"
+                ]
+            }
+        }
+    },
+    "anime_complete": {
+        "headers": {
+            "Cookie": "3d3b81c3810f50abfa556d8a468c805b=1"
+        },
+        "title": {
+            "skip": "itemprop=\"name",
+            "token1": ">",
+            "token2": "</",
+            "replace": {
+                "match": ".*/ ",
+                "text": ""
+            }
+        },
+        "alt_title": {
+            "skip": "itemprop=\"name",
+            "token1": ">",
+            "token2": "</",
+            "replace": {
+                "match": " /.*",
+                "text": ""
+            }
+        },
+        "author": {
+            "skip": ">Автор оригинала:",
+            "token1": "'>",
+            "token2": "</"
+        },
+        "add_producers": {
+            "start": ">Режиссёр:",
+            "next": "a href",
+            "token1": "\">",
+            "token2": "<",
+            "end": "</li>"
+        },
+        "cover": {
+            "skip": "og:image",
+            "token1": "content=\"",
+            "token2": "\"",
+            "replace": {
+                "match": "^/",
+                "text": "$scheme$//$hostname$/"
+            }
+        },
+        "country": {
+            "skip": ">Страна:",
+            "token1": ">",
+            "token2": "</li"
+        },
+        "production_year": {
+            "skip": ">Год выпуска:",
+            "token1": "\">",
+            "token2": "</"
+        },
+        "episodes": {
+            "skip": "Серии:",
+            "token1": ">",
+            "token2": "</li>"
+        },
+        "summary": {
+            "skip": "itemprop=\"description",
+            "token1": ">",
+            "token2": "</"
+        },
+        "content_type": {
+            "anime": {
+                "start": ">Категория:",
+                "value": ">Аниме<",
+                "end": "</p>"
+            },
+            "dorama": {
+                "start": ">Категория:",
+                "value": ">Дорамы<",
+                "end": "</p>"
+            },
+            "hentai_anime": {
+                "start": ">Категория:",
+                "value": ">Хентай<",
+                "end": "</p>"
+            },
+            "default": "unknown"
+        },
+        "status": {
+            "complete": "(заключительная) серия",
+            "default": "ongoing"
+        },
+        "add_genres": {
+            "start": ">Жанр:",
+            "next": "/filter/",
+            "token1": "'>",
+            "token2": "</",
+            "end": "</li"
+        }
+    },
+    "torrents_complete": {
+        "add_torrent": [
+            {
+                "headers": {
+                    "Cookie": "3d3b81c3810f50abfa556d8a468c805b=1"
+                },
+                "may_be_null": true,
+                "start": "list_torrent",
+                "next": "class=\"torrent\"",
+                "link": {
+                    "token1": "href=\"",
+                    "token2": "\""
+                },
+                "title": {
+                    "token1": "info_d1\">",
+                    "token2": "<",
+                    "replace": {
+                        "match": " \\(.*\\)",
+                        "text": ""
+                    }
+                },
+                "size": {
+                    "skip": "Размер: <",
+                    "token1": ">",
+                    "token2": "<"
+                },
+                "leechers": {
+                    "token1": "li_swing\">",
+                    "token2": "<"
+                },
+                "seeders": {
+                    "token1": "li_distribute\">",
+                    "token2": "<"
+                },
+                "downloads": {
+                    "token1": "li_download\">",
+                    "token2": "<"
+                }
+            }
+        ]
+    },
+    "seasons_complete": {
+        "headers": {
+            "Cookie": "3d3b81c3810f50abfa556d8a468c805b=1"
+        },
+        "get_translations": true
+    },
+    "translations_complete": {
+        "headers": {
+            "Cookie": "3d3b81c3810f50abfa556d8a468c805b=1"
+        },
+        "get_episodes": true
+    },
+    "episodes_complete": {
+        "headers": {
+            "Cookie": "3d3b81c3810f50abfa556d8a468c805b=1"
+        },
+        "episodes_from_page": {
+            "headers": {
+                "Cookie": "3d3b81c3810f50abfa556d8a468c805b=1"
+            },
+            "skip": "class=\"video_as\" id=",
+            "token1": "src=\"/test",
+            "token2": "\"",
+            "replace": [
+                {
+                    "prefix": "/test"
+                },
+                {
+                    "match": "videoas_p2p",
+                    "text": "videoas"
+                },
+                {
+                    "match": "videoas_new",
+                    "text": "videoas"
+                },
+                {
+                    "match": "/videoas.php",
+                    "text": "$scheme$//$hostname$/test/player2/videoas.php"
+                },
+                {
+                    "match": "/playlist_anistar2.php",
+                    "text": "$scheme$//$hostname$/playlist_anistar2.php"
+                },
+                {
+                    "match": "/test/player2/test/player2",
+                    "text": "/test/player2"
+                },
+                {
+                    "match": "^/test/player2",
+                    "text": ""
+                }
+            ]
+        },
+        "!add_episode": [
+            {
+                "headers": {
+                    "Cookie": "3d3b81c3810f50abfa556d8a468c805b=1"
+                },
+                "direct_links": true,
+                "start": "var playlst=",
+                "next": "title:",
+                "link": {
+                    "token1": "file:\"",
+                    "token2": "\"",
+                    "replace": [
+                        {
+                            "match": ".*?360=",
+                            "text": ""
+                        },
+                        {
+                            "match": ".&720=.*",
+                            "text": ""
+                        },
+                        {
+                            "match": "%2F",
+                            "text": "/"
+                        },
+                        {
+                            "match": "%3A",
+                            "text": ":"
+                        },
+                        {
+                            "match": "%3D",
+                            "text": "="
+                        },
+                        {
+                            "match": "%2C",
+                            "text": ","
+                        },
+                        {
+                            "match": ".m3u",
+                            "text": ".m3u8"
+                        },
+                        {
+                            "match": ".m3u88",
+                            "text": ".m3u8"
+                        }
+                    ]
+                },
+                "url360": {
+                    "skip": "title:\"360\",",
+                    "token1": "file:\"",
+                    "token2": "\"",
+                    "replace": [
+                        {
+                            "match": ".*?360=",
+                            "text": ""
+                        },
+                        {
+                            "match": ".&720=.*",
+                            "text": ""
+                        },
+                        {
+                            "match": "%2F",
+                            "text": "/"
+                        },
+                        {
+                            "match": "%3A",
+                            "text": ":"
+                        },
+                        {
+                            "match": "%3D",
+                            "text": "="
+                        },
+                        {
+                            "match": "%2C",
+                            "text": ","
+                        },
+                        {
+                            "match": ".m3u",
+                            "text": ".m3u8"
+                        },
+                        {
+                            "match": ".m3u88",
+                            "text": ".m3u8"
+                        }
+                    ]
+                },
+                "url720": {
+                    "skip": "title:\"720\",",
+                    "token1": "file:\"",
+                    "token2": "\"",
+                    "replace": [
+                        {
+                            "match": "^//",
+                            "text": "http://"
+                        },
+                        {
+                            "match": ".*&720=",
+                            "text": ""
+                        },
+                        {
+                            "match": "&h720=&type=.mp4",
+                            "text": ""
+                        },
+                        {
+                            "match": "%2F",
+                            "text": "/"
+                        },
+                        {
+                            "match": "%3A",
+                            "text": ":"
+                        },
+                        {
+                            "match": "%3D",
+                            "text": "="
+                        },
+                        {
+                            "match": "%2C",
+                            "text": ","
+                        },
+                        {
+                            "sufix": "/index.m3u8"
+                        },
+                        {
+                            "match": "sfv.an-media",
+                            "text": "sf2.an-media"
+                        },
+                        {
+                            "match": "/key=.*/(.*)/720.mp4",
+                            "text": "/video/$1/720.mp4"
+                        },
+                        {
+                            "unescape_unicode": true
+                        }
+                    ]
+                },
+                "add_links": [
+                    {
+                        "name": "360p",
+                        "link": {
+                            "skip": "title:\"360\",",
+                            "token1": "file:\"",
+                            "token2": "\"",
+                            "replace": [
+                                {
+                                    "match": ".*?360=",
+                                    "text": ""
+                                },
+                                {
+                                    "match": ".&720=.*",
+                                    "text": ""
+                                },
+                                {
+                                    "match": "%2F",
+                                    "text": "/"
+                                },
+                                {
+                                    "match": "%3A",
+                                    "text": ":"
+                                },
+                                {
+                                    "match": "%3D",
+                                    "text": "="
+                                },
+                                {
+                                    "match": "%2C",
+                                    "text": ","
+                                },
+                                {
+                                    "match": ".m3u",
+                                    "text": ".m3u8"
+                                },
+                                {
+                                    "match": ".m3u88",
+                                    "text": ".m3u8"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "720p",
+                        "link": {
+                            "skip": "title:\"720\",",
+                            "token1": "file:\"",
+                            "token2": "\"",
+                            "replace": [
+                                {
+                                    "match": "^//",
+                                    "text": "http://"
+                                },
+                                {
+                                    "match": ".*&720=",
+                                    "text": ""
+                                },
+                                {
+                                    "match": "&h720=&type=.mp4",
+                                    "text": ""
+                                },
+                                {
+                                    "match": "%2F",
+                                    "text": "/"
+                                },
+                                {
+                                    "match": "%3A",
+                                    "text": ":"
+                                },
+                                {
+                                    "match": "%3D",
+                                    "text": "="
+                                },
+                                {
+                                    "match": "%2C",
+                                    "text": ","
+                                },
+                                {
+                                    "sufix": "/index.m3u8"
+                                },
+                                {
+                                    "match": "sfv.an-media",
+                                    "text": "sf2.an-media"
+                                },
+                                {
+                                    "match": "/key=.*/(.*)/720.mp4",
+                                    "text": "/video/$1/720.mp4"
+                                },
+                                {
+                                    "unescape_unicode": true
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "title": {
+                    "token1": "\"",
+                    "token2": "\"",
+                    "replace": [
+                        {
+                            "match": "^360$",
+                            "text": ""
+                        },
+                        {
+                            "match": "^720$",
+                            "text": ""
+                        },
+                        {
+                            "match": "^1080$",
+                            "text": ""
+                        }
+                    ]
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\"",
+                    "replace": [
+                        {
+                            "match": "^360$",
+                            "text": ""
+                        },
+                        {
+                            "match": "^720$",
+                            "text": ""
+                        },
+                        {
+                            "match": "^1080$",
+                            "text": ""
+                        }
+                    ]
+                },
+                "end": "];"
+            }
+        ],
+        "add_episode": [
+            {
+                "headers": {
+                    "Cookie": "3d3b81c3810f50abfa556d8a468c805b=1"
+                },
+                "direct_links": true,
+                "start": "var playlst=",
+                "next": "title:",
+                "link": {
+                    "token1": "file:\"",
+                    "token2": "\"",
+                    "replace": [
+                        {
+                            "match": ".*?360=",
+                            "text": ""
+                        },
+                        {
+                            "match": ".&720=.*",
+                            "text": ""
+                        },
+                        {
+                            "match": "%2F",
+                            "text": "/"
+                        },
+                        {
+                            "match": "%3A",
+                            "text": ":"
+                        },
+                        {
+                            "match": "%3D",
+                            "text": "="
+                        },
+                        {
+                            "match": "%2C",
+                            "text": ","
+                        },
+                        {
+                            "match": ".m3u",
+                            "text": ".m3u8"
+                        },
+                        {
+                            "match": ".m3u88",
+                            "text": ".m3u8"
+                        }
+                    ]
+                },
+                "url360": {
+                    "token1": "file:\"",
+                    "token2": "\"",
+                    "replace": [
+                        {
+                            "match": ".*?360=",
+                            "text": ""
+                        },
+                        {
+                            "match": ".&720=.*",
+                            "text": ""
+                        },
+                        {
+                            "match": "%2F",
+                            "text": "/"
+                        },
+                        {
+                            "match": "%3A",
+                            "text": ":"
+                        },
+                        {
+                            "match": "%3D",
+                            "text": "="
+                        },
+                        {
+                            "match": "%2C",
+                            "text": ","
+                        },
+                        {
+                            "match": ".m3u",
+                            "text": ".m3u8"
+                        },
+                        {
+                            "match": ".m3u88",
+                            "text": ".m3u8"
+                        }
+                    ]
+                },
+                "url720": {
+                    "token1": "file_h:\"",
+                    "token2": "\"",
+                    "replace": [
+                        {
+                            "match": "^//",
+                            "text": "http://"
+                        },
+                        {
+                            "match": ".*&720=",
+                            "text": ""
+                        },
+                        {
+                            "match": "&h720=&type=.mp4",
+                            "text": ""
+                        },
+                        {
+                            "match": "%2F",
+                            "text": "/"
+                        },
+                        {
+                            "match": "%3A",
+                            "text": ":"
+                        },
+                        {
+                            "match": "%3D",
+                            "text": "="
+                        },
+                        {
+                            "match": "%2C",
+                            "text": ","
+                        },
+                        {
+                            "sufix": "/index.m3u8"
+                        },
+                        {
+                            "match": "sfv.an-media",
+                            "text": "sf2.an-media"
+                        },
+                        {
+                            "match": "/key=.*/(.*)/720.mp4",
+                            "text": "/video/$1/720.mp4"
+                        },
+                        {
+                            "unescape_unicode": true
+                        }
+                    ]
+                },
+                "add_links": [
+                    {
+                        "name": "360p",
+                        "link": {
+                            "token1": "file:\"",
+                            "token2": "\"",
+                            "replace": [
+                                {
+                                    "match": ".*?360=",
+                                    "text": ""
+                                },
+                                {
+                                    "match": ".&720=.*",
+                                    "text": ""
+                                },
+                                {
+                                    "match": "%2F",
+                                    "text": "/"
+                                },
+                                {
+                                    "match": "%3A",
+                                    "text": ":"
+                                },
+                                {
+                                    "match": "%3D",
+                                    "text": "="
+                                },
+                                {
+                                    "match": "%2C",
+                                    "text": ","
+                                },
+                                {
+                                    "match": ".m3u",
+                                    "text": ".m3u8"
+                                },
+                                {
+                                    "match": ".m3u88",
+                                    "text": ".m3u8"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "720p",
+                        "link": {
+                            "token1": "file_h:\"",
+                            "token2": "\"",
+                            "replace": [
+                                {
+                                    "match": "^//",
+                                    "text": "http://"
+                                },
+                                {
+                                    "match": ".*&720=",
+                                    "text": ""
+                                },
+                                {
+                                    "match": "&h720=&type=.mp4",
+                                    "text": ""
+                                },
+                                {
+                                    "match": "%2F",
+                                    "text": "/"
+                                },
+                                {
+                                    "match": "%3A",
+                                    "text": ":"
+                                },
+                                {
+                                    "match": "%3D",
+                                    "text": "="
+                                },
+                                {
+                                    "match": "%2C",
+                                    "text": ","
+                                },
+                                {
+                                    "sufix": "/index.m3u8"
+                                },
+                                {
+                                    "match": "sfv.an-media",
+                                    "text": "sf2.an-media"
+                                },
+                                {
+                                    "match": "/key=.*/(.*)/720.mp4",
+                                    "text": "/video/$1/720.mp4"
+                                },
+                                {
+                                    "unescape_unicode": true
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "title": {
+                    "token1": "\"",
+                    "token2": "\"",
+                    "replace": [
+                        {
+                            "match": "^360$",
+                            "text": ""
+                        },
+                        {
+                            "match": "^720$",
+                            "text": ""
+                        },
+                        {
+                            "match": "^1080$",
+                            "text": ""
+                        }
+                    ]
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\"",
+                    "replace": [
+                        {
+                            "match": "^360$",
+                            "text": ""
+                        },
+                        {
+                            "match": "^720$",
+                            "text": ""
+                        },
+                        {
+                            "match": "^1080$",
+                            "text": ""
+                        }
+                    ]
+                },
+                "end": "];"
+            },
+            {
+                "headers": {
+                    "Cookie": "3d3b81c3810f50abfa556d8a468c805b=1"
+                },
+                "may_be_null": true,
+                "start": "var playlst=",
+                "next": "title:",
+                "link": {
+                    "token1": "other_2:\"",
+                    "token2": "\""
+                },
+                "title": {
+                    "token1": "\"",
+                    "token2": "\"",
+                    "replace": [
+                        {
+                            "match": "^360$",
+                            "text": ""
+                        },
+                        {
+                            "match": "^720$",
+                            "text": ""
+                        },
+                        {
+                            "match": "^1080$",
+                            "text": ""
+                        }
+                    ]
+                },
+                "uniq": {
+                    "token1": "\"",
+                    "token2": "\""
+                },
+                "end": "];"
+            },
+            {
+                "headers": {
+                    "Cookie": "3d3b81c3810f50abfa556d8a468c805b=1"
+                },
+                "may_be_null": true,
+                "start": "id=\"PlayList",
+                "next": "onclick=",
+                "link": {
+                    "token1": "playvk('",
+                    "token2": "'"
+                },
+                "title": {
+                    "token1": "\">",
+                    "token2": "<",
+                    "replace": {
+                        "match": ".* (\\d+)",
+                        "text": "Серия $1"
+                    }
+                },
+                "uniq": {
+                    "token1": "\">",
+                    "token2": "<"
+                },
+                "end": "</div>"
+            },
+            {
+                "headers": {
+                    "Cookie": "3d3b81c3810f50abfa556d8a468c805b=1"
+                },
+                "may_be_null": true,
+                "episodes_from_page": {
+                    "after": "iframe src=\"//ko",
+                    "token1": "dik",
+                    "token2": "\"",
+                    "prefix": "http://kodik"
+                },
+                "start": "class=\"serial-series-box",
+                "next": "<option",
+                "link": {
+                    "token1": "value=\"",
+                    "token2": "\"",
+                    "replace": [
+                        {
+                            "prefix": "%%url%%?episode="
+                        },
+                        {
+                            "match": "\\?translations=false",
+                            "text": ""
+                        }
+                    ]
+                },
+                "title": {
+                    "token1": ">",
+                    "token2": "</",
+                    "replace": [
+                        {
+                            "match": "(Серия) (\\d+)(.*)",
+                            "text": "Серия $2"
+                        },
+                        {
+                            "match": "(\\d+) серия(.*)",
+                            "text": "Серия $1"
+                        }
+                    ]
+                },
+                "uniq": {
+                    "token1": ">",
+                    "token2": "</"
+                },
+                "end": "</select>"
+            }
+        ]
+    },
+    "episode_complete": {
+        "use_content_parser": true,
+        "form_data_tag": "anistar",
+        "headers": {
+            "Cookie": "3d3b81c3810f50abfa556d8a468c805b=1",
+            "Referer": "$host$"
+        },
+        "video_headers": {
+            "Referer": "https://v24.astar.bz"
+        }
+    },
+    "test": [
+        {
+            "proc": "anime_list_complete",
+            "testpages": 3,
+            "assert": {
+                "animes": [
+                    {
+                        "title": "@^(\\w+)",
+                        "link": "@https://v24.astar.bz/",
+                        "uniq": "@^(\\w+)"
+                    }
+                ],
+                "animes_count": ">=20"
+            }
+        },
+        {
+            "proc": "anime_complete",
+            "link": "https://v24.astar.bz/7558-dvoryanstvo-noblesse.html",
+            "assert": {
+                "title": "Noblesse",
+                "alt_title": "Дворянство",
+                "cover": "https://v24.astar.bz/uploads/posters/7558/original.jpg",
+                "producers": "@тада",
+                "year": "2020",
+                "episodes": "ТВ (13 эп.), 25 мин.",
+                "content_type": "anime",
+                "genres": "@school",
+                "genres_count": ">=1",
+                "tags": "[вампиры]",
+                "status": "complete",
+                "summary": "@^(Очнувшись от забытья)"
+            }
+        },
+        {
+            "proc": "anime_complete",
+            "link": "https://v24.astar.bz/6261-boruto-naruto-sleduyuschee-pokolenie-boruto-novoe-pokolenie-naruto-boruto-naruto-next-generations.html",
+            "assert": {
+                "title": "Boruto: Naruto Next Generations",
+                "alt_title": "@(Боруто.*)",
+                "cover": "https://v24.astar.bz/uploads/posters/6261/original.jpg",
+                "year": "2017",
+                "episodes": "ТВ (293 эп.), 25 мин.",
+                "content_type": "anime",
+                "genres": "@drama",
+                "genres_count": ">=6",
+                "status": "ongoing",
+                "summary": "@^(Действия ТВ-сериала будут)"
+            }
+        }
+    ]
+}

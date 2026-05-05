@@ -1,0 +1,284 @@
+{
+    "id": 40007,
+    "version": 18,
+    "title": "MANGA/in/UA",
+    "host": "https://manga.in.ua",
+    "public_link": "https://manga.in.ua",
+    "hash_tag": "manga_in_ua",
+    "folder": "manga_in_ua",
+    "name": [
+        "manga",
+        "in"
+    ],
+    "language": "ua",
+    "content_type": "manga",
+    "chapters_order": true,
+    "user_agent": "Mozilla/5.0 (Linux; Android 11; M2102J20SG) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Mobile Safari/537.36",
+    "icon_link": "http://images.mangawatcherx.com/parser/icon/manga/manga_in_ua.png",
+    "self_link": "https://api.anilabx.xyz/v3/parser/get?type=manga&parser=manga_in_ua",
+    "author": {
+        "name": "AniLabX Team",
+        "email": "anilabx.supp@gmail.com"
+    },
+    "custom_settings": {
+        "is_allow_empty_content_length_in_manga_reader": true
+    },
+    "manga_search_complete": {
+        "search_link": "$scheme$//$hostname$/index.php?do=search&subaction=search&search_start=$page$&full_search=0&result_from=1&story=$query$",
+        "query_type": "GET",
+        "add_manga": {
+            "start": "class=\"search\"",
+            "next": "class=\"card__cover\"",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "alt_title": {
+                "token1": "title=\"",
+                "token2": "\"",
+                "replace": {
+                    "match": " / .*",
+                    "text": ""
+                }
+            },
+            "title": {
+                "token1": "title=\"",
+                "token2": "\"",
+                "replace": {
+                    "match": ".* / ",
+                    "text": ""
+                }
+            },
+            "cover": {
+                "token1": "src=\"",
+                "token2": "\""
+            }
+        }
+    },
+    "manga_list_complete": {
+        "iterator": {
+            "category": {
+                "tag": "main",
+                "name": "Последние"
+            },
+            "first_page_url": "$scheme$//$hostname$/mangas/",
+            "base_url": "$scheme$//$hostname$/mangas/page/",
+            "append_nums": {
+                "from": 1,
+                "to": 13,
+                "step": 1
+            }
+        },
+        "add_manga": {
+            "start": "<main class=\"main",
+            "next": "<article class=\"item\">",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "title": {
+                "token1": "title=\"",
+                "token2": "\"",
+                "replace": {
+                    "match": ".*/ ",
+                    "text": ""
+                }
+            },
+            "alt_title": {
+                "token1": "title=\"",
+                "token2": "\"",
+                "replace": {
+                    "match": " /.*",
+                    "text": ""
+                }
+            },
+            "cover": {
+                "token1": "data-src=\"",
+                "token2": "\""
+            },
+            "info_1": {
+                "token1": "progress__sm\">",
+                "token2": "</"
+            }
+        }
+    },
+    "manga_complete": {
+        "title": {
+            "token1": "\"headline\": \"",
+            "token2": "\""
+        },
+        "cover": {
+            "after": "--poster",
+            "token1": "src=\"",
+            "token2": "\""
+        },
+        "author": {
+            "skip": ">Автор:",
+            "token1": "\">",
+            "token2": "</"
+        },
+        "summary": {
+            "skip": ">Опис",
+            "token1": "\">",
+            "token2": "<a"
+        },
+        "status": {
+            "default": "ongoing"
+        },
+        "translation_status": {
+            "default": "ongoing"
+        },
+        "content_type": {
+            "default": "manga"
+        },
+        "add_genres": {
+            "start": ">Жанри",
+            "next": "href=\"",
+            "token1": "\">",
+            "token2": "</",
+            "end": "<div"
+        },
+        "request_chapters_from_page": {
+            "method": "POST",
+            "url": "https://manga.in.ua/engine/ajax/controller.php?mod=load_chapters",
+            "headers": {
+                "Referer": "$scheme$//$hostname$",
+                "X-Requested-With": "XMLHttpRequest"
+            },
+            "form_data": {
+                "action": "show",
+                "news_id": {
+                    "token1": "'id': '",
+                    "token2": "'"
+                },
+                "news_category": "1",
+                "this_link": "",
+                "user_hash": {
+                    "token1": "var site_login_hash = '",
+                    "token2": "'"
+                }
+            }
+        },
+        "add_chapter": {
+            "next": "foruserreadedbar",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "title": {
+                "skip": "href=\"",
+                "token1": "\">",
+                "token2": "</a>",
+                "replace": [
+                    {
+                        "match": "НОВЕ",
+                        "text": ""
+                    },
+                    {
+                        "match": "^Том(\\d+)",
+                        "text": "Том $1"
+                    }
+                ]
+            },
+            "uniq": {
+                "skip": "href=\"",
+                "token1": "\">",
+                "token2": "</a>",
+                "replace": [
+                    {
+                        "match": "НОВЕ",
+                        "text": ""
+                    },
+                    {
+                        "match": "^Том(\\d+)",
+                        "text": "Том $1"
+                    }
+                ]
+            }
+        }
+    },
+    "chapter_complete": {
+        "images_url": {
+            "token1": "site_login_hash = '",
+            "token2": "'",
+            "replace": [
+                {
+                    "prefix": "&action=show&user_hash="
+                },
+                {
+                    "prefix": {
+                        "token1": "data-news_id=",
+                        "token2": ">"
+                    }
+                },
+                {
+                    "prefix": "https://manga.in.ua/engine/ajax/controller.php?mod=load_chapters_image&news_id="
+                }
+            ]
+        },
+        "add_images": {
+            "start": "loadcomicsimages",
+            "token1": "data-src=\"",
+            "token2": "\"",
+            "end": "</ul>",
+            "!replace": {
+                "prefix": "https://wsrv.nl/?we=&url="
+            }
+        }
+    },
+    "test": [
+        {
+            "proc": "manga_list_complete",
+            "testpages": "3",
+            "assert": {
+                "mangas": [
+                    {
+                        "title": "@^(\\p{L}+)",
+                        "link": "@https://manga.in.ua/",
+                        "uniq": "@^(\\w+)"
+                    }
+                ],
+                "mangas_count": ">=30"
+            }
+        },
+        {
+            "proc": "manga_complete",
+            "link": "https://manga.in.ua/mangas/boyovik/81-shikabane-hime-princesa-mercv.html",
+            "assert": {
+                "title": "Принцеса мерців",
+                "cover": "@https://manga.in.ua/uploads/posts//2020-05/1588698007_shikabane_hime_cover.jpg",
+                "summary": "@^(«Секта захисту)",
+                "status": "ongoing",
+                "chapters_count": ">=4",
+                "chapters": [
+                    {
+                        "title": "Том 1. Розділ 3",
+                        "link": "https://manga.in.ua/chapters/8876-shikabane-hime-vol1-ch3.html",
+                        "folder": "Том 1. Розділ 3/"
+                    },
+                    {
+                        "title": "Том 1. Розділ 1",
+                        "chapter_number": "1.0",
+                        "link": "https://manga.in.ua/chapters/8874-shikabane-hime-vol1-ch1.html"
+                    }
+                ]
+            }
+        },
+        {
+            "proc": "chapter_complete",
+            "link": "https://manga.in.ua/chapters/8874-shikabane-hime-vol1-ch1.html",
+            "title": "Том 1. Розділ 1",
+            "assert": {
+                "pages": [
+                    {
+                        "image": "https://manga.in.ua/uploads/posts/2022-04/1650575335_13.png"
+                    },
+                    {
+                        "image": "https://manga.in.ua/uploads/posts/2022-04/1650575255_03.png"
+                    }
+                ],
+                "pages_count": "77"
+            }
+        }
+    ]
+}

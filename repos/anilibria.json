@@ -1,0 +1,788 @@
+{
+    "id": 20000,
+    "version": 71,
+    "title": "AniLibria",
+    "host": "https://www.anilibria.tv",
+    "public_link": "https://www.anilibria.tv",
+    "api_endpoint": "https://wwnd.space/",
+    "api_images": "https://static.wwnd.space/",
+    "api": "anilibria",
+    "hash_tag": "anilibria",
+    "folder": "anilibria",
+    "name": "anilibria",
+    "language": "ru",
+    "content_type": "anime",
+    "episodes_order": true,
+    "icon_link": "http://images.mangawatcherx.com/parser/icon/anime/anilibria.png",
+    "self_link": "https://api.anilabx.xyz/v3/parser/get?type=anime&parser=anilibria",
+    "author": {
+        "name": "AniLabX Team",
+        "email": "anilabx.supp@gmail.com"
+    },
+    "custom_settings": {
+        "is_allow_endpoint_mirroring": true,
+        "endpoint_mirrors": [
+            {
+                "name": "Основное",
+                "url": "https://www.anilibria.tv/"
+            },
+            {
+                "name": "Запасное",
+                "url": "https://wwnd.space/"
+            },
+            {
+                "name": "Резервное",
+                "url": "https://wwnd.anilib.moe/"
+            }
+        ]
+    },
+    "anime_list_filters_complete": {
+        "base_link": "$scheme$//$hostname$",
+        "filters": {
+            "0_sort": {
+                "name": "Сортировка",
+                "choice_mode": "single",
+                "filter_type": "form_data",
+                "form_data_name": "sort",
+                "values": [
+                    {
+                        "name": "По популярности",
+                        "value": "2"
+                    },
+                    {
+                        "name": "По новизне",
+                        "value": "1"
+                    }
+                ]
+            },
+            "1_genres": {
+                "name": "Жанры",
+                "choice_mode": "multiple",
+                "filter_type": "form_data",
+                "form_data_name": "search->genre",
+                "values": [
+                    {
+                        "n_v": "боевые искусства"
+                    },
+                    {
+                        "n_v": "вампиры"
+                    },
+                    {
+                        "n_v": "демоны"
+                    },
+                    {
+                        "n_v": "детектив"
+                    },
+                    {
+                        "n_v": "драма"
+                    },
+                    {
+                        "n_v": "игры"
+                    },
+                    {
+                        "n_v": "исторический"
+                    },
+                    {
+                        "n_v": "комедия"
+                    },
+                    {
+                        "n_v": "магия"
+                    },
+                    {
+                        "n_v": "меха"
+                    },
+                    {
+                        "n_v": "мистика"
+                    },
+                    {
+                        "n_v": "музыка"
+                    },
+                    {
+                        "n_v": "повседневность"
+                    },
+                    {
+                        "n_v": "приключения"
+                    },
+                    {
+                        "n_v": "психологическое"
+                    },
+                    {
+                        "n_v": "романтика"
+                    },
+                    {
+                        "n_v": "сверхъестественное"
+                    },
+                    {
+                        "n_v": "сейнен"
+                    },
+                    {
+                        "n_v": "спорт"
+                    },
+                    {
+                        "n_v": "супер сила"
+                    },
+                    {
+                        "n_v": "сёдзе"
+                    },
+                    {
+                        "n_v": "сёнен"
+                    },
+                    {
+                        "n_v": "триллер"
+                    },
+                    {
+                        "n_v": "ужасы"
+                    },
+                    {
+                        "n_v": "фантастика"
+                    },
+                    {
+                        "n_v": "фэнтези"
+                    },
+                    {
+                        "n_v": "школа"
+                    },
+                    {
+                        "n_v": "экшен"
+                    },
+                    {
+                        "n_v": "этти"
+                    }
+                ]
+            },
+            "2_years": {
+                "name": "Года",
+                "choice_mode": "multiple",
+                "filter_type": "form_data",
+                "form_data_name": "search->year",
+                "values": [
+                    {
+                        "n_v": "2026"
+                    },
+                    {
+                        "n_v": "2025"
+                    },
+                    {
+                        "n_v": "2024"
+                    },
+                    {
+                        "n_v": "2023"
+                    },
+                    {
+                        "n_v": "2022"
+                    },
+                    {
+                        "n_v": "2021"
+                    },
+                    {
+                        "n_v": "2020"
+                    },
+                    {
+                        "n_v": "2019"
+                    },
+                    {
+                        "n_v": "2018"
+                    },
+                    {
+                        "n_v": "2017"
+                    },
+                    {
+                        "n_v": "2016"
+                    },
+                    {
+                        "n_v": "2015"
+                    },
+                    {
+                        "n_v": "2014"
+                    },
+                    {
+                        "n_v": "2013"
+                    },
+                    {
+                        "n_v": "2012"
+                    },
+                    {
+                        "n_v": "2011"
+                    },
+                    {
+                        "n_v": "2010"
+                    },
+                    {
+                        "n_v": "2009"
+                    },
+                    {
+                        "n_v": "2008"
+                    },
+                    {
+                        "n_v": "2007"
+                    },
+                    {
+                        "n_v": "2006"
+                    },
+                    {
+                        "n_v": "2005"
+                    },
+                    {
+                        "n_v": "2004"
+                    },
+                    {
+                        "n_v": "2003"
+                    },
+                    {
+                        "n_v": "2001"
+                    },
+                    {
+                        "n_v": "1996"
+                    }
+                ]
+            },
+            "3_seasons": {
+                "name": "Сезоны",
+                "choice_mode": "multiple",
+                "filter_type": "form_data",
+                "form_data_name": "search->season",
+                "values": [
+                    {
+                        "n_v": "зима"
+                    },
+                    {
+                        "n_v": "весна"
+                    },
+                    {
+                        "n_v": "лето"
+                    },
+                    {
+                        "n_v": "осень"
+                    }
+                ]
+            },
+            "9_finish": {
+                "name": "Статус релиза",
+                "choice_mode": "multiple",
+                "filter_type": "form_data",
+                "form_data_name": "search->year",
+                "values": [
+                    {
+                        "name": "Все",
+                        "value": "1"
+                    },
+                    {
+                        "name": "Релиз завершен",
+                        "value": "2"
+                    }
+                ]
+            }
+        },
+        "allow_redirected_code": true,
+        "genre_filters": {
+            "link": "https://www.anilibria.tv/public/catalog.php",
+            "method": "POST",
+            "form_data": {
+                "page": "$page$",
+                "search": "{\"year\":\"\",\"genre\":\"$filter$\"}",
+                "xpage": "catalog"
+            },
+            "filters": [
+                {
+                    "n_v": "боевые искусства"
+                },
+                {
+                    "n_v": "вампиры"
+                },
+                {
+                    "n_v": "демоны"
+                },
+                {
+                    "n_v": "детектив"
+                },
+                {
+                    "n_v": "драма"
+                },
+                {
+                    "n_v": "игры"
+                },
+                {
+                    "n_v": "исторический"
+                },
+                {
+                    "n_v": "комедия"
+                },
+                {
+                    "n_v": "магия"
+                },
+                {
+                    "n_v": "меха"
+                },
+                {
+                    "n_v": "мистика"
+                },
+                {
+                    "n_v": "музыка"
+                },
+                {
+                    "n_v": "повседневность"
+                },
+                {
+                    "n_v": "приключения"
+                },
+                {
+                    "n_v": "психологическое"
+                },
+                {
+                    "n_v": "романтика"
+                },
+                {
+                    "n_v": "сверхъестественное"
+                },
+                {
+                    "n_v": "сейнен"
+                },
+                {
+                    "n_v": "спорт"
+                },
+                {
+                    "n_v": "супер сила"
+                },
+                {
+                    "n_v": "сёдзе"
+                },
+                {
+                    "n_v": "сёнен"
+                },
+                {
+                    "n_v": "триллер"
+                },
+                {
+                    "n_v": "ужасы"
+                },
+                {
+                    "n_v": "фантастика"
+                },
+                {
+                    "n_v": "фэнтези"
+                },
+                {
+                    "n_v": "школа"
+                },
+                {
+                    "n_v": "экшен"
+                },
+                {
+                    "n_v": "этти"
+                }
+            ]
+        },
+        "year_filters": {
+            "link": "https://www.anilibria.tv/public/catalog.php",
+            "method": "POST",
+            "form_data": {
+                "page": "$page$",
+                "search": "{\"year\":\"$filter$\",\"genre\":\"\"}",
+                "xpage": "catalog",
+                "sort": "2"
+            },
+            "filters": [
+                {
+                    "n_v": "2026"
+                },
+                {
+                    "n_v": "2025"
+                },
+                {
+                    "n_v": "2024"
+                },
+                {
+                    "n_v": "2023"
+                },
+                {
+                    "n_v": "2022"
+                },
+                {
+                    "n_v": "2021"
+                },
+                {
+                    "n_v": "2020"
+                },
+                {
+                    "n_v": "2019"
+                },
+                {
+                    "n_v": "2018"
+                },
+                {
+                    "n_v": "2017"
+                },
+                {
+                    "n_v": "2016"
+                },
+                {
+                    "n_v": "2015"
+                },
+                {
+                    "n_v": "2014"
+                },
+                {
+                    "n_v": "2013"
+                },
+                {
+                    "n_v": "2012"
+                },
+                {
+                    "n_v": "2011"
+                },
+                {
+                    "n_v": "2010"
+                },
+                {
+                    "n_v": "2009"
+                },
+                {
+                    "n_v": "2008"
+                },
+                {
+                    "n_v": "2007"
+                },
+                {
+                    "n_v": "2006"
+                },
+                {
+                    "n_v": "2005"
+                },
+                {
+                    "n_v": "2004"
+                },
+                {
+                    "n_v": "2003"
+                },
+                {
+                    "n_v": "2001"
+                },
+                {
+                    "n_v": "1996"
+                }
+            ]
+        },
+        "add_anime": {
+            "next": "<td>",
+            "link": {
+                "token1": "href=\\\"",
+                "token2": "\\\">",
+                "replace": {
+                    "prefix": "$scheme$//$hostname$",
+                    "match": "\\\\",
+                    "text": ""
+                }
+            },
+            "title": {
+                "skip": "torrent_pic",
+                "token1": "alt=\\\"",
+                "token2": "\\\"",
+                "replace": {
+                    "unescape_unicode": true,
+                    "match": ".* / ",
+                    "text": ""
+                }
+            },
+            "additional_title": {
+                "skip": "torrent_pic",
+                "token1": "alt=\\\"",
+                "token2": "\\\"",
+                "replace": {
+                    "unescape_unicode": true,
+                    "match": " / .*",
+                    "text": ""
+                }
+            },
+            "cover": {
+                "skip": "torrent_pic",
+                "token1": "src=\\\"",
+                "token2": "\\\"",
+                "replace": {
+                    "prefix": "$scheme$//$hostname$",
+                    "match": "\\\\",
+                    "text": ""
+                }
+            },
+            "episodes_aired": {
+                "skip": "anime_number",
+                "token1": "\\\">",
+                "token2": "<",
+                "replace": {
+                    "unescape_unicode": true
+                }
+            }
+        }
+    },
+    "anime_search_complete": {
+        "search_link": "https://www.anilibria.tv/public/search.php",
+        "query_type": "POST",
+        "form_data": {
+            "search": "$query$",
+            "small": "1"
+        },
+        "add_anime": {
+            "next": "<td>",
+            "link": {
+                "token1": "href='",
+                "token2": "'",
+                "replace": {
+                    "prefix": "$scheme$//$hostname$",
+                    "match": "\\\\",
+                    "text": ""
+                }
+            },
+            "title": {
+                "skip": "<span",
+                "token1": "'>",
+                "token2": "<",
+                "replace": {
+                    "unescape_unicode": true
+                }
+            }
+        }
+    },
+    "anime_list_complete": {
+        "iterator": {
+            "base_url": "https://www.anilibria.tv/public/catalog.php",
+            "method": "POST",
+            "form_data": {
+                "page": "$page$",
+                "search": "{\"year\":\"\",\"genre\":\"\"}",
+                "xpage": "catalog"
+            },
+            "append_nums": {
+                "from": 1,
+                "to": 100,
+                "step": 1
+            }
+        },
+        "add_anime": {
+            "next": "<td>",
+            "link": {
+                "token1": "href=\\\"",
+                "token2": "\\\">",
+                "replace": {
+                    "prefix": "$scheme$//$hostname$",
+                    "match": "\\\\",
+                    "text": ""
+                }
+            },
+            "title": {
+                "skip": "torrent_pic",
+                "token1": "alt=\\\"",
+                "token2": "\\\"",
+                "replace": {
+                    "unescape_unicode": true,
+                    "match": ".* / ",
+                    "text": ""
+                }
+            },
+            "additional_title": {
+                "skip": "torrent_pic",
+                "token1": "alt=\\\"",
+                "token2": "\\\"",
+                "replace": {
+                    "unescape_unicode": true,
+                    "match": " / .*",
+                    "text": ""
+                }
+            },
+            "cover": {
+                "skip": "torrent_pic",
+                "token1": "src=\\\"",
+                "token2": "\\\"",
+                "replace": {
+                    "prefix": "$scheme$//$hostname$",
+                    "match": "\\\\",
+                    "text": ""
+                }
+            },
+            "episodes_aired": {
+                "skip": "anime_number",
+                "token1": "\\\">",
+                "token2": "<",
+                "replace": {
+                    "unescape_unicode": true
+                }
+            }
+        }
+    },
+    "anime_complete": {
+        "title": {
+            "skip": "og:title",
+            "token1": "content='",
+            "token2": "'",
+            "replace": {
+                "match": ".* / ",
+                "text": ""
+            }
+        },
+        "additional_title": {
+            "skip": "og:title",
+            "token1": "content='",
+            "token2": "'",
+            "replace": {
+                "match": " / .*",
+                "text": ""
+            }
+        },
+        "uniq": {
+            "skip": "og:title",
+            "token1": "content='",
+            "token2": "'",
+            "replace": {
+                "match": ".* / ",
+                "text": ""
+            }
+        },
+        "cover": {
+            "after": "detail_torrent_pic",
+            "token1": "src=\"",
+            "token2": "\""
+        },
+        "add_dubber": {
+            "after": ">Озвучка<",
+            "token1": ":",
+            "token2": "<br",
+            "split": ","
+        },
+        "production_year": {
+            "skip": ">Год:<",
+            "token1": ">",
+            "token2": "<"
+        },
+        "ep_length": {
+            "skip": ">Тип:<",
+            "token1": ">",
+            "token2": "<",
+            "replace": {
+                "match": ".*,",
+                "text": ""
+            }
+        },
+        "episodes": {
+            "skip": ">Тип:<",
+            "token1": ">",
+            "token2": "<",
+            "replace": {
+                "match": "\\((.*?)\\)",
+                "match_number": "1",
+                "group": "1"
+            }
+        },
+        "summary": {
+            "skip": "og:description",
+            "token1": "content='",
+            "token2": "'"
+        },
+        "is_have_subs": ">Субтитры",
+        "status": {
+            "ongoing": "Новая серия кажд",
+            "default": "complete"
+        },
+        "content_type": {
+            "anime": "Ani",
+            "default": "anime"
+        },
+        "add_genre": {
+            "after": ">Жанры:<",
+            "token1": "b>",
+            "token2": "<",
+            "split": ","
+        },
+        "related": {
+            "after": ">Порядок просмотра:<",
+            "token1": "<br>",
+            "token2": "</div>",
+            "!replace": {
+                "match": "href=\"/",
+                "text": "href=\"$scheme$//$hostname$/"
+            }
+        }
+    },
+    "seasons_complete": {
+        "get_translations": true
+    },
+    "translations_complete": {
+        "get_episodes": true
+    },
+    "episodes_complete": {
+        "add_episode": [
+            {
+                "direct_links": true,
+                "start": "new Playerjs",
+                "next": "'title'",
+                "link": {
+                    "token1": "'file':'",
+                    "token2": ",",
+                    "replace": {
+                        "match": "\\[.*\\]",
+                        "text": "https:"
+                    }
+                },
+                "title": {
+                    "token1": "'title':'",
+                    "token2": "'"
+                },
+                "uniq": {
+                    "token1": "'title':'",
+                    "token2": "'"
+                }
+            },
+            {
+                "may_be_null": true,
+                "episodes_from_page": {
+                    "after": "id=\"moonPlayer\"",
+                    "token1": "src=\"",
+                    "token2": "\"",
+                    "replace": {
+                        "match": "^//",
+                        "text": "http://"
+                    }
+                },
+                "start": "class=\"serial-series-box",
+                "next": "<option",
+                "link": {
+                    "token1": "value=\"",
+                    "token2": "\"",
+                    "replace": [
+                        {
+                            "prefix": "%%url%%?episode="
+                        },
+                        {
+                            "match": "\\?translations=false",
+                            "text": ""
+                        }
+                    ]
+                },
+                "title": {
+                    "token1": ">",
+                    "token2": "</",
+                    "replace": [
+                        {
+                            "match": "(Серия) (\\d+)(.*)",
+                            "text": "Серия $2"
+                        },
+                        {
+                            "match": "(\\d+) серия(.*)",
+                            "text": "Серия $1"
+                        }
+                    ]
+                },
+                "uniq": {
+                    "token1": ">",
+                    "token2": "</"
+                },
+                "end": "</select>"
+            }
+        ]
+    },
+    "torrents_complete": {},
+    "episode_complete": {
+        "form_data_tag": "shikimori",
+        "headers": {
+            "Referer": "$scheme$//$hostname$"
+        }
+    },
+    "test": []
+}

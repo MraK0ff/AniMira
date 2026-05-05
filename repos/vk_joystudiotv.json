@@ -1,0 +1,211 @@
+{
+    "id": 30104,
+    "version": 10,
+    "title": "VK: JoyStudio",
+    "host": "https://vk.ru/joystudiotv",
+    "public_link": "https://vk.ru/joystudiotv",
+    "api": "vk_group",
+    "hash_tag": "vk_joystudiotv",
+    "folder": "vk_joystudiotv",
+    "name": "vk_joystudiotv",
+    "language": "ru",
+    "content_type": "dorama",
+    "episodes_order": false,
+    "icon_link": "http://images.mangawatcherx.com/parser/icon/dorams/vk_joystudiotv.png",
+    "self_link": "https://api.anilabx.xyz/v3/parser/get?type=dorama&parser=vk_joystudiotv",
+    "author": {
+        "name": "AniLabX Team",
+        "email": "anilabx.supp@gmail.com"
+    },
+    "custom_settings": {
+        "vk_catalog_app_client_id": "2685278",
+        "vk_videos_owner_id": "-149988655",
+        "is_ignore_dynamic_link_system": "true",
+        "card_size": "LAND"
+    },
+    "anime_search_complete": {},
+    "anime_list_complete": {
+        "iterator": [
+            {
+                "category": {
+                    "tag": "main",
+                    "name": "Последние"
+                },
+                "base_url": "https://api3.anilabx.xyz/v3/provider/vk/joystudiotv/list"
+            }
+        ],
+        "add_anime": {
+            "start": "\"items\":",
+            "next": "\"count\"",
+            "link": {
+                "token1": "\"id\":",
+                "token2": ",",
+                "replace": [
+                    {
+                        "match": "\\}",
+                        "text": ""
+                    },
+                    {
+                        "prefix": "https://api3.anilabx.xyz/v3/provider/vk/joystudiotv/details/"
+                    }
+                ]
+            },
+            "title": {
+                "token1": "\"title\":\"",
+                "token2": "\"",
+                "replace": {
+                    "match": "\\\\",
+                    "text": ""
+                }
+            },
+            "cover": {
+                "token1": "\"photo_320\":\"",
+                "token2": "\"",
+                "replace": {
+                    "match": "\\\\",
+                    "text": ""
+                }
+            },
+            "episodes_aired": {
+                "token1": "\"count\":",
+                "token2": ",",
+                "prefix": "Эпизодов: "
+            }
+        }
+    },
+    "anime_complete": {
+        "title": {
+            "token1": "\"title\":\"",
+            "token2": "\"",
+            "replace": {
+                "match": "\\\\",
+                "text": ""
+            }
+        },
+        "cover": {
+            "token1": "\"photo_320\":\"",
+            "token2": "\"",
+            "replace": {
+                "match": "\\\\",
+                "text": ""
+            }
+        },
+        "add_dubber": "JoyStudio",
+        "country": "Корея",
+        "episodes": {
+            "token1": "\"count\":\"",
+            "token2": ","
+        },
+        "!summary": {
+            "token1": ">",
+            "token2": "<"
+        },
+        "status": {
+            "default": "ongoing"
+        },
+        "content_type": {
+            "default": "dorama"
+        }
+    },
+    "seasons_complete": {
+        "link_corrector_in": [
+            {
+                "match": "/details/",
+                "text": "/episodes/"
+            }
+        ],
+        "get_translations": true
+    },
+    "translations_complete": {
+        "get_episodes": true
+    },
+    "episodes_complete": {
+        "add_episode": [
+            {
+                "may_be_null": true,
+                "start": "\"items\":",
+                "next": "\"owner_id\":",
+                "link": {
+                    "token1": "\"player\":\"",
+                    "token2": "\"",
+                    "replace": {
+                        "match": "\\\\",
+                        "text": ""
+                    }
+                },
+                "title": {
+                    "token1": "\"title\":\"",
+                    "token2": "\"",
+                    "replace": {
+                        "match": "\\\\",
+                        "text": ""
+                    }
+                },
+                "end": "]}}"
+            }
+        ]
+    },
+    "episode_complete": {},
+    "test": [
+        {
+            "proc": "anime_list_complete",
+            "testpages": 3,
+            "assert": {
+                "animes": [
+                    {
+                        "title": "Попсовый Эпос / Poputepipikku [05 из 12]",
+                        "link": "https://online.anidub.com/anime/anime_ongoing/10359-popsovyy-epos-poputepipikku-01-iz-12.html",
+                        "uniq": "Попсовый Эпос / Poputepipikku [05 из 12]"
+                    }
+                ],
+                "animes_count": ">=30"
+            }
+        },
+        {
+            "proc": "anime_complete",
+            "link": "https://online.anidub.com/anime/anime_ongoing/10361-citrus-citrus-01-iz-12.html",
+            "title": "Citrus",
+            "assert": {
+                "additional_title": "Цитрус",
+                "author": "@Сабурота",
+                "cover": "https://static3.anidub.com/online/poster/c3f841cce5.jpg",
+                "producers": "[такахаси такэо]",
+                "dubbers": "[kobayashi, гамлетка цезаревна, 9й неизвестный]",
+                "country": "Япония",
+                "production_year": "2018",
+                "aired_date": "c 06.01.2018",
+                "summary": "@^(Айхара Юзу классическая)",
+                "tags": "[романтика, драма, школа, сёдзе-ай]",
+                "status": "ongoing",
+                "episodes_count": "5",
+                "episodes": [
+                    {
+                        "title": "Крылья спасения - 2 серия Azazel, Mai, Stefan",
+                        "link": "https://video.sibnet.ru/shell.php?videoid=3099925",
+                        "folder": "Крылья спасения - 2 серия Azazel, Mai, Stefan/"
+                    },
+                    {
+                        "title": "Крылья спасения - 4 серия Azazel, Mai, Stefan",
+                        "link": "https://video.sibnet.ru/shell.php?videoid=3124759"
+                    }
+                ]
+            }
+        },
+        {
+            "proc": "episode_complete",
+            "link": "http://mangachan.me/online/148650-gantz_v37_ch383.html",
+            "title": "v37 - 383 КОНЕЦ",
+            "assert": {
+                "episodes": [
+                    {
+                        "image": "http://img3.mangachan.me/manga/a/1372175196_adieu-gantz-383-rus/gantz-c383p01.jpg"
+                    },
+                    {
+                        "image": "http://img3.mangachan.me/manga/a/1372175196_adieu-gantz-383-rus/gantz-c383p02.jpg"
+                    }
+                ],
+                "pages_count": "30"
+            }
+        }
+    ]
+}

@@ -1,0 +1,356 @@
+{
+    "id": 40019,
+    "version": 2,
+    "title": "TransLab Project",
+    "host": "https://alxcontent.github.io/TransLab",
+    "public_link": "https://alxcontent.github.io/TransLab",
+    "api": "translab",
+    "api_endpoint": "https://alxcontent.github.io",
+    "hash_tag": "translab",
+    "folder": "translab",
+    "name": "translab",
+    "language": "ru",
+    "content_type": "manga",
+    "icon_link": "http://images.mangawatcherx.com/parser/icon/manga/translab.png",
+    "self_link": "https://api.anilabx.xyz/v3/parser/get?type=manga&parser=translab",
+    "manga_search_complete": {},
+    "manga_list_complete": {
+        "iterator": {
+            "base_url": "https://alxcontent.github.io/TransLab/manga/api/?limit=30&order=popular&page=",
+            "append_nums": {
+                "from": 1,
+                "to": 80
+            }
+        },
+        "add_manga": {
+            "next": "\"id\"",
+            "link": {
+                "after": "\"url\"",
+                "token1": ":\"",
+                "token2": "\",",
+                "replace": [
+                    {
+                        "match": "anilabx.github.io/TransLab/manga/",
+                        "text": "anilabx.github.io/TransLab/manga/api/"
+                    },
+                    {
+                        "match": "alxcontent.github.io/TransLab/manga/",
+                        "text": "alxcontent.github.io/TransLab/manga/api/"
+                    }
+                ]
+            },
+            "uniq": {
+                "after": "\"name\"",
+                "token1": ":\"",
+                "token2": "\","
+            },
+            "title": {
+                "after": "\"russian\"",
+                "token1": ":\"",
+                "token2": "\","
+            }
+        }
+    },
+    "manga_complete": [
+        {
+            "condition": "response",
+            "title": {
+                "after": "\"name\"",
+                "token1": ":\"",
+                "token2": "\",\"im",
+                "replace": {
+                    "match": "\",\"russian\":\"",
+                    "text": " / "
+                }
+            },
+            "uniq": {
+                "after": "\"name\"",
+                "token1": ":\"",
+                "token2": "\","
+            },
+            "status": {
+                "complete": [
+                    "\"status\":\"singl\"",
+                    "\"status\":\"released\""
+                ],
+                "ongoing": "\"status\":\"ongoing\"",
+                "empty": "\"status\":\"anons\""
+            },
+            "summary": {
+                "skip": "\"description\"",
+                "token1": ":\"",
+                "token2": "\","
+            },
+            "read_dir": {
+                "right_to_left": "\"right-to-left\"",
+                "left_to_right": "\"left-to-right\""
+            },
+            "cover": {
+                "skip": "\"original\"",
+                "token1": ":\"",
+                "token2": "\""
+            },
+            "is_mature": "\"adult\":1,",
+            "add_chapter": {
+                "start": "\"list\":[",
+                "next": "\"id\"",
+                "end": "}}}",
+                "link": {
+                    "token1": "\"id\":",
+                    "token2": ",",
+                    "replace": {
+                        "prefix": "%%url%%chapter/"
+                    }
+                },
+                "title": {
+                    "token1": "\"vol\":",
+                    "token2": "\"date\"",
+                    "replace": [
+                        {
+                            "match": ",\"ch\":",
+                            "text": " - "
+                        },
+                        {
+                            "match": "\"title\"",
+                            "text": ""
+                        },
+                        {
+                            "match": ",:null,",
+                            "text": ""
+                        },
+                        {
+                            "match": ",:\"",
+                            "text": " - "
+                        },
+                        {
+                            "match": "\",",
+                            "text": ""
+                        }
+                    ]
+                },
+                "uniq": {
+                    "token1": "\"ch\":",
+                    "token2": "\"date\"",
+                    "replace": [
+                        {
+                            "match": "\"title\"",
+                            "text": ""
+                        },
+                        {
+                            "match": ",:null,",
+                            "text": ""
+                        },
+                        {
+                            "match": ",:\"",
+                            "text": " - "
+                        },
+                        {
+                            "match": "\",",
+                            "text": ""
+                        },
+                        {
+                            "match": "\\\\",
+                            "text": ""
+                        },
+                        {
+                            "match": "\\?",
+                            "text": ""
+                        },
+                        {
+                            "match": "!",
+                            "text": ""
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "condition": "",
+            "title": {
+                "skip": "<span class=\"rus-name\"",
+                "token1": "\">",
+                "token2": "</"
+            },
+            "uniq": {
+                "skip": "<span class=\"rus-name\"",
+                "token1": "\">",
+                "token2": "</"
+            },
+            "status": {
+                "complete": [
+                    "Сингл",
+                    "вышло"
+                ],
+                "ongoing": "выходит"
+            },
+            "summary": {
+                "skip": "<div class=\"prgrph\"",
+                "token1": ">",
+                "token2": "</div>"
+            },
+            "read_dir": {
+                "right_to_left": "class=\"valuev\">Манга",
+                "left_to_right": "class=\"valuev\">Манхва"
+            },
+            "cover": {
+                "skip": "<div class=\"c-poster\"",
+                "token1": "src=\"",
+                "token2": "\""
+            },
+            "chapters_from_page": {
+                "skip": "<meta property=\"og:url\"",
+                "token1": "content=\"",
+                "token2": "\"",
+                "replace": [
+                    {
+                        "match": "anilabx.github.io/TransLab/manga/",
+                        "text": "anilabx.github.io/TransLab/manga/api/"
+                    },
+                    {
+                        "match": "alxcontent.github.io/TransLab/manga/",
+                        "text": "alxcontent.github.io/TransLab/manga/api/"
+                    }
+                ]
+            },
+            "add_chapter": {
+                "start": "\"list\":[",
+                "next": "\"id\"",
+                "end": "user_list",
+                "link": {
+                    "token1": "\"id\":",
+                    "token2": ",",
+                    "replace": {
+                        "prefix": "%%url%%chapter/"
+                    }
+                },
+                "title": {
+                    "token1": "\"vol\":",
+                    "token2": "\"date\"",
+                    "replace": [
+                        {
+                            "match": ",\"ch\":",
+                            "text": " - "
+                        },
+                        {
+                            "match": "\"title\"",
+                            "text": ""
+                        },
+                        {
+                            "match": ",:null,",
+                            "text": ""
+                        },
+                        {
+                            "match": ",:\"",
+                            "text": " - "
+                        },
+                        {
+                            "match": "\",",
+                            "text": ""
+                        }
+                    ]
+                },
+                "uniq": {
+                    "token1": "\"ch\":",
+                    "token2": "\"date\"",
+                    "replace": [
+                        {
+                            "match": "\"title\"",
+                            "text": ""
+                        },
+                        {
+                            "match": ",:null,",
+                            "text": ""
+                        },
+                        {
+                            "match": ",:\"",
+                            "text": " - "
+                        },
+                        {
+                            "match": "\",",
+                            "text": ""
+                        },
+                        {
+                            "match": "\\\\",
+                            "text": ""
+                        },
+                        {
+                            "match": "\\?",
+                            "text": ""
+                        },
+                        {
+                            "match": "!",
+                            "text": ""
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "chapter_complete": {
+        "images": true,
+        "add_pages": {
+            "start": "\"pages\"",
+            "token1": "\"img\":\"",
+            "token2": "\"",
+            "end": "}]"
+        }
+    },
+    "test": [
+        {
+            "proc": "manga_list_complete",
+            "testpages": "3",
+            "assert": {
+                "mangas": [
+                    {
+                        "link": "https://anilabx.github.io/TransLab/manga/api/one-piece.12/",
+                        "uniq": "One Piece"
+                    },
+                    {
+                        "link": "https://anilabx.github.io/TransLab/manga/api/onepunch-man.48/"
+                    }
+                ],
+                "mangas_count": ">25"
+            }
+        },
+        {
+            "proc": "manga_complete",
+            "link": "https://anilabx.github.io/TransLab/manga/api/fairy-tail.10/",
+            "title": "Фейри Тейл",
+            "assert": {
+                "cover": "https://anilabx.github.io/TransLab/data/manga/covers/original/10.jpg",
+                "summary": "@^(Фейри Тейл – знаменитая на весь мир)",
+                "genres": "@comedy",
+                "status": "complete",
+                "genres_count": ">=2",
+                "chapters_count": ">=511",
+                "chapters": [
+                    {
+                        "title": "1 - Фейри Тейл",
+                        "link": "https://anilabx.github.io/TransLab/manga/api/fairy-tail.10/chapter/37975",
+                        "folder": "1 - Фейри Тейл/"
+                    },
+                    {
+                        "title": "@(2 - Появление)",
+                        "link": "https://anilabx.github.io/TransLab/manga/api/fairy-tail.10/chapter/37976"
+                    }
+                ]
+            }
+        },
+        {
+            "proc": "chapter_complete",
+            "link": "https://anilabx.github.io/TransLab/manga/api/fairy-tail.10/chapter/37975",
+            "title": "1 - Фейри Тейл",
+            "assert": {
+                "pages": [
+                    {
+                        "image": "@^http://img2.anilabx.github.io/TransLab/manga/rus/fairy_tail/vol01_ch001/fairy_tail_vol1_ch001_p001.jpg"
+                    },
+                    {
+                        "image": "@^http://img2.anilabx.github.io/TransLab/manga/rus/fairy_tail/vol01_ch001/fairy_tail_vol1_ch001_p002.jpg"
+                    }
+                ],
+                "pages_count": "77"
+            }
+        }
+    ]
+}

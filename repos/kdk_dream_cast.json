@@ -1,0 +1,799 @@
+{
+    "language": "ru",
+    "public_link": "https://dream_cast.kdk.com",
+    "title": "Dream Cast",
+    "episodes_complete": {
+        "add_episode": [
+            {
+                "next": "<span",
+                "uniq": {
+                    "token1": ">",
+                    "token2": "</"
+                },
+                "start": "video-box",
+                "link": {
+                    "token1": "data=\"",
+                    "token2": "\""
+                },
+                "end": "iframe",
+                "title": {
+                    "token1": ">",
+                    "token2": "</"
+                },
+                "may_be_null": true
+            }
+        ]
+    },
+    "anime_search_complete": {
+        "search_link": "$scheme$//$hostname$/index.php",
+        "query_type": "GET",
+        "add_anime": {
+            "next": "item",
+            "cover": {
+                "token1": "\"",
+                "token2": "\"",
+                "skip": "src="
+            },
+            "alt_title": {
+                "token1": ">",
+                "token2": "<",
+                "skip": "title"
+            },
+            "link": {
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "title": {
+                "token1": ">",
+                "token2": "</",
+                "skip": "subtitle"
+            }
+        }
+    },
+    "anime_list_filters_complete": {
+        "filters": {
+            "06_genres": {
+                "filter_type": "form_data",
+                "values": [
+                    {
+                        "n_v": "Полиция"
+                    },
+                    {
+                        "n_v": "Драма"
+                    },
+                    {
+                        "n_v": "Игры"
+                    },
+                    {
+                        "n_v": "Психологическое"
+                    },
+                    {
+                        "n_v": "Психологическое"
+                    },
+                    {
+                        "n_v": "Демоны"
+                    },
+                    {
+                        "n_v": "Игры"
+                    },
+                    {
+                        "n_v": "Дзёсей"
+                    },
+                    {
+                        "n_v": "Приключения"
+                    },
+                    {
+                        "n_v": "Юри"
+                    },
+                    {
+                        "n_v": "Сёнен"
+                    },
+                    {
+                        "n_v": "Комедия"
+                    },
+                    {
+                        "n_v": "Сверхъестественное"
+                    },
+                    {
+                        "n_v": "Драма"
+                    },
+                    {
+                        "n_v": "Этти"
+                    },
+                    {
+                        "n_v": "Сёдзе"
+                    },
+                    {
+                        "n_v": "Вампиры"
+                    },
+                    {
+                        "n_v": "Яой"
+                    },
+                    {
+                        "n_v": "Музыка"
+                    },
+                    {
+                        "n_v": "Самураи"
+                    },
+                    {
+                        "n_v": "Экшен"
+                    },
+                    {
+                        "n_v": "Пародия"
+                    },
+                    {
+                        "n_v": "Повседневность"
+                    },
+                    {
+                        "n_v": "Приключения"
+                    },
+                    {
+                        "n_v": "Музыка"
+                    },
+                    {
+                        "n_v": "Ужасы"
+                    },
+                    {
+                        "n_v": "Меха"
+                    },
+                    {
+                        "n_v": "Романтика"
+                    },
+                    {
+                        "n_v": "Работа"
+                    },
+                    {
+                        "n_v": "Гурман"
+                    },
+                    {
+                        "n_v": "Гурман"
+                    },
+                    {
+                        "n_v": "Исторический"
+                    },
+                    {
+                        "n_v": "Экшен"
+                    },
+                    {
+                        "n_v": "Комедия"
+                    },
+                    {
+                        "n_v": "Демоны"
+                    },
+                    {
+                        "n_v": "Полиция"
+                    },
+                    {
+                        "n_v": "Фэнтези"
+                    },
+                    {
+                        "n_v": "Магия"
+                    },
+                    {
+                        "n_v": "Гарем"
+                    },
+                    {
+                        "n_v": "Спорт"
+                    },
+                    {
+                        "n_v": "Хентай"
+                    },
+                    {
+                        "n_v": "Космос"
+                    },
+                    {
+                        "n_v": "Школа"
+                    },
+                    {
+                        "n_v": "Космос"
+                    },
+                    {
+                        "n_v": "Этти"
+                    },
+                    {
+                        "n_v": "Фэнтези"
+                    },
+                    {
+                        "n_v": "Хентай"
+                    },
+                    {
+                        "n_v": "Исторический"
+                    },
+                    {
+                        "n_v": "Ужасы"
+                    },
+                    {
+                        "n_v": "Магия"
+                    },
+                    {
+                        "n_v": "Меха"
+                    },
+                    {
+                        "n_v": "Пародия"
+                    },
+                    {
+                        "n_v": "Самураи"
+                    },
+                    {
+                        "n_v": "Романтика"
+                    },
+                    {
+                        "n_v": "Школа"
+                    },
+                    {
+                        "n_v": "Эротика"
+                    },
+                    {
+                        "n_v": "Сёнен"
+                    },
+                    {
+                        "n_v": "Вампиры"
+                    },
+                    {
+                        "n_v": "Яой"
+                    },
+                    {
+                        "n_v": "Юри"
+                    },
+                    {
+                        "n_v": "Гарем"
+                    },
+                    {
+                        "n_v": "Фантастика"
+                    },
+                    {
+                        "n_v": "Повседневность"
+                    },
+                    {
+                        "n_v": "Сёдзё-ай"
+                    },
+                    {
+                        "n_v": "Эротика"
+                    },
+                    {
+                        "n_v": "Дзёсей"
+                    },
+                    {
+                        "n_v": "Смена пола"
+                    },
+                    {
+                        "n_v": "Додзинси"
+                    },
+                    {
+                        "n_v": "Триллер"
+                    },
+                    {
+                        "n_v": "Сверхъестественное"
+                    },
+                    {
+                        "n_v": "Триллер"
+                    },
+                    {
+                        "n_v": "Фантастика"
+                    },
+                    {
+                        "n_v": "Сёдзё"
+                    },
+                    {
+                        "n_v": "Супер сила"
+                    },
+                    {
+                        "n_v": "Супер сила"
+                    },
+                    {
+                        "n_v": "Детектив"
+                    },
+                    {
+                        "n_v": "Военное"
+                    },
+                    {
+                        "n_v": "Детектив"
+                    },
+                    {
+                        "n_v": "Военное"
+                    },
+                    {
+                        "n_v": "Детское"
+                    },
+                    {
+                        "n_v": "Детское"
+                    },
+                    {
+                        "n_v": "Машины"
+                    },
+                    {
+                        "n_v": "Машины"
+                    },
+                    {
+                        "n_v": "Боевые искусства"
+                    },
+                    {
+                        "n_v": "Боевые искусства"
+                    },
+                    {
+                        "n_v": "Безумие"
+                    },
+                    {
+                        "n_v": "Безумие"
+                    },
+                    {
+                        "n_v": "Спорт"
+                    },
+                    {
+                        "n_v": "Работа"
+                    },
+                    {
+                        "n_v": "Сэйнэн"
+                    },
+                    {
+                        "n_v": "Сёнен-ай"
+                    },
+                    {
+                        "n_v": "Сёдзе-ай"
+                    },
+                    {
+                        "n_v": "Сёнен-ай"
+                    },
+                    {
+                        "n_v": "Сэйнэн"
+                    }
+                ],
+                "name": "Жанры",
+                "form_data_name": "search->genre",
+                "choice_mode": "multiple"
+            },
+            "01_sort": {
+                "filter_type": "form_data",
+                "values": [
+                    {
+                        "name": "По новизне",
+                        "value": "UPDATED_AT"
+                    },
+                    {
+                        "name": "По дате создания",
+                        "value": "CREATED_AT"
+                    },
+                    {
+                        "name": "По дате выпуска",
+                        "value": "YEAR"
+                    },
+                    {
+                        "name": "По рейтингу Shikimori",
+                        "value": "SHIKIMORI_RATING"
+                    },
+                    {
+                        "name": "По рейтингу IMDB",
+                        "value": "IMDB_RATING"
+                    },
+                    {
+                        "name": "По рейтингу Кинопоиск",
+                        "value": "KINOPOISK_RATING"
+                    }
+                ],
+                "name": "Сортировка",
+                "form_data_name": "sort",
+                "choice_mode": "single"
+            },
+            "05_translation_type": {
+                "filter_type": "form_data",
+                "values": [
+                    {
+                        "name": "Озвучка",
+                        "value": "VOICE"
+                    },
+                    {
+                        "name": "Субтитры",
+                        "value": "SUBTITLES"
+                    }
+                ],
+                "name": "Тип перевода",
+                "form_data_name": "sort",
+                "choice_mode": "single"
+            },
+            "07_anime_kind": {
+                "filter_type": "form_data",
+                "values": [
+                    {
+                        "name": "Сериал",
+                        "value": "TV"
+                    },
+                    {
+                        "name": "Фильм",
+                        "value": "MOVIE"
+                    },
+                    {
+                        "name": "OVA",
+                        "value": "OVA"
+                    },
+                    {
+                        "name": "ONA",
+                        "value": "ONA"
+                    },
+                    {
+                        "name": "Спэшл",
+                        "value": "SPECIAL"
+                    },
+                    {
+                        "name": "Музыка",
+                        "value": "MUSIC"
+                    },
+                    {
+                        "name": "Сериал (13 эпизодов)",
+                        "value": "TV_13"
+                    },
+                    {
+                        "name": "Сериал (24 эпизода)",
+                        "value": "TV_24"
+                    },
+                    {
+                        "name": "Сериал (48 эпизодов)",
+                        "value": "TV_48"
+                    }
+                ],
+                "name": "Тип",
+                "form_data_name": "sort",
+                "choice_mode": "multiple"
+            },
+            "02_order": {
+                "filter_type": "form_data",
+                "values": [
+                    {
+                        "name": "По убыванию",
+                        "value": "DESC"
+                    },
+                    {
+                        "name": "По возрастанию",
+                        "value": "ASC"
+                    }
+                ],
+                "name": "Направление сортировки",
+                "form_data_name": "sort",
+                "choice_mode": "single"
+            },
+            "03_year": {
+                "filter_type": "form_data",
+                "values": [
+                    {
+                        "n_v": "2026"
+                    },
+                    {
+                        "n_v": "2025"
+                    },
+                    {
+                        "n_v": "2024"
+                    },
+                    {
+                        "n_v": "2023"
+                    },
+                    {
+                        "n_v": "2022"
+                    },
+                    {
+                        "n_v": "2021"
+                    },
+                    {
+                        "n_v": "2020"
+                    },
+                    {
+                        "n_v": "2019"
+                    },
+                    {
+                        "n_v": "2018"
+                    },
+                    {
+                        "n_v": "2017"
+                    },
+                    {
+                        "n_v": "2016"
+                    },
+                    {
+                        "n_v": "2015"
+                    },
+                    {
+                        "n_v": "2014"
+                    },
+                    {
+                        "n_v": "2013"
+                    },
+                    {
+                        "n_v": "2012"
+                    },
+                    {
+                        "n_v": "2011"
+                    },
+                    {
+                        "n_v": "2010"
+                    },
+                    {
+                        "n_v": "2009"
+                    },
+                    {
+                        "n_v": "2008"
+                    },
+                    {
+                        "n_v": "2007"
+                    },
+                    {
+                        "n_v": "2006"
+                    },
+                    {
+                        "n_v": "2005"
+                    },
+                    {
+                        "n_v": "2004"
+                    },
+                    {
+                        "n_v": "2003"
+                    },
+                    {
+                        "n_v": "2002"
+                    },
+                    {
+                        "n_v": "2001"
+                    },
+                    {
+                        "n_v": "2000"
+                    },
+                    {
+                        "n_v": "1999"
+                    },
+                    {
+                        "n_v": "1998"
+                    },
+                    {
+                        "n_v": "1997"
+                    },
+                    {
+                        "n_v": "1996"
+                    },
+                    {
+                        "n_v": "1995"
+                    },
+                    {
+                        "n_v": "1994"
+                    },
+                    {
+                        "n_v": "1993"
+                    },
+                    {
+                        "n_v": "1992"
+                    },
+                    {
+                        "n_v": "1991"
+                    },
+                    {
+                        "n_v": "1990"
+                    },
+                    {
+                        "n_v": "1989"
+                    },
+                    {
+                        "n_v": "1988"
+                    },
+                    {
+                        "n_v": "1987"
+                    },
+                    {
+                        "n_v": "1986"
+                    },
+                    {
+                        "n_v": "1985"
+                    },
+                    {
+                        "n_v": "1984"
+                    },
+                    {
+                        "n_v": "1983"
+                    },
+                    {
+                        "n_v": "1982"
+                    },
+                    {
+                        "n_v": "1981"
+                    },
+                    {
+                        "n_v": "1980"
+                    }
+                ],
+                "name": "Года",
+                "form_data_name": "search->year",
+                "choice_mode": "single"
+            },
+            "08_content_status": {
+                "filter_type": "form_data",
+                "values": [
+                    {
+                        "name": "Анонс",
+                        "value": "ANONS"
+                    },
+                    {
+                        "name": "Онгоинг",
+                        "value": "ONGOING"
+                    },
+                    {
+                        "name": "Релиз",
+                        "value": "RELEASED"
+                    }
+                ],
+                "name": "Статус",
+                "form_data_name": "sort",
+                "choice_mode": "multiple"
+            }
+        },
+        "base_link": "$scheme$//$hostname$",
+        "add_anime": {
+            "next": "item",
+            "cover": {
+                "token1": "\"",
+                "token2": "\"",
+                "skip": "src="
+            },
+            "alt_title": {
+                "token1": ">",
+                "token2": "<",
+                "skip": "title"
+            },
+            "link": {
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "title": {
+                "token1": ">",
+                "token2": "</",
+                "skip": "subtitle"
+            }
+        }
+    },
+    "anime_complete": {
+        "summary": {
+            "token1": "\">",
+            "token2": "</div>",
+            "skip": "<"
+        },
+        "country": {
+            "token1": "<span>",
+            "token2": "</span>",
+            "skip": ">"
+        },
+        "author": {
+            "token1": "\">",
+            "token2": "</",
+            "after": "<"
+        },
+        "aired_date": {
+            "token1": "n>",
+            "token2": "<",
+            "skip": ":<"
+        },
+        "title": {
+            "token1": "/ ",
+            "token2": "</",
+            "after": "<h1>"
+        },
+        "add_producers": {
+            "next": "a href",
+            "start": "<",
+            "token1": "\">",
+            "token2": "<",
+            "end": "</li>"
+        },
+        "cover": {
+            "token1": "src=\"",
+            "token2": "\"",
+            "after": "poster"
+        },
+        "alt_title": {
+            "token1": "<h1>",
+            "token2": " /"
+        },
+        "content_type": {
+            "default": "anime"
+        },
+        "add_genres": {
+            "next": "a href",
+            "start": "<",
+            "token1": "\">",
+            "token2": "<",
+            "end": "</li>"
+        },
+        "add_dubbers": {
+            "next": "a href",
+            "start": "<",
+            "token1": "\">",
+            "token2": "<",
+            "end": "</li>"
+        },
+        "add_studios": {
+            "next": "span>",
+            "start": "<",
+            "token1": "span>",
+            "token2": "<",
+            "end": "</li>"
+        },
+        "episodes": {
+            "token1": "n>",
+            "token2": "<",
+            "skip": ":<"
+        },
+        "production_year": {
+            "token1": ">",
+            "token2": "</"
+        },
+        "status": {
+            "default": "complete"
+        }
+    },
+    "content_type": "anime",
+    "episodes_order": true,
+    "host": "https://dream_cast.kdk.com",
+    "seasons_complete": {
+        "get_translations": true
+    },
+    "custom_settings": {
+        "types": "anime,anime_serial",
+        "countries": "",
+        "translator_id": 1978,
+        "use_okhttp_client": true,
+        "disable_open_in_browser": true
+    },
+    "anime_list_complete": {
+        "iterator": [
+            {
+                "append_nums": {
+                    "from": 1,
+                    "step": 1,
+                    "to": 100
+                },
+                "base_url": "$scheme$//$hostname$/anime/",
+                "category": {
+                    "name": "Последние",
+                    "tag": "main"
+                }
+            }
+        ],
+        "add_anime": {
+            "next": "item",
+            "cover": {
+                "token1": "\"",
+                "token2": "\"",
+                "skip": "src="
+            },
+            "alt_title": {
+                "token1": ">",
+                "token2": "<",
+                "skip": "title"
+            },
+            "link": {
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "title": {
+                "token1": ">",
+                "token2": "</",
+                "skip": "subtitle"
+            }
+        }
+    },
+    "id": 20061,
+    "api": "kdk_catalog",
+    "icon_link": "http://images.mangawatcherx.com/parser/icon/anime/kdk_dream_cast.png",
+    "episode_complete": {
+        "headers": {
+            "Referer": "https://www.anilibria.tv"
+        },
+        "form_data_tag": "shikimori"
+    },
+    "test": [],
+    "author": {
+        "name": "AniLabX Team",
+        "email": "anilabx.supp@gmail.com"
+    },
+    "version": 3,
+    "hash_tag": "kdk_dream_cast",
+    "folder": "kdk_dream_cast",
+    "name": "kdk_dream_cast",
+    "self_link": "https://api.anilabx.xyz/v3/parser/get?type=anime&parser=kdk_dream_cast",
+    "translations_complete": {
+        "get_episodes": true
+    }
+}

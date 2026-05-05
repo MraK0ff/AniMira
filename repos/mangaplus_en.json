@@ -1,0 +1,329 @@
+{
+    "id": 40052,
+    "version": 2,
+    "title": "MangaPlus (English)",
+    "host": "https://mangaplus.shueisha.co.jp",
+    "public_link": "https://mangaplus.shueisha.co.jp",
+    "api": "mangaplus_en",
+    "hash_tag": "mangaplus_en",
+    "folder": "mangaplus_en",
+    "name": "mangaplus_en",
+    "language": "en",
+    "content_type": "manga",
+    "chapters_order": true,
+    "icon_link": "http://images.mangawatcherx.com/parser/icon/manga/mangaplus.png",
+    "self_link": "https://api.anilabx.xyz/v3/parser/get?type=manga&parser=mangaplus_en",
+    "author": {
+        "name": "AniLabX Team",
+        "email": "anilabx.supp@gmail.com"
+    },
+    "manga_search_complete": {
+        "search_link": "$scheme$//$hostname$/search?q=$query$&page=$page$",
+        "query_type": "GET",
+        "add_manga": {
+            "next": "card card-gallery",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "title": {
+                "token1": "class=\"title\">",
+                "token2": "</",
+                "replace": {
+                    "match": "<br />",
+                    "text": " / "
+                }
+            },
+            "cover": {
+                "token1": "data-src=\"",
+                "token2": "\"",
+                "replace": {
+                    "match": "^//",
+                    "text": "https://"
+                }
+            }
+        }
+    },
+    "manga_list_complete": {
+        "iterator": [
+            {
+                "category": {
+                    "tag": "main",
+                    "name": "Последние"
+                },
+                "base_url": "$scheme$//$hostname$/browse/newest?page=",
+                "append_nums": {
+                    "from": 0,
+                    "to": 2300,
+                    "step": 1
+                }
+            }
+        ],
+        "add_manga": {
+            "next": "card card-gallery",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "title": {
+                "token1": "class=\"title\">",
+                "token2": "</",
+                "replace": {
+                    "match": "<br />",
+                    "text": " / "
+                }
+            },
+            "cover": {
+                "token1": "data-src=\"",
+                "token2": "\"",
+                "replace": {
+                    "match": "^//",
+                    "text": "https://"
+                }
+            }
+        }
+    },
+    "manga_complete": {
+        "title": {
+            "skip": "<h1><a",
+            "token1": "\">",
+            "token2": "</"
+        },
+        "cover": {
+            "skip": "avif 1x",
+            "token1": "srcset=\"",
+            "token2": " ",
+            "prefix": "https:"
+        },
+        "add_artists": {
+            "start": "comma-list",
+            "next": "/artist/",
+            "token1": "\">",
+            "token2": "</a",
+            "end": "</ul>"
+        },
+        "add_circles": {
+            "start": ">Group<",
+            "next": "/group/",
+            "token1": "\">",
+            "token2": "</a",
+            "end": "</ul>"
+        },
+        "add_parodies": {
+            "start": ">Series<",
+            "next": "/series/",
+            "token1": "\">",
+            "token2": "</a",
+            "end": "</ul>"
+        },
+        "add_languages": {
+            "start": ">Language<",
+            "next": "href=",
+            "token1": "\">",
+            "token2": "</a",
+            "end": "</td>"
+        },
+        "add_characters": {
+            "start": ">Characters<",
+            "next": "/character/",
+            "token1": "\">",
+            "token2": "</a",
+            "end": "</ul>"
+        },
+        "add_genres": {
+            "start": "<td>Tags</td>",
+            "next": "/tag/",
+            "token1": "\">",
+            "token2": "</a",
+            "end": "</ul>"
+        },
+        "status": {
+            "default": "single"
+        },
+        "censorship": {
+            "uncensored": ">Uncensored<",
+            "decensored": "(Decensored)",
+            "censored": ">full censorship<"
+        },
+        "color": {
+            "full_color": ">Full Color<"
+        },
+        "content_type": {
+            "manga": "manga",
+            "default": "doujinshi"
+        },
+        "is_adult": "hitomi",
+        "add_chapter": {
+            "start": "ztable-collectionz",
+            "next": "<td>#",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\"",
+                "replace": {
+                    "match": "gallery/(\\d+)/",
+                    "text": "read/$1/01/"
+                }
+            },
+            "title": "Gallery"
+        }
+    },
+    "chapter_complete": {},
+    "test": [
+        {
+            "proc": "manga_search_complete",
+            "query": "moshi",
+            "assert": {
+                "mangas": [
+                    {
+                        "title": "@^(\\p{L}+)",
+                        "link": "@https://pururin.io/",
+                        "uniq": "@^(\\w+)"
+                    }
+                ],
+                "mangas_count": ">=20"
+            }
+        },
+        {
+            "proc": "manga_list_complete",
+            "testpages": 2,
+            "assert": {
+                "mangas": [
+                    {
+                        "title": "@^(\\p{L}+)",
+                        "link": "@https://pururin.io/",
+                        "uniq": "@^(\\w+)"
+                    }
+                ],
+                "mangas_count": ">30"
+            }
+        },
+        {
+            "proc": "manga_complete",
+            "link": "https://pururin.io/gallery/27348/to-love-ru-party",
+            "assert": {
+                "title": "To Love-Ru Party",
+                "alt_title": "ToLoVeるパーティ",
+                "artists": "[Sora Mochi]",
+                "circles": "[Sochikochi]",
+                "parodies": "[To Love-Ru]",
+                "languages": "[English]",
+                "characters": "[golden darkness, haruna sairenji, lala satalin deviluke, mea kurosaki, mikan yuuki, momo velia deviluke, nana asta deviluke, rito yuuki, tearju lunatique, yui kotegawa]",
+                "score": "4.1",
+                "content_type": "doujinshi",
+                "tags": "[Big Breasts, Blowjob, Footjob, Full Color, Glasses, Group Sex, Incest, Nakadashi, Paizuri, Sister]",
+                "tags_count": ">=8",
+                "color": "full_color",
+                "cover": "https://cdn.pururin.io/assets/images/data/27348/cover.jpg",
+                "genres": "@harem",
+                "status": "unknown",
+                "chapters_count": "1",
+                "chapters": [
+                    {
+                        "title": "To Love-Ru Party / ToLoVeるパーティ",
+                        "link": "https://pururin.io/read/27348/01/to-love-ru-party",
+                        "folder": "to-love-ru-party/"
+                    }
+                ]
+            }
+        },
+        {
+            "proc": "manga_complete",
+            "link": "https://pururin.io/gallery/54414/a-journey-of-booze-and-roxy",
+            "assert": {
+                "title": "A Journey of Booze and Roxy",
+                "alt_title": "酒とロキシーの旅",
+                "artists": "[ginhaha]",
+                "parodies": "[Mushoku Tensei]",
+                "languages": "[English]",
+                "characters": "[roxy migurdia]",
+                "score": "3.3",
+                "content_type": "doujinshi",
+                "tags": "[full color, nakadashi, pettanko, sleeping, sole female, twintails, uncensored]",
+                "tags_count": ">=7",
+                "color": "full_color",
+                "censorship": "uncensored",
+                "cover": "https://cdn.pururin.io/assets/images/data/54414/cover.jpg",
+                "status": "unknown",
+                "chapters_count": "1",
+                "chapters": [
+                    {
+                        "title": "A Journey of Booze and Roxy / 酒とロキシーの旅",
+                        "link": "https://pururin.io/read/54414/01/a-journey-of-booze-and-roxy",
+                        "folder": "a-journey-of-booze-and-roxy/"
+                    }
+                ]
+            }
+        },
+        {
+            "proc": "manga_complete",
+            "link": "https://pururin.io/gallery/27992/moshi-rito-darkness",
+            "assert": {
+                "title": "Moshi Rito Darkness",
+                "alt_title": "もしリトダークネス",
+                "artists": "[Ginyou Haru]",
+                "circles": "[Kamikadou]",
+                "parodies": "[To Love-Ru]",
+                "languages": "[English]",
+                "characters": "[Momo Velia Deviluke, Rito Yuuki]",
+                "score": "4.8",
+                "content_type": "doujinshi",
+                "tags": "[Blowjob, Demon Girl, Full Color]",
+                "tags_count": ">=3",
+                "color": "full_color",
+                "cover": "https://cdn.pururin.io/assets/images/data/27992/cover.jpg",
+                "status": "unknown",
+                "chapters_count": "6",
+                "chapters": [
+                    {
+                        "title": "Moshi Rito Darkness 3 / もしリトダークネス 3",
+                        "link": "https://pururin.io/read/52662/01/moshi-rito-darkness-3",
+                        "chapter_number": "3.0",
+                        "folder": "moshi-rito-darkness-3/"
+                    }
+                ]
+            }
+        },
+        {
+            "proc": "manga_complete",
+            "link": "https://pururin.io/gallery/45699/classmate-to-ecchi-jugyou-ch-12",
+            "assert": {
+                "title": "Classmate to Ecchi Jugyou Ch. 12",
+                "alt_title": "クラスメイトとエッチ授業 第13話",
+                "artists": "[Iguchi Sentarou]",
+                "parodies": "[Original]",
+                "languages": "[English]",
+                "score": "4.3",
+                "content_type": "manga",
+                "tags": "[Big Breasts, Bunny Girl, Femdom, Full Color, Group Sex, Loli, Maid, MMF Threesome, Public Use, Virginity]",
+                "tags_count": ">=10",
+                "color": "full_color",
+                "cover": "https://cdn.pururin.io/assets/images/data/45699/cover.jpg",
+                "status": "unknown",
+                "chapters_count": "13",
+                "chapters": [
+                    {
+                        "title": "Classmate and sex Lessons Ch.5.5 / クラスメイトとエッチ授業 第6話",
+                        "link": "https://pururin.io/read/43041/01/classmate-and-sex-lessons-ch55",
+                        "chapter_number": "5.5",
+                        "folder": "classmate-and-sex-lessons-ch55/"
+                    }
+                ]
+            }
+        },
+        {
+            "proc": "chapter_complete",
+            "link": "https://pururin.io/read/27348/01/to-love-ru-party",
+            "title": "Single",
+            "assert": {
+                "pages": [
+                    {
+                        "image": "https://cdn.pururin.io/assets/images/data/27348/1.jpg"
+                    },
+                    {
+                        "image": "https://cdn.pururin.io/assets/images/data/27348/10.jpg"
+                    }
+                ]
+            }
+        }
+    ]
+}

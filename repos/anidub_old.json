@@ -1,0 +1,998 @@
+{
+    "id": 20045,
+    "version": 26,
+    "title": "AniDub (Старая команда)",
+    "host": "https://v3.anidub.shop",
+    "public_link": "https://v3.anidub.shop",
+    "hash_tag": "anidub",
+    "folder": "anidub",
+    "name": [
+        "anidub"
+    ],
+    "language": "ru",
+    "content_type": "anime",
+    "episodes_order": true,
+    "icon_link": "http://images.mangawatcherx.com/parser/icon/anime/anidub_old.png",
+    "self_link": "https://api.anilabx.xyz/v3/parser/get?type=anime&parser=anidub_old",
+    "author": {
+        "name": "AniLabX Team",
+        "email": "anilabx.supp@gmail.com"
+    },
+    "custom_settings": {
+        "use_okhttp_client": true,
+        "is_allow_host_mirroring": "true"
+    },
+    "authorization_complete": {
+        "registration": "$scheme$//$hostname$/index.php?do=register",
+        "webview_auth_supported": true,
+        "disable_classic_auth": true,
+        "expires": 31449600000,
+        "values": {
+            "login": "submit",
+            "login_name": {
+                "label": "Login",
+                "hint": "Логин",
+                "kind": "text"
+            },
+            "login_password": {
+                "label": "Password",
+                "hint": "Пароль",
+                "kind": "password"
+            }
+        },
+        "request": {
+            "method": "post",
+            "url": "$scheme$//$hostname$/"
+        },
+        "response_check": {
+            "cookies": {
+                "dle_user_id": "@\\d+"
+            },
+            "headers": {
+                "Set-Cookie": "@dle_user_id=\\d+"
+            }
+        }
+    },
+    "anime_search_complete": {
+        "search_link": "$scheme$//$hostname$/index.php?do=search&subaction=search&search_start=$page$&full_search=0&result_from=1&story=$query$",
+        "query_type": "GET",
+        "add_anime": {
+            "next": "class=\"th-item\"",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "title": {
+                "skip": "th-title",
+                "token1": ">",
+                "token2": "</div",
+                "replace": [
+                    {
+                        "match": "\\[.*?\\]",
+                        "text": ""
+                    },
+                    {
+                        "match": ".*/ ",
+                        "text": ""
+                    }
+                ]
+            },
+            "alt_title": {
+                "skip": "th-title",
+                "token1": ">",
+                "token2": "</div",
+                "replace": [
+                    {
+                        "match": "\\[.*?\\]",
+                        "text": ""
+                    },
+                    {
+                        "match": " /.*",
+                        "text": ""
+                    }
+                ]
+            },
+            "cover": {
+                "skip": "src=",
+                "token1": "\"",
+                "token2": "\"",
+                "replace": [
+                    {
+                        "match": "&#58;",
+                        "text": ":"
+                    },
+                    {
+                        "match": "^/uploads",
+                        "text": "$scheme$//$hostname$/uploads"
+                    }
+                ]
+            },
+            "season": {
+                "after": "th-rating",
+                "token1": ">",
+                "token2": "<",
+                "prefix": "★"
+            },
+            "episodes_aired": {
+                "after": "th-title",
+                "before": "th-subtitle",
+                "token1": "[",
+                "token2": "]"
+            },
+            "add_genres": {
+                "start": ">Жанр:<",
+                "next": "a href",
+                "token1": "\">",
+                "token2": "<",
+                "end": "</li>"
+            },
+            "skip_anime": {
+                "link_contains": [
+                    "/anidub_news/",
+                    "/videoblog/"
+                ]
+            }
+        }
+    },
+    "anime_list_filters_complete": {
+        "genre_filters": {
+            "link": "$scheme$//$hostname$/xfsearch/$filter$/page/$page$",
+            "filters": [
+                {
+                    "n_v": "сёнэн"
+                },
+                {
+                    "n_v": "романтика"
+                },
+                {
+                    "n_v": "драма"
+                },
+                {
+                    "n_v": "комедия"
+                },
+                {
+                    "n_v": "этти"
+                },
+                {
+                    "n_v": "меха"
+                },
+                {
+                    "n_v": "фантастика"
+                },
+                {
+                    "n_v": "фэнтези"
+                },
+                {
+                    "n_v": "повседневность"
+                },
+                {
+                    "n_v": "школа"
+                },
+                {
+                    "n_v": "война"
+                },
+                {
+                    "n_v": "сёдзё"
+                },
+                {
+                    "n_v": "детектив"
+                },
+                {
+                    "n_v": "ужасы"
+                },
+                {
+                    "n_v": "история"
+                },
+                {
+                    "n_v": "триллер"
+                },
+                {
+                    "n_v": "приключения"
+                },
+                {
+                    "n_v": "киберпанк"
+                },
+                {
+                    "n_v": "мистика"
+                },
+                {
+                    "n_v": "музыкальный"
+                },
+                {
+                    "n_v": "спорт"
+                },
+                {
+                    "n_v": "пародия"
+                },
+                {
+                    "name": "для детей",
+                    "value": "для%20детей"
+                },
+                {
+                    "n_v": "махо-сёдзё"
+                },
+                {
+                    "n_v": "сказка"
+                },
+                {
+                    "n_v": "сёдзё-ай"
+                },
+                {
+                    "n_v": "сёнэн-ай"
+                },
+                {
+                    "name": "боевые искусства",
+                    "value": "боевые%20искусства"
+                },
+                {
+                    "name": "самурайский боевик",
+                    "value": "самурайский%20боевик"
+                }
+            ]
+        },
+        "year_filters": {
+            "link": "$scheme$//$hostname$/xfsearch/$filter$/page/$page$",
+            "filters": [
+                {
+                    "n_v": "2026"
+                },
+                {
+                    "n_v": "2025"
+                },
+                {
+                    "n_v": "2024"
+                },
+                {
+                    "n_v": "2023"
+                },
+                {
+                    "n_v": "2022"
+                },
+                {
+                    "n_v": "2021"
+                },
+                {
+                    "n_v": "2020"
+                },
+                {
+                    "n_v": "2019"
+                },
+                {
+                    "n_v": "2018"
+                },
+                {
+                    "n_v": "2017"
+                },
+                {
+                    "n_v": "2016"
+                },
+                {
+                    "n_v": "2015"
+                },
+                {
+                    "n_v": "2014"
+                },
+                {
+                    "n_v": "2013"
+                },
+                {
+                    "n_v": "2012"
+                },
+                {
+                    "n_v": "2011"
+                },
+                {
+                    "n_v": "2010"
+                },
+                {
+                    "n_v": "2009"
+                },
+                {
+                    "n_v": "2008"
+                },
+                {
+                    "n_v": "2007"
+                },
+                {
+                    "n_v": "2006"
+                },
+                {
+                    "n_v": "2005"
+                },
+                {
+                    "n_v": "2004"
+                },
+                {
+                    "n_v": "2003"
+                },
+                {
+                    "n_v": "2002"
+                },
+                {
+                    "n_v": "2001"
+                },
+                {
+                    "n_v": "2000"
+                },
+                {
+                    "n_v": "1999"
+                },
+                {
+                    "n_v": "1998"
+                },
+                {
+                    "n_v": "1997"
+                },
+                {
+                    "n_v": "1996"
+                },
+                {
+                    "n_v": "1995"
+                }
+            ]
+        },
+        "dubber_filters": {
+            "link": "$scheme$//$hostname$/xfsearch/$filter$/page/$page$",
+            "filters": [
+                {
+                    "n_v": "Ancord"
+                },
+                {
+                    "n_v": "Cuba77"
+                },
+                {
+                    "name": "Nika Lenina",
+                    "value": "Nika+Lenina"
+                },
+                {
+                    "n_v": "Онитян"
+                },
+                {
+                    "n_v": "Inspector_Gadjet"
+                },
+                {
+                    "n_v": "OSLIKt"
+                },
+                {
+                    "n_v": "Trina_D"
+                },
+                {
+                    "n_v": "Shina"
+                },
+                {
+                    "name": "Lord Alukart",
+                    "value": "Lord+Alukart"
+                },
+                {
+                    "n_v": "MCShaman"
+                },
+                {
+                    "n_v": "Стефан"
+                },
+                {
+                    "n_v": "Keita"
+                },
+                {
+                    "n_v": "Holly"
+                },
+                {
+                    "name": "Lonely Dragon",
+                    "value": "Lonely+Dragon"
+                },
+                {
+                    "n_v": "Tinko"
+                },
+                {
+                    "n_v": "Tori"
+                },
+                {
+                    "n_v": "Oriko"
+                },
+                {
+                    "n_v": "Trouble"
+                },
+                {
+                    "n_v": "JAM"
+                },
+                {
+                    "n_v": "BalFor"
+                },
+                {
+                    "n_v": "Симбад"
+                },
+                {
+                    "n_v": "FruKt"
+                },
+                {
+                    "n_v": "Kiara_Laine"
+                },
+                {
+                    "name": "Гамлетка Цезаревна",
+                    "value": "Гамлетка+Цезаревна"
+                },
+                {
+                    "n_v": "NASTR"
+                }
+            ]
+        },
+        "add_anime": {
+            "next": "class=\"th-item\"",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "title": {
+                "skip": "th-title",
+                "token1": ">",
+                "token2": "</div",
+                "replace": [
+                    {
+                        "match": "\\[.*?\\]",
+                        "text": ""
+                    },
+                    {
+                        "match": ".*/ ",
+                        "text": ""
+                    }
+                ]
+            },
+            "alt_title": {
+                "skip": "th-title",
+                "token1": ">",
+                "token2": "</div",
+                "replace": [
+                    {
+                        "match": "\\[.*?\\]",
+                        "text": ""
+                    },
+                    {
+                        "match": " /.*",
+                        "text": ""
+                    }
+                ]
+            },
+            "cover": {
+                "skip": "src=",
+                "token1": "\"",
+                "token2": "\"",
+                "replace": [
+                    {
+                        "match": "&#58;",
+                        "text": ":"
+                    },
+                    {
+                        "match": "^/uploads",
+                        "text": "$scheme$//$hostname$/uploads"
+                    }
+                ]
+            },
+            "season": {
+                "after": "th-rating",
+                "token1": ">",
+                "token2": "<",
+                "prefix": "★"
+            },
+            "episodes_aired": {
+                "after": "th-title",
+                "before": "th-subtitle",
+                "token1": "[",
+                "token2": "]"
+            },
+            "add_genres": {
+                "start": ">Жанр:<",
+                "next": "a href",
+                "token1": "\">",
+                "token2": "<",
+                "end": "</li>"
+            },
+            "skip_anime": {
+                "link_contains": [
+                    "/anidub_news/",
+                    "/videoblog/"
+                ]
+            }
+        }
+    },
+    "anime_list_complete": {
+        "iterator": [
+            {
+                "category": {
+                    "tag": "main",
+                    "name": "Последние"
+                },
+                "first_page_url": "$scheme$//$hostname$/",
+                "base_url": "$scheme$//$hostname$/page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 75,
+                    "step": 1,
+                    "sufix": "/"
+                }
+            },
+            {
+                "category": {
+                    "tag": "ongoing",
+                    "name": "Онгоинги"
+                },
+                "base_url": "$scheme$//$hostname$/anime_ongoing/page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 5,
+                    "step": 1,
+                    "sufix": "/"
+                }
+            },
+            {
+                "category": {
+                    "tag": "complete",
+                    "name": "Законченные"
+                },
+                "base_url": "$scheme$//$hostname$/full/page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 80,
+                    "step": 1,
+                    "sufix": "/"
+                }
+            },
+            {
+                "category": {
+                    "tag": "films",
+                    "name": "Аниме фильмы"
+                },
+                "base_url": "$scheme$//$hostname$/anime_movie/page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 16,
+                    "step": 1,
+                    "sufix": "/"
+                }
+            },
+            {
+                "category": {
+                    "tag": "ova",
+                    "name": "OVA"
+                },
+                "base_url": "$scheme$//$hostname$/anime_ova/page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 33,
+                    "step": 1,
+                    "sufix": "/"
+                }
+            },
+            {
+                "category": {
+                    "tag": "dorama",
+                    "name": "Дорамы"
+                },
+                "base_url": "$scheme$//$hostname$/dorama/page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 8,
+                    "step": 1,
+                    "sufix": "/"
+                }
+            }
+        ],
+        "add_anime": {
+            "next": "class=\"th-item\"",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "title": {
+                "skip": "th-title",
+                "token1": ">",
+                "token2": "</div",
+                "replace": [
+                    {
+                        "match": "\\[.*?\\]",
+                        "text": ""
+                    },
+                    {
+                        "match": ".*/ ",
+                        "text": ""
+                    }
+                ]
+            },
+            "alt_title": {
+                "skip": "th-title",
+                "token1": ">",
+                "token2": "</div",
+                "replace": [
+                    {
+                        "match": "\\[.*?\\]",
+                        "text": ""
+                    },
+                    {
+                        "match": " /.*",
+                        "text": ""
+                    }
+                ]
+            },
+            "cover": {
+                "skip": "src=",
+                "token1": "\"",
+                "token2": "\"",
+                "replace": [
+                    {
+                        "match": "&#58;",
+                        "text": ":"
+                    },
+                    {
+                        "match": "^/uploads",
+                        "text": "$scheme$//$hostname$/uploads"
+                    }
+                ]
+            },
+            "season": {
+                "after": "th-rating",
+                "token1": ">",
+                "token2": "<",
+                "prefix": "★"
+            },
+            "episodes_aired": {
+                "after": "th-title",
+                "before": "th-subtitle",
+                "token1": "[",
+                "token2": "]"
+            },
+            "add_genres": {
+                "start": ">Жанр:<",
+                "next": "a href",
+                "token1": "\">",
+                "token2": "<",
+                "end": "</li>"
+            },
+            "skip_anime": {
+                "link_contains": [
+                    "/anidub_news/",
+                    "/videoblog/"
+                ]
+            }
+        }
+    },
+    "anime_complete": {
+        "title": {
+            "skip": "class=\"fheader",
+            "token1": "</div>",
+            "token2": "</h",
+            "replace": [
+                {
+                    "match": ".*/ ",
+                    "text": ""
+                },
+                {
+                    "match": "\\[.*?\\]",
+                    "text": ""
+                },
+                {
+                    "trim": true
+                }
+            ]
+        },
+        "alt_title": {
+            "skip": "class=\"fheader",
+            "token1": "</div>",
+            "token2": "<div",
+            "replace": [
+                {
+                    "match": "<h1>.*",
+                    "text": ""
+                },
+                {
+                    "match": ".*<h3>",
+                    "text": ""
+                },
+                {
+                    "match": "</h3>.*",
+                    "text": ""
+                },
+                {
+                    "match": "<h4>.*",
+                    "text": ""
+                },
+                {
+                    "match": " / .*",
+                    "text": ""
+                },
+                {
+                    "match": "\\[.*\\]",
+                    "text": ""
+                },
+                {
+                    "trim": true
+                }
+            ]
+        },
+        "uniq": {
+            "after": "<h2>",
+            "token1": "/ ",
+            "token2": "</",
+            "replace": [
+                {
+                    "match": "\\[.*\\]",
+                    "text": ""
+                },
+                {
+                    "trim": true
+                }
+            ]
+        },
+        "cover": {
+            "after": "fposter",
+            "token1": "src=\"",
+            "token2": "\"",
+            "replace": [
+                {
+                    "match": "^/",
+                    "text": "$scheme$//$hostname$/"
+                },
+                {
+                    "match": "&#58;",
+                    "text": "://"
+                },
+                {
+                    "match": "////",
+                    "text": "//"
+                }
+            ]
+        },
+        "author": {
+            "after": ">Автор оригинала:<",
+            "token1": "\">",
+            "token2": "</"
+        },
+        "add_studios": {
+            "start": ">Студия:<",
+            "next": "a href=",
+            "token1": "\">",
+            "token2": "<",
+            "end": "</li>"
+        },
+        "add_producers": {
+            "start": "Режиссёр:",
+            "next": "a href=",
+            "token1": "\">",
+            "token2": "<",
+            "end": "</li>"
+        },
+        "add_dubbers": {
+            "start": "Озвучание",
+            "next": "a href=",
+            "token1": "\">",
+            "token2": "<",
+            "end": "</li>"
+        },
+        "country": {
+            "skip": "/country/",
+            "token1": ">",
+            "token2": "</span>"
+        },
+        "production_year": {
+            "skip": "/year/",
+            "token1": ">",
+            "token2": "</span>"
+        },
+        "episodes": {
+            "skip": "Кол-во серий:<",
+            "token1": "n>",
+            "token2": "<"
+        },
+        "summary": {
+            "skip": ">Описание<",
+            "token1": "\">",
+            "token2": "</div>",
+            "replace": {
+                "match": ".*бесплатно</h2>",
+                "text": ""
+            }
+        },
+        "status": {
+            "ongoing": [
+                "fquality\">Онгоинг",
+                "из ххх"
+            ],
+            "default": "complete"
+        },
+        "content_type": {
+            "dorama": ">Дорамы Онлайн<",
+            "default": "anime"
+        },
+        "add_genres": {
+            "start": ">Жанр:<",
+            "next": "a href",
+            "token1": "\">",
+            "token2": "<",
+            "end": "</li>"
+        },
+        "related": {
+            "token1": "Связанные аниме</div>",
+            "token2": "</div>"
+        }
+    },
+    "seasons_complete": {
+        "get_translations": true
+    },
+    "translations_complete": {
+        "get_episodes": true
+    },
+    "episodes_complete": {
+        "add_episode": [
+            {
+                "may_be_null": true,
+                "start": "tabs-b video-box",
+                "next": "<span",
+                "link": {
+                    "token1": "data=\"",
+                    "token2": "\"",
+                    "replace": {
+                        "match": "\\|.*",
+                        "text": ""
+                    }
+                },
+                "title": {
+                    "token1": ">",
+                    "token2": "</",
+                    "replace": {
+                        "match": "ПЛЕЕР #1",
+                        "text": ""
+                    }
+                },
+                "uniq": {
+                    "token1": ">",
+                    "token2": "</"
+                },
+                "end": "playeriframe"
+            },
+            {
+                "may_be_null": true,
+                "episodes_from_page": {
+                    "skip": "https://player.ladonyvesna2005.info",
+                    "token1": "/",
+                    "token2": "\"",
+                    "replace": [
+                        {
+                            "match": "amp;",
+                            "text": ""
+                        },
+                        {
+                            "prefix": "https://player.ladonyvesna2005.info/"
+                        }
+                    ]
+                },
+                "start": "tabs-sel series-tab",
+                "next": "<span",
+                "link": {
+                    "token1": "data=\"",
+                    "token2": "\"",
+                    "prefix": "https://player.ladonyvesna2005.info/index.php?v=/"
+                },
+                "title": {
+                    "token1": ">",
+                    "token2": "</",
+                    "replace": {
+                        "match": "(\\d+).*",
+                        "text": "Серия $1"
+                    }
+                },
+                "uniq": {
+                    "token1": ">",
+                    "token2": "</",
+                    "replace": {
+                        "match": "(\\d+).*",
+                        "text": "Серия $1"
+                    }
+                },
+                "end": "</div>"
+            }
+        ],
+        "link_corrector": [
+            {
+                "match": "&quot; frameborder=&quot;0&quot; scrolling=&quot;no",
+                "text": ""
+            },
+            {
+                "match": "'",
+                "text": ""
+            },
+            {
+                "match": "\"",
+                "text": ""
+            },
+            {
+                "match": "^//",
+                "text": "http://"
+            },
+            {
+                "match": "^/player",
+                "text": "$scheme$//$hostname$/player"
+            },
+            {
+                "match": "^oid=",
+                "text": "https://vk.ru/video_ext.php?oid="
+            }
+        ]
+    },
+    "episode_complete": {
+        "form_data_tag": "stdband",
+        "headers": {
+            "Referer": "https://www.anilibria.tv"
+        }
+    },
+    "test": [
+        {
+            "proc": "anime_list_complete",
+            "testpages": 3,
+            "assert": {
+                "animes": [
+                    {
+                        "title": "@^(\\p{L}+)",
+                        "link": "@https://v3.anidub.shop/",
+                        "uniq": "@^(\\d+\\w+)"
+                    }
+                ],
+                "animes_count": ">=30"
+            }
+        },
+        {
+            "proc": "anime_complete",
+            "link": "https://v3.anidub.shop/full/11450-spyxfamil.html",
+            "assert": {
+                "title": "Spy x Family TV-1",
+                "alt_title": "@Сем",
+                "author": "@Эн",
+                "cover": "https://static2.statics.life/tracker/poster/153eef6d91.jpg",
+                "producers": "@(фурухаси)",
+                "dubbers": "[9й Неизвестный, Vel, Команда AniDUB]",
+                "year": "2022",
+                "episodes": "12",
+                "content_type": "anime",
+                "genres": "@comedy",
+                "genres_count": ">=2",
+                "status": "complete",
+                "summary": "@^(Над)"
+            }
+        },
+        {
+            "proc": "anime_complete",
+            "link": "https://v3.anidub.shop/anime_ongoing/12017-polnoe-issledovanie-zenshu-00-iz-12.html",
+            "assert": {
+                "title": "@Полное",
+                "alt_title": "Zenshu",
+                "author": "@Кимико",
+                "cover": "https://v3.anidub.shop/uploads/posts/2025-01/poster-polnoe-issledovanie.jpg",
+                "producers": "@(мицуэ)",
+                "dubbers": "[Команда AniDUB, Oriko, Shaman, Lonty, Лизавета]",
+                "year": "2025",
+                "episodes": "12",
+                "content_type": "anime",
+                "genres": "@comedy",
+                "genres_count": ">=2",
+                "status": "complete",
+                "summary": "@^(После)"
+            }
+        },
+        {
+            "proc": "anime_complete",
+            "link": "https://v3.anidub.shop/full/9747-boku-no-hero-academia-moya-geroyskaya-akademiya-01-iz-13.html",
+            "assert": {
+                "title": "Boku no Hero Academia",
+                "alt_title": "@Моя",
+                "author": "@Хорикоси",
+                "cover": "https://v3.anidub.shop/uploads/posts/2023-05/1684907951_poster_moja_gerojskaja_akademija_1_sezon.jpg",
+                "producers": "[Нагасаки Кэндзи]",
+                "studios": "[Bones]",
+                "dubbers": "[JAM]",
+                "year": "2016",
+                "episodes": "13",
+                "content_type": "anime",
+                "genres": "@shounen",
+                "genres_count": ">=3",
+                "status": "complete",
+                "summary": "@^(Эта история)"
+            }
+        }
+    ]
+}

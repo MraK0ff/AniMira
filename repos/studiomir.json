@@ -1,0 +1,601 @@
+{
+    "id": 20550,
+    "version": 2,
+    "title": "Творческая студия МИР",
+    "host": "https://studiomir.club",
+    "public_link": "https://studiomir.club",
+    "api": "studiomir",
+    "api_endpoint": "https://api.studiomir.club/api/",
+    "hash_tag": "studiomir",
+    "folder": "studiomir",
+    "name": "studiomir",
+    "language": "ru",
+    "content_type": "anime",
+    "episodes_order": true,
+    "icon_link": "http://images.mangawatcherx.com/parser/icon/anime/studiomir.png",
+    "self_link": "https://api.anilabx.xyz/v3/parser/get?type=anime&parser=studiomir",
+    "author": {
+        "name": "AniLabX Team",
+        "email": "anilabx.supp@gmail.com"
+    },
+    "anime_list_filters_complete": {
+        "base_link": "$scheme$//$hostname$",
+        "filters": {
+            "0_sort": {
+                "name": "Сортировка",
+                "choice_mode": "sort",
+                "filter_type": "form_data",
+                "form_data_name": "sort",
+                "values": [
+                    {
+                        "name": "По дате изменения",
+                        "value": "EDITED"
+                    },
+                    {
+                        "name": "По идентификатору",
+                        "value": "ID"
+                    }
+                ]
+            },
+            "0_order_type": {
+                "name": "Направление сортировки",
+                "choice_mode": "sort_direction",
+                "filter_type": "form_data",
+                "form_data_name": "sort",
+                "values": [
+                    {
+                        "name": "По убыванию",
+                        "value": "desc"
+                    },
+                    {
+                        "name": "По возрастанию",
+                        "value": "asc"
+                    }
+                ]
+            },
+            "1_genres": {
+                "name": "Жанры",
+                "choice_mode": "multiple",
+                "filter_type": "form_data",
+                "form_data_name": "sort",
+                "values": [
+                    {
+                        "name": "Безумие",
+                        "value": "безумие"
+                    },
+                    {
+                        "name": "Вампиры",
+                        "value": "вампиры"
+                    },
+                    {
+                        "name": "Гурман",
+                        "value": "гурман"
+                    },
+                    {
+                        "name": "Драма",
+                        "value": "драма"
+                    },
+                    {
+                        "name": "Исторический",
+                        "value": "исторический"
+                    },
+                    {
+                        "name": "Комедия",
+                        "value": "комедия"
+                    },
+                    {
+                        "name": "Мистика",
+                        "value": "мистика"
+                    },
+                    {
+                        "name": "Музыка",
+                        "value": "музыка"
+                    },
+                    {
+                        "name": "Повседневность",
+                        "value": "повседневность"
+                    },
+                    {
+                        "name": "Приключения",
+                        "value": "приключения"
+                    },
+                    {
+                        "name": "Психологическое",
+                        "value": "психологическое"
+                    },
+                    {
+                        "name": "Работа",
+                        "value": "работа"
+                    },
+                    {
+                        "name": "Романтика",
+                        "value": "романтика"
+                    },
+                    {
+                        "name": "Самураи",
+                        "value": "самураи"
+                    },
+                    {
+                        "name": "Сверхъестественное",
+                        "value": "сверхъестественное"
+                    },
+                    {
+                        "name": "Спорт",
+                        "value": "спорт"
+                    },
+                    {
+                        "name": "Супер сила",
+                        "value": "супер сила"
+                    },
+                    {
+                        "name": "Сэйнэн",
+                        "value": "сэйнэн"
+                    },
+                    {
+                        "name": "Сёдзё",
+                        "value": "сёдзё"
+                    },
+                    {
+                        "name": "Сёдзё-ай",
+                        "value": "сёдзё-ай"
+                    },
+                    {
+                        "name": "Сёнен",
+                        "value": "сёнен"
+                    },
+                    {
+                        "name": "Сёнэн",
+                        "value": "сёнэн"
+                    },
+                    {
+                        "name": "Тайна",
+                        "value": "тайна"
+                    },
+                    {
+                        "name": "Триллер",
+                        "value": "триллер"
+                    },
+                    {
+                        "name": "Ужасы",
+                        "value": "ужасы"
+                    },
+                    {
+                        "name": "Фантастика",
+                        "value": "фантастика"
+                    },
+                    {
+                        "name": "Фэнтези",
+                        "value": "фэнтези"
+                    },
+                    {
+                        "name": "Фэнтэзи",
+                        "value": "фэнтэзи"
+                    },
+                    {
+                        "name": "Школа",
+                        "value": "школа"
+                    },
+                    {
+                        "name": "Экшен",
+                        "value": "экшен"
+                    }
+                ]
+            },
+            "2_status": {
+                "name": "Статус",
+                "choice_mode": "single",
+                "filter_type": "form_data",
+                "form_data_name": "sort",
+                "values": [
+                    {
+                        "name": "Анонс",
+                        "value": "анонс"
+                    },
+                    {
+                        "name": "В работе",
+                        "value": "в работе"
+                    },
+                    {
+                        "name": "Завершено",
+                        "value": "завершено"
+                    },
+                    {
+                        "name": "Заморожено",
+                        "value": "заморожено"
+                    }
+                ]
+            }
+        },
+        "genre_filters": {
+            "link": "https://studiomir.club",
+            "method": "GET",
+            "filters": [
+                {
+                    "name": "Безумие",
+                    "value": "безумие"
+                },
+                {
+                    "name": "Вампиры",
+                    "value": "вампиры"
+                },
+                {
+                    "name": "Гурман",
+                    "value": "гурман"
+                },
+                {
+                    "name": "Драма",
+                    "value": "драма"
+                },
+                {
+                    "name": "Исторический",
+                    "value": "исторический"
+                },
+                {
+                    "name": "Комедия",
+                    "value": "комедия"
+                },
+                {
+                    "name": "Мистика",
+                    "value": "мистика"
+                },
+                {
+                    "name": "Музыка",
+                    "value": "музыка"
+                },
+                {
+                    "name": "Повседневность",
+                    "value": "повседневность"
+                },
+                {
+                    "name": "Приключения",
+                    "value": "приключения"
+                },
+                {
+                    "name": "Психологическое",
+                    "value": "психологическое"
+                },
+                {
+                    "name": "Работа",
+                    "value": "работа"
+                },
+                {
+                    "name": "Романтика",
+                    "value": "романтика"
+                },
+                {
+                    "name": "Самураи",
+                    "value": "самураи"
+                },
+                {
+                    "name": "Сверхъестественное",
+                    "value": "сверхъестественное"
+                },
+                {
+                    "name": "Спорт",
+                    "value": "спорт"
+                },
+                {
+                    "name": "Супер сила",
+                    "value": "супер сила"
+                },
+                {
+                    "name": "Сэйнэн",
+                    "value": "сэйнэн"
+                },
+                {
+                    "name": "Сёдзё",
+                    "value": "сёдзё"
+                },
+                {
+                    "name": "Сёдзё-ай",
+                    "value": "сёдзё-ай"
+                },
+                {
+                    "name": "Сёнен",
+                    "value": "сёнен"
+                },
+                {
+                    "name": "Сёнэн",
+                    "value": "сёнэн"
+                },
+                {
+                    "name": "Тайна",
+                    "value": "тайна"
+                },
+                {
+                    "name": "Триллер",
+                    "value": "триллер"
+                },
+                {
+                    "name": "Ужасы",
+                    "value": "ужасы"
+                },
+                {
+                    "name": "Фантастика",
+                    "value": "фантастика"
+                },
+                {
+                    "name": "Фэнтези",
+                    "value": "фэнтези"
+                },
+                {
+                    "name": "Фэнтэзи",
+                    "value": "фэнтэзи"
+                },
+                {
+                    "name": "Школа",
+                    "value": "школа"
+                },
+                {
+                    "name": "Экшен",
+                    "value": "экшен"
+                }
+            ]
+        },
+        "add_anime": {
+            "next": "<td>",
+            "link": {
+                "token1": "href=\\\"",
+                "token2": "\\\">",
+                "replace": {
+                    "prefix": "$scheme$//$hostname$",
+                    "match": "\\\\",
+                    "text": ""
+                }
+            },
+            "title": {
+                "skip": "torrent_pic",
+                "token1": "alt=\\\"",
+                "token2": "\\\"",
+                "replace": {
+                    "unescape_unicode": true,
+                    "match": ".* / ",
+                    "text": ""
+                }
+            },
+            "additional_title": {
+                "skip": "torrent_pic",
+                "token1": "alt=\\\"",
+                "token2": "\\\"",
+                "replace": {
+                    "unescape_unicode": true,
+                    "match": " / .*",
+                    "text": ""
+                }
+            },
+            "cover": {
+                "skip": "torrent_pic",
+                "token1": "src=\\\"",
+                "token2": "\\\"",
+                "replace": {
+                    "prefix": "$scheme$//$hostname$",
+                    "match": "\\\\",
+                    "text": ""
+                }
+            },
+            "episodes_aired": {
+                "skip": "anime_number",
+                "token1": "\\\">",
+                "token2": "<",
+                "replace": {
+                    "unescape_unicode": true
+                }
+            }
+        }
+    },
+    "anime_search_complete": {
+        "search_link": "https://studiomir.club",
+        "add_anime": {
+            "next": "<td>",
+            "link": {
+                "token1": "href='",
+                "token2": "'",
+                "replace": {
+                    "prefix": "$scheme$//$hostname$",
+                    "match": "\\\\",
+                    "text": ""
+                }
+            },
+            "title": {
+                "skip": "<span",
+                "token1": "'>",
+                "token2": "<",
+                "replace": {
+                    "unescape_unicode": true
+                }
+            }
+        }
+    },
+    "anime_list_complete": {
+        "iterator": {
+            "base_url": "https://studiomir.club",
+            "append_nums": {
+                "from": 1,
+                "to": 10,
+                "step": 1
+            }
+        },
+        "add_anime": {
+            "next": "<td>",
+            "link": {
+                "token1": "href=\\\"",
+                "token2": "\\\">",
+                "replace": {
+                    "prefix": "$scheme$//$hostname$",
+                    "match": "\\\\",
+                    "text": ""
+                }
+            },
+            "title": {
+                "skip": "torrent_pic",
+                "token1": "alt=\\\"",
+                "token2": "\\\"",
+                "replace": {
+                    "unescape_unicode": true,
+                    "match": ".* / ",
+                    "text": ""
+                }
+            },
+            "additional_title": {
+                "skip": "torrent_pic",
+                "token1": "alt=\\\"",
+                "token2": "\\\"",
+                "replace": {
+                    "unescape_unicode": true,
+                    "match": " / .*",
+                    "text": ""
+                }
+            },
+            "cover": {
+                "skip": "torrent_pic",
+                "token1": "src=\\\"",
+                "token2": "\\\"",
+                "replace": {
+                    "prefix": "$scheme$//$hostname$",
+                    "match": "\\\\",
+                    "text": ""
+                }
+            },
+            "episodes_aired": {
+                "skip": "anime_number",
+                "token1": "\\\">",
+                "token2": "<",
+                "replace": {
+                    "unescape_unicode": true
+                }
+            }
+        }
+    },
+    "anime_complete": {
+        "title": {
+            "skip": "og:title",
+            "token1": "content='",
+            "token2": "'",
+            "replace": {
+                "match": ".* / ",
+                "text": ""
+            }
+        },
+        "additional_title": {
+            "skip": "og:title",
+            "token1": "content='",
+            "token2": "'",
+            "replace": {
+                "match": " / .*",
+                "text": ""
+            }
+        },
+        "uniq": {
+            "skip": "og:title",
+            "token1": "content='",
+            "token2": "'",
+            "replace": {
+                "match": ".* / ",
+                "text": ""
+            }
+        },
+        "cover": {
+            "after": "detail_torrent_pic",
+            "token1": "src=\"",
+            "token2": "\""
+        },
+        "add_dubber": {
+            "after": ">Озвучка<",
+            "token1": ":",
+            "token2": "<br",
+            "split": ","
+        },
+        "production_year": {
+            "skip": ">Год:<",
+            "token1": ">",
+            "token2": "<"
+        },
+        "ep_length": {
+            "skip": ">Тип:<",
+            "token1": ">",
+            "token2": "<",
+            "replace": {
+                "match": ".*,",
+                "text": ""
+            }
+        },
+        "episodes": {
+            "skip": ">Тип:<",
+            "token1": ">",
+            "token2": "<",
+            "replace": {
+                "match": "\\((.*?)\\)",
+                "match_number": "1",
+                "group": "1"
+            }
+        },
+        "summary": {
+            "skip": "og:description",
+            "token1": "content='",
+            "token2": "'"
+        },
+        "is_have_subs": ">Субтитры",
+        "status": {
+            "ongoing": "Новая серия кажд",
+            "default": "complete"
+        },
+        "content_type": {
+            "anime": "Ani",
+            "default": "anime"
+        },
+        "add_genre": {
+            "after": ">Жанры:<",
+            "token1": "b>",
+            "token2": "<",
+            "split": ","
+        },
+        "related": {
+            "after": ">Порядок просмотра:<",
+            "token1": "<br>",
+            "token2": "</div>",
+            "!replace": {
+                "match": "href=\"/",
+                "text": "href=\"$scheme$//$hostname$/"
+            }
+        }
+    },
+    "seasons_complete": {
+        "get_translations": true
+    },
+    "translations_complete": {
+        "get_episodes": true
+    },
+    "episodes_complete": {
+        "add_episode": [
+            {
+                "direct_links": true,
+                "start": "new Playerjs",
+                "next": "'title'",
+                "link": {
+                    "token1": "'file':'",
+                    "token2": ",",
+                    "replace": {
+                        "match": "\\[.*\\]",
+                        "text": "https:"
+                    }
+                },
+                "title": {
+                    "token1": "'title':'",
+                    "token2": "'"
+                },
+                "uniq": {
+                    "token1": "'title':'",
+                    "token2": "'"
+                }
+            }
+        ]
+    },
+    "torrents_complete": {},
+    "episode_complete": {
+        "form_data_tag": "shikimori",
+        "headers": {
+            "Referer": "$scheme$//$hostname$"
+        }
+    },
+    "test": []
+}

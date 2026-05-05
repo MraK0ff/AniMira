@@ -1,0 +1,1098 @@
+{
+    "id": 40065,
+    "version": 6,
+    "title": "Senkuro",
+    "host": "https://senkuro.me",
+    "public_link": "https://senkuro.me",
+    "api": "senkuro",
+    "api_endpoint": "https://api.senkuro.me/",
+    "hash_tag": "senkuro",
+    "folder": "senkuro",
+    "name": "senkuro",
+    "language": "ru",
+    "content_type": "manga",
+    "chapters_order": false,
+    "icon_link": "http://images.mangawatcherx.com/parser/icon/manga/senkuro.png",
+    "self_link": "https://api.anilabx.xyz/v3/parser/get?type=manga&parser=senkuro",
+    "custom_settings": {
+        "on_catalog_loading_error_hint": "<b>Подсказка:</b> Если каталог не работает, попробуйте сменить зеркала в настройках <b>Senkuro</b>. По умолчанию, каталог доступен только в <b>Ру и СНГ регионах</b>",
+        "is_allow_host_mirroring": true,
+        "is_allow_endpoint_mirroring": true,
+        "mirrors": [
+            {
+                "name": "Ру и СНГ",
+                "url": "https://senkuro.me"
+            },
+            {
+                "name": "Весь мир",
+                "url": "https://senkuro.com"
+            }
+        ],
+        "endpoint_mirrors": [
+            {
+                "name": "Ру и СНГ",
+                "url": "https://api.senkuro.me/"
+            },
+            {
+                "name": "Весь мир",
+                "url": "https://api.senkuro.com/"
+            }
+        ]
+    },
+    "manga_list_filters_complete": {
+        "base_link": "$scheme$//$hostname$/filterList?page=$page$",
+        "filters": {
+            "0_search": {
+                "name": "Поиск",
+                "choice_mode": "search",
+                "filter_type": "get_query",
+                "query_name": "search",
+                "values": [
+                    {
+                        "name": "Search",
+                        "value": ""
+                    }
+                ]
+            },
+            "1_status": {
+                "name": "Статус",
+                "choice_mode": "multiple_exclude",
+                "filter_type": "get_query",
+                "query_name": "status[]",
+                "values": [
+                    {
+                        "name": "Анонс",
+                        "value": "ANNOUNCE"
+                    },
+                    {
+                        "name": "Онгоинг",
+                        "value": "ONGOING"
+                    },
+                    {
+                        "name": "Выпущено",
+                        "value": "FINISHED"
+                    },
+                    {
+                        "name": "Приостановлено",
+                        "value": "HIATUS"
+                    },
+                    {
+                        "name": "Отменено",
+                        "value": "CANCELLED"
+                    }
+                ]
+            },
+            "2_translation_status": {
+                "name": "Статус перевода",
+                "choice_mode": "multiple_exclude",
+                "filter_type": "get_query",
+                "query_name": "status[]",
+                "values": [
+                    {
+                        "name": "Переводится",
+                        "value": "IN_PROGRESS"
+                    },
+                    {
+                        "name": "Завершён",
+                        "value": "FINISHED"
+                    },
+                    {
+                        "name": "Заморожен",
+                        "value": "FROZEN"
+                    },
+                    {
+                        "name": "Заброшен",
+                        "value": "ABANDONED"
+                    }
+                ]
+            },
+            "3_type": {
+                "name": "Тип",
+                "choice_mode": "multiple_exclude",
+                "filter_type": "get_query",
+                "query_name": "ftype[]",
+                "values": [
+                    {
+                        "name": "Манга",
+                        "value": "MANGA"
+                    },
+                    {
+                        "name": "Манхва",
+                        "value": "MANHWA"
+                    },
+                    {
+                        "name": "Маньхуа",
+                        "value": "MANHUA"
+                    },
+                    {
+                        "name": "Комикс",
+                        "value": "COMICS"
+                    },
+                    {
+                        "name": "OEL Манга",
+                        "value": "OEL_MANGA"
+                    },
+                    {
+                        "name": "РуМанга",
+                        "value": "RU_MANGA"
+                    }
+                ]
+            },
+            "5_age_rating": {
+                "name": "Возрастное ограничени",
+                "choice_mode": "multiple_exclude",
+                "filter_type": "get_query",
+                "query_name": "asc",
+                "values": [
+                    {
+                        "name": "0+",
+                        "value": "GENERAL"
+                    },
+                    {
+                        "name": "12+",
+                        "value": "SENSITIVE"
+                    },
+                    {
+                        "name": "16+",
+                        "value": "QUESTIONABLE"
+                    },
+                    {
+                        "name": "18+",
+                        "value": "EXPLICIT"
+                    }
+                ]
+            },
+            "6_format": {
+                "name": "Формат",
+                "choice_mode": "multiple_exclude",
+                "filter_type": "get_query",
+                "query_name": "asc",
+                "values": [
+                    {
+                        "name": "Сборник",
+                        "value": "DIGEST"
+                    },
+                    {
+                        "name": "Додзинси",
+                        "value": "DOUJINSHI"
+                    },
+                    {
+                        "name": "В цвете",
+                        "value": "IN_COLOR"
+                    },
+                    {
+                        "name": "Сингл",
+                        "value": "SINGLE"
+                    },
+                    {
+                        "name": "Веб",
+                        "value": "WEB"
+                    },
+                    {
+                        "name": "Вебтун",
+                        "value": "WEBTOON"
+                    },
+                    {
+                        "name": "Ёнкома",
+                        "value": "YONKOMA"
+                    },
+                    {
+                        "name": "Short",
+                        "value": "SHORT"
+                    }
+                ]
+            },
+            "7_genres": {
+                "name": "Жанры",
+                "choice_mode": "multiple_exclude",
+                "filter_type": "get_query",
+                "query_name": "cat",
+                "values": [
+                    {
+                        "name": "Драма",
+                        "value": "drama"
+                    },
+                    {
+                        "name": "Детектив",
+                        "value": "mystery"
+                    },
+                    {
+                        "name": "Повседневность",
+                        "value": "slice_of_life"
+                    },
+                    {
+                        "name": "Сёнен",
+                        "value": "shounen"
+                    },
+                    {
+                        "name": "Романтика",
+                        "value": "romance"
+                    },
+                    {
+                        "name": "Триллер",
+                        "value": "thriller"
+                    },
+                    {
+                        "name": "Музыка",
+                        "value": "music"
+                    },
+                    {
+                        "name": "Сянься",
+                        "value": "xianxia"
+                    },
+                    {
+                        "name": "Психологическое",
+                        "value": "psychological"
+                    },
+                    {
+                        "name": "Ужасы",
+                        "value": "horror"
+                    },
+                    {
+                        "name": "Комедия",
+                        "value": "comedy"
+                    },
+                    {
+                        "name": "Спорт",
+                        "value": "sports"
+                    },
+                    {
+                        "name": "Сверхъестественное",
+                        "value": "supernatural"
+                    },
+                    {
+                        "name": "Сёнен-ай",
+                        "value": "shounen_ai"
+                    },
+                    {
+                        "name": "Меха",
+                        "value": "mecha"
+                    },
+                    {
+                        "name": "Приключения",
+                        "value": "adventure"
+                    },
+                    {
+                        "name": "Исторический",
+                        "value": "historical"
+                    },
+                    {
+                        "name": "Военное",
+                        "value": "military"
+                    },
+                    {
+                        "name": "Экшен",
+                        "value": "action"
+                    },
+                    {
+                        "name": "Сёдзе-ай",
+                        "value": "shoujo_ai"
+                    },
+                    {
+                        "name": "Пародия",
+                        "value": "parody"
+                    },
+                    {
+                        "name": "Сёдзе",
+                        "value": "shoujo"
+                    },
+                    {
+                        "name": "Фэнтези",
+                        "value": "fantasy"
+                    },
+                    {
+                        "name": "Фантастика",
+                        "value": "sci_fi"
+                    },
+                    {
+                        "name": "Игры",
+                        "value": "game"
+                    },
+                    {
+                        "name": "Сэйнэн",
+                        "value": "seinen"
+                    },
+                    {
+                        "name": "Дзёсей",
+                        "value": "josei"
+                    },
+                    {
+                        "name": "Боевые искусства",
+                        "value": "martial_arts"
+                    },
+                    {
+                        "name": "Исекай",
+                        "value": "isekai"
+                    }
+                ]
+            },
+            "8_tags": {
+                "name": "Теги",
+                "choice_mode": "multiple_exclude",
+                "filter_type": "get_query",
+                "query_name": "cat",
+                "values": [
+                    {
+                        "name": "Вестерн",
+                        "value": "western"
+                    },
+                    {
+                        "name": "Шантаж",
+                        "value": "blackmail"
+                    },
+                    {
+                        "name": "Учитель / ученик",
+                        "value": "student_teacher"
+                    },
+                    {
+                        "name": "Ведьма",
+                        "value": "witch"
+                    },
+                    {
+                        "name": "Игровые элементы",
+                        "value": "game_elements"
+                    },
+                    {
+                        "name": "Антиутопия",
+                        "value": "dystopia"
+                    },
+                    {
+                        "name": "Гоблины",
+                        "value": "goblins"
+                    },
+                    {
+                        "name": "Подземелья",
+                        "value": "dungeons"
+                    },
+                    {
+                        "name": "Вампиры",
+                        "value": "vampires"
+                    },
+                    {
+                        "name": "Алхимия",
+                        "value": "alchemy"
+                    },
+                    {
+                        "name": "Обратный гарем",
+                        "value": "reverse_harem"
+                    },
+                    {
+                        "name": "Система",
+                        "value": "system"
+                    },
+                    {
+                        "name": "Кошка-жена",
+                        "value": "cat_wife"
+                    },
+                    {
+                        "name": "Политика",
+                        "value": "policy"
+                    },
+                    {
+                        "name": "Космос",
+                        "value": "space"
+                    },
+                    {
+                        "name": "Дополненная реальность",
+                        "value": "ar"
+                    },
+                    {
+                        "name": "Антигерой",
+                        "value": "antihero"
+                    },
+                    {
+                        "name": "Армия",
+                        "value": "army"
+                    },
+                    {
+                        "name": "Лоли",
+                        "value": "loli"
+                    },
+                    {
+                        "name": "Азартные игры",
+                        "value": "gambling"
+                    },
+                    {
+                        "name": "Эльфы",
+                        "value": "elves"
+                    },
+                    {
+                        "name": "Волшебные существа",
+                        "value": "magical_creatures"
+                    },
+                    {
+                        "name": "Нежить",
+                        "value": "undead"
+                    },
+                    {
+                        "name": "Гарем",
+                        "value": "harem"
+                    },
+                    {
+                        "name": "Обмен телами",
+                        "value": "body_swap"
+                    },
+                    {
+                        "name": "Воспоминания из другого мира",
+                        "value": "another_world_memory"
+                    },
+                    {
+                        "name": "Будущее",
+                        "value": "future"
+                    },
+                    {
+                        "name": "Дружба",
+                        "value": "friendship"
+                    },
+                    {
+                        "name": "Разумные расы",
+                        "value": "sentient_races"
+                    },
+                    {
+                        "name": "Апокалипсис",
+                        "value": "apocalypse"
+                    },
+                    {
+                        "name": "Гг мужчина",
+                        "value": "male_protagonist"
+                    },
+                    {
+                        "name": "Умный гг",
+                        "value": "smart_protagonist"
+                    },
+                    {
+                        "name": "Борьба за власть",
+                        "value": "power_struggle"
+                    },
+                    {
+                        "name": "Полиция",
+                        "value": "police"
+                    },
+                    {
+                        "name": "Завоевание мира",
+                        "value": "world_conquest"
+                    },
+                    {
+                        "name": "Спасение мира",
+                        "value": "saving_the_world"
+                    },
+                    {
+                        "name": "Мафия",
+                        "value": "mafia"
+                    },
+                    {
+                        "name": "Ангелы",
+                        "value": "angels"
+                    },
+                    {
+                        "name": "Наёмники",
+                        "value": "mercenaries"
+                    },
+                    {
+                        "name": "Якудза",
+                        "value": "yakuza"
+                    },
+                    {
+                        "name": "Ниндзя",
+                        "value": "ninja"
+                    },
+                    {
+                        "name": "Магическая академия",
+                        "value": "magic_academy"
+                    },
+                    {
+                        "name": "Боги",
+                        "value": "gods"
+                    },
+                    {
+                        "name": "Кулинария",
+                        "value": "cooking"
+                    },
+                    {
+                        "name": "Гг женщина",
+                        "value": "female_protagonist"
+                    },
+                    {
+                        "name": "Пародия",
+                        "value": "parody"
+                    },
+                    {
+                        "name": "Волшебники / маги",
+                        "value": "wizards"
+                    },
+                    {
+                        "name": "Япония",
+                        "value": "japan"
+                    },
+                    {
+                        "name": "Брат и сестра",
+                        "value": "brother_and_sister"
+                    },
+                    {
+                        "name": "Средневековье",
+                        "value": "middle_ages"
+                    },
+                    {
+                        "name": "Огнестрельное оружие",
+                        "value": "firearms"
+                    },
+                    {
+                        "name": "Культивация",
+                        "value": "cultivation"
+                    },
+                    {
+                        "name": "Призраки / духи",
+                        "value": "ghosts"
+                    },
+                    {
+                        "name": "Драконы",
+                        "value": "dragons"
+                    },
+                    {
+                        "name": "Медицина",
+                        "value": "medicine"
+                    },
+                    {
+                        "name": "Глупый гг",
+                        "value": "stupid_protagonist"
+                    },
+                    {
+                        "name": "Офисные работники",
+                        "value": "office_workers"
+                    },
+                    {
+                        "name": "Яндере",
+                        "value": "yandere"
+                    },
+                    {
+                        "name": "Традиционные игры",
+                        "value": "traditional_games"
+                    },
+                    {
+                        "name": "Путешествие во времени",
+                        "value": "time_travel"
+                    },
+                    {
+                        "name": "Горничные",
+                        "value": "maids"
+                    },
+                    {
+                        "name": "Пираты",
+                        "value": "pirates"
+                    },
+                    {
+                        "name": "Навыки / способности",
+                        "value": "skills"
+                    },
+                    {
+                        "name": "Гг имба",
+                        "value": "overpowered_protagonist"
+                    },
+                    {
+                        "name": "Ранги силы",
+                        "value": "power_ranks"
+                    },
+                    {
+                        "name": "Насилие / жестокость",
+                        "value": "violence"
+                    },
+                    {
+                        "name": "Магия",
+                        "value": "magic"
+                    },
+                    {
+                        "name": "Бои на мечах",
+                        "value": "sword_fighting"
+                    },
+                    {
+                        "name": "Легендарное оружие",
+                        "value": "legendary_weapon"
+                    },
+                    {
+                        "name": "Видеоигры",
+                        "value": "video_games"
+                    },
+                    {
+                        "name": "Амнезия / потеря памяти",
+                        "value": "amnesia"
+                    },
+                    {
+                        "name": "Гяру",
+                        "value": "gyaru"
+                    },
+                    {
+                        "name": "Роботы",
+                        "value": "robots"
+                    },
+                    {
+                        "name": "Гильдии",
+                        "value": "guilds"
+                    },
+                    {
+                        "name": "Стимпанк",
+                        "value": "steampunk"
+                    },
+                    {
+                        "name": "Скрытие личности",
+                        "value": "hiding_identity"
+                    },
+                    {
+                        "name": "Реинкарнация",
+                        "value": "reincarnation"
+                    },
+                    {
+                        "name": "Философия",
+                        "value": "philosophy"
+                    },
+                    {
+                        "name": "Зомби",
+                        "value": "zombie"
+                    },
+                    {
+                        "name": "Демоны",
+                        "value": "demons"
+                    },
+                    {
+                        "name": "Монстродевушки",
+                        "value": "monster_girls"
+                    },
+                    {
+                        "name": "Школа",
+                        "value": "school"
+                    },
+                    {
+                        "name": "Артефакты",
+                        "value": "artifacts"
+                    },
+                    {
+                        "name": "Монстры",
+                        "value": "monsters"
+                    },
+                    {
+                        "name": "Зверолюди",
+                        "value": "beastmen"
+                    },
+                    {
+                        "name": "Самураи",
+                        "value": "samurai"
+                    },
+                    {
+                        "name": "Музыка",
+                        "value": "music"
+                    },
+                    {
+                        "name": "Война",
+                        "value": "war"
+                    },
+                    {
+                        "name": "Империи",
+                        "value": "empire"
+                    },
+                    {
+                        "name": "Животные компаньоны",
+                        "value": "animal_companions"
+                    },
+                    {
+                        "name": "Военные",
+                        "value": "military"
+                    },
+                    {
+                        "name": "Хикикомори",
+                        "value": "hikikomori"
+                    },
+                    {
+                        "name": "Безумие",
+                        "value": "madness"
+                    },
+                    {
+                        "name": "Месть",
+                        "value": "revenge"
+                    },
+                    {
+                        "name": "Геймеры",
+                        "value": "gamers"
+                    },
+                    {
+                        "name": "Супергерои",
+                        "value": "superheroes"
+                    },
+                    {
+                        "name": "Преступники / криминал",
+                        "value": "criminals"
+                    },
+                    {
+                        "name": "Жестокий мир",
+                        "value": "cruel_world"
+                    },
+                    {
+                        "name": "Владыка демонов",
+                        "value": "maou"
+                    },
+                    {
+                        "name": "Квесты",
+                        "value": "quests"
+                    },
+                    {
+                        "name": "Спортивное тело",
+                        "value": "athletic_body"
+                    },
+                    {
+                        "name": "Выживание",
+                        "value": "survival"
+                    },
+                    {
+                        "name": "Рабы",
+                        "value": "slaves"
+                    },
+                    {
+                        "name": "Виртуальная реальность",
+                        "value": "vr"
+                    },
+                    {
+                        "name": "Холодное оружие",
+                        "value": "steel_arms"
+                    },
+                    {
+                        "name": "Рыцари",
+                        "value": "knights"
+                    },
+                    {
+                        "name": "Злые духи",
+                        "value": "evil_spirits"
+                    }
+                ]
+            }
+        },
+        "add_manga": {
+            "start": "<article",
+            "next": "short-in",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "title": {
+                "token1": "title=\"",
+                "token2": "\"",
+                "replace": {
+                    "match": ".*/ ",
+                    "text": ""
+                }
+            },
+            "alt_title": {
+                "token1": "title=\"",
+                "token2": "\"",
+                "replace": {
+                    "match": " /.*",
+                    "text": ""
+                }
+            },
+            "cover": {
+                "token1": "src='",
+                "token2": "'"
+            }
+        }
+    },
+    "manga_search_complete": {
+        "search_link": "$scheme$//$hostname$/dosearch?do=search&subaction=search&query=$query$&page=$page$",
+        "query_type": "GET",
+        "add_manga": {
+            "start": "class=\"manga-list",
+            "next": "\"flist row",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "title": {
+                "token1": "<strong>",
+                "token2": "</",
+                "replace": {
+                    "match": ".*/ ",
+                    "text": ""
+                }
+            },
+            "alt_title": {
+                "token1": "<strong>",
+                "token2": "</",
+                "replace": {
+                    "match": " /.*",
+                    "text": ""
+                }
+            },
+            "cover": {
+                "token1": "src='",
+                "token2": "'"
+            },
+            "end": "</article>"
+        }
+    },
+    "manga_list_complete": {
+        "iterator": {
+            "category": {
+                "tag": "main",
+                "name": "Последние"
+            },
+            "base_url": "$scheme$//$hostname$/filterList?ftype%5B%5D=0&cat=&status%5B%5D=0&alpha=&year_min=&year_max=&sortBy=created_at&asc=true&author=&artist=&tag=&page=",
+            "append_nums": {
+                "from": 1,
+                "to": 550,
+                "step": 1
+            }
+        },
+        "add_manga": {
+            "start": "<article",
+            "next": "short-in",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "title": {
+                "token1": "title=\"",
+                "token2": "\"",
+                "replace": {
+                    "match": ".*/ ",
+                    "text": ""
+                }
+            },
+            "alt_title": {
+                "token1": "title=\"",
+                "token2": "\"",
+                "replace": {
+                    "match": " /.*",
+                    "text": ""
+                }
+            },
+            "cover": {
+                "token1": "src='",
+                "token2": "'"
+            }
+        }
+    },
+    "manga_complete": {
+        "title": {
+            "token1": "<h1>",
+            "token2": "</",
+            "replace": {
+                "match": ".*/ ",
+                "text": ""
+            }
+        },
+        "alt_title": {
+            "token1": "<h1>",
+            "token2": "</",
+            "replace": {
+                "match": " /.*",
+                "text": ""
+            }
+        },
+        "jap_title": {
+            "after": ">Другие названия:",
+            "token1": "<span>",
+            "token2": "</span>"
+        },
+        "author": {
+            "after": "Автор(ы):",
+            "token1": "\">",
+            "token2": "</"
+        },
+        "add_artists": {
+            "start": ">Художник(и):",
+            "next": "/artist/",
+            "token1": "\">",
+            "token2": "</",
+            "end": "</li>"
+        },
+        "add_translator": {
+            "after": ">Переводчик:",
+            "token1": "</span>",
+            "token2": "</li>",
+            "split": ", "
+        },
+        "production_year": {
+            "skip": ">Дата релиза:<",
+            "token1": ">",
+            "token2": "</"
+        },
+        "add_genres": {
+            "start": ">Категории:",
+            "next": "/category/",
+            "token1": "\">",
+            "token2": "</",
+            "end": "</li>"
+        },
+        "cover": {
+            "after": "img-responsive",
+            "token1": "src=\"",
+            "token2": "\""
+        },
+        "summary": {
+            "after": ">Сюжет:",
+            "token1": "</span>",
+            "token2": "</div>"
+        },
+        "content_type": {
+            "manga": "label-success\">Манга",
+            "manhwa": "label-success\">Манхва",
+            "manhua": "label-success\">Маньхуа",
+            "webcomics": "label-success\">Веб-Манхва",
+            "default": "unknown"
+        },
+        "status": {
+            "complete": "label-success\">Изданное",
+            "ongoing": "label-success\">Сейчас издаётся",
+            "announcement": "label-success\">Анонсировано",
+            "default": "unknown"
+        },
+        "add_chapter": {
+            "start": ">Список глав<",
+            "end": "<div class=\"row\">",
+            "next": "<li style",
+            "link": {
+                "skip": "<h5>",
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "title": {
+                "skip": "<h5>",
+                "token1": "\">",
+                "token2": "</"
+            },
+            "date": {
+                "after": "date-chapter-title",
+                "token1": "\">",
+                "token2": "</div"
+            }
+        }
+    },
+    "chapter_complete": {
+        "images": true,
+        "add_pages": {
+            "start": "reader-images\"",
+            "token1": "data-src=\"",
+            "token2": "\"",
+            "end": "</div>"
+        }
+    },
+    "test": [
+        {
+            "proc": "manga_search_complete",
+            "query": "naruto",
+            "assert": {
+                "mangas": [
+                    {
+                        "title": "Naruto",
+                        "alt_title": "Наруто",
+                        "link": "https://senkuro.org/manga/naruto",
+                        "uniq": "naruto"
+                    }
+                ],
+                "mangas_count": ">=10"
+            }
+        },
+        {
+            "proc": "manga_list_filters_complete",
+            "filters": {
+                "5_genre": [
+                    {
+                        "value": "harem",
+                        "name": "Гарем"
+                    }
+                ]
+            },
+            "assert": {
+                "mangas": [
+                    {
+                        "title": "@^(\\w+)",
+                        "link": "@https://senkuro.org/manga/",
+                        "uniq": "@^(\\w+)"
+                    }
+                ],
+                "mangas_count": ">=30"
+            }
+        },
+        {
+            "proc": "manga_list_complete",
+            "testpages": "5",
+            "assert": {
+                "mangas": [
+                    {
+                        "title": "@^(\\w+)",
+                        "link": "@https://senkuro.org/manga/",
+                        "uniq": "@^(\\w+)"
+                    }
+                ],
+                "mangas_count": ">=150"
+            }
+        },
+        {
+            "proc": "manga_complete",
+            "link": "https://senkuro.org/manga/arifureta-shokugyou-de-sekai-saikyou",
+            "assert": {
+                "title": "Arifureta Shokugyou de Sekai Saikyou",
+                "alt_title": "Арифурета - Обычная профессия – сильнейший в мире!",
+                "author": "Hakumai Ryou",
+                "artists": "[roga]",
+                "translators": "[семья друля, baddog]",
+                "production_year": "2016",
+                "cover": "https://senkuro.org/uploads/manga/arifureta-shokugyou-de-sekai-saikyou/cover/cover_250x350.jpg",
+                "summary": "@^(По сравнению со своими)",
+                "genres": "@action",
+                "genres_count": ">=7",
+                "status": "ongoing",
+                "content_type": "manga",
+                "chapters_count": ">=45",
+                "chapters": [
+                    {
+                        "title": "Глава №35: Предвидение",
+                        "link": "https://senkuro.org/manga/arifureta-shokugyou-de-sekai-saikyou/v6-ch35",
+                        "folder": "v6-ch35/",
+                        "date": "08.12.2019",
+                        "chapter_number": "35.0"
+                    }
+                ]
+            }
+        },
+        {
+            "proc": "manga_complete",
+            "link": "https://senkuro.org/manga/strike-or-gutter",
+            "assert": {
+                "title": "Strike or Gutter",
+                "alt_title": "Либо страйк, либо мимо",
+                "jap_title": "ストライク・オア・ガター",
+                "author": "Yuu Ando",
+                "artists": "[yuu ando]",
+                "translators": "[bao inc., forgotten manga]",
+                "cover": "https://senkuro.org/uploads/manga/strike-or-gutter/cover/cover_250x350.jpg",
+                "summary": "@^(Тоука - обычная старшеклассница)",
+                "genres": "@comedy",
+                "genres_count": ">=5",
+                "status": "ongoing",
+                "content_type": "manga",
+                "chapters_count": ">=8",
+                "chapters": [
+                    {
+                        "title": "Глава №3: Учительница на меня пялится",
+                        "link": "https://senkuro.org/manga/strike-or-gutter/v1-ch3",
+                        "folder": "v1-ch3/",
+                        "date": "04.11.2020",
+                        "chapter_number": "3.0"
+                    }
+                ]
+            }
+        },
+        {
+            "proc": "chapter_complete",
+            "title": "Глава №33",
+            "link": "https://senkuro.org/manga/arifureta-shokugyou-de-sekai-saikyou/33/1",
+            "assert": {
+                "pages": [
+                    {
+                        "image": "https://senkuro.org/uploads/manga/arifureta-shokugyou-de-sekai-saikyou/chapters/33/001.jpg"
+                    },
+                    {
+                        "image": "https://senkuro.org/uploads/manga/arifureta-shokugyou-de-sekai-saikyou/chapters/33/003.jpg"
+                    }
+                ]
+            }
+        }
+    ]
+}

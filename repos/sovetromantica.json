@@ -1,0 +1,411 @@
+{
+    "id": 20005,
+    "version": 36,
+    "title": "SovetRomantica",
+    "host": "https://sovetromantica.com",
+    "public_link": "https://sovetromantica.com",
+    "hash_tag": "sovetromantica",
+    "folder": "sovetromantica",
+    "name": "sovetromantica",
+    "language": "ru",
+    "content_type": "anime",
+    "episodes_order": true,
+    "icon_link": "http://images.mangawatcherx.com/parser/icon/anime/sovetromantica.png",
+    "self_link": "https://api.anilabx.xyz/v3/parser/get?type=anime&parser=sovetromantica",
+    "author": {
+        "name": "AniLabX Team",
+        "email": "anilabx.supp@gmail.com"
+    },
+    "custom_settings": {
+        "is_allow_host_mirroring": "true",
+        "use_okhttp_client": false
+    },
+    "anime_search_complete": {
+        "search_link": "$scheme$//$hostname$/anime?query=$query$&page=$page$",
+        "query_type": "GET",
+        "add_anime": {
+            "start": "anime--block",
+            "next": "anime--block__desu",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "title": {
+                "after": "anime--block__name",
+                "token1": "<span>",
+                "token2": "</span>"
+            },
+            "alt_title": {
+                "after": "anime--block__name",
+                "token1": "</span><span>",
+                "token2": "</span>"
+            },
+            "cover": {
+                "token1": "data-src=\"",
+                "token2": "\""
+            },
+            "end": "<footer>"
+        }
+    },
+    "anime_list_complete": {
+        "iterator": [
+            {
+                "category": {
+                    "tag": "main",
+                    "name": "Последние"
+                },
+                "first_page_url": "$scheme$//$hostname$/anime",
+                "base_url": "$scheme$//$hostname$/anime/page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 36,
+                    "step": 1
+                }
+            }
+        ],
+        "add_anime": {
+            "start": "anime--block",
+            "next": "anime--block__desu",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "title": {
+                "after": "anime--block__name",
+                "token1": "<span>",
+                "token2": "</span>"
+            },
+            "alt_title": {
+                "after": "anime--block__name",
+                "token1": "</span><span>",
+                "token2": "</span>"
+            },
+            "cover": {
+                "token1": "data-src=\"",
+                "token2": "\""
+            },
+            "end": "<footer>"
+        }
+    },
+    "anime_complete": {
+        "title": {
+            "skip": "block--full anime-name\">",
+            "token1": "/ ",
+            "token2": "</",
+            "replace": [
+                {
+                    "match": "/ SovetRomantica",
+                    "text": ""
+                },
+                {
+                    "match": "Субтитры / ",
+                    "text": ""
+                },
+                {
+                    "match": "Озвучка / ",
+                    "text": ""
+                },
+                {
+                    "match": "Эпизод.*",
+                    "text": ""
+                }
+            ]
+        },
+        "alt_title": {
+            "skip": "block--full anime-name\">",
+            "token1": "\">",
+            "token2": " /",
+            "replace": [
+                {
+                    "match": "/ SovetRomantica",
+                    "text": ""
+                },
+                {
+                    "match": "Субтитры / ",
+                    "text": ""
+                },
+                {
+                    "match": "Озвучка / ",
+                    "text": ""
+                },
+                {
+                    "match": "Эпизод.*",
+                    "text": ""
+                }
+            ]
+        },
+        "uniq": {
+            "skip": "block--full anime-name\">",
+            "token1": "\">",
+            "token2": "</",
+            "replace": [
+                {
+                    "match": "/ SovetRomantica",
+                    "text": ""
+                },
+                {
+                    "match": "Субтитры / ",
+                    "text": ""
+                },
+                {
+                    "match": "Озвучка / ",
+                    "text": ""
+                },
+                {
+                    "match": "Эпизод.*",
+                    "text": ""
+                }
+            ]
+        },
+        "cover": {
+            "after": "anime-poster",
+            "token1": "src=\"",
+            "token2": "\"",
+            "replace": {
+                "match": "^\\.\\.",
+                "text": "$scheme$//$hostname$"
+            }
+        },
+        "add_studios": {
+            "start": ">Студия</div>",
+            "next": "/studios/",
+            "token1": "alt=\"",
+            "token2": "\"",
+            "end": "anime-content",
+            "replace": {
+                "match": "Эпизод.*",
+                "text": ""
+            }
+        },
+        "add_dubbers": {
+            "start": "Над озвучкой работали",
+            "next": "user-team__username",
+            "token1": "\">",
+            "token2": "<",
+            "end": "block--header"
+        },
+        "production_year": {
+            "skip": ">Год<",
+            "token1": ">",
+            "token2": "</"
+        },
+        "episodes": {
+            "skip": ">Кол-во эпизодов<",
+            "token1": ">",
+            "token2": "</"
+        },
+        "summary": {
+            "skip": "anime-description",
+            "token1": "\">",
+            "token2": "</",
+            "replace": {
+                "match": "^Комментарии",
+                "text": ""
+            }
+        },
+        "status": {
+            "default": "unknown"
+        },
+        "content_type": {
+            "dorama": "\"active\">Дорамы",
+            "default": "anime"
+        },
+        "is_have_subs": {
+            "value": "class=\"disabled\">Субтитры",
+            "not_have": true
+        },
+        "add_genres": {
+            "start": ">Жанры<",
+            "next": "animeTagInfo",
+            "token1": "\">",
+            "token2": "</",
+            "end": "</li"
+        }
+    },
+    "seasons_complete": {
+        "get_translations": true
+    },
+    "translations_complete": {
+        "get_episodes": true
+    },
+    "episodes_complete": {
+        "add_episode": [
+            {
+                "start": "\"episodes-slick\"",
+                "next": "episodes-slick_item",
+                "link": {
+                    "token1": "href=\"",
+                    "token2": "\""
+                },
+                "title": {
+                    "token1": "<span>",
+                    "token2": "</",
+                    "prefix": {
+                        "full_search": true,
+                        "token1": "class=\"selected \">",
+                        "token2": "</",
+                        "replace": {
+                            "sufix": ": "
+                        }
+                    }
+                },
+                "uniq": {
+                    "token1": "<span>",
+                    "token2": "</",
+                    "prefix": {
+                        "full_search": true,
+                        "token1": "class=\"selected \">",
+                        "token2": "</",
+                        "replace": {
+                            "sufix": ": "
+                        }
+                    }
+                },
+                "end": "block--container"
+            },
+            {
+                "may_be_null": true,
+                "start": ";Озвучка</div",
+                "next": "href",
+                "link": {
+                    "token1": "href=\"",
+                    "token2": "\""
+                },
+                "title": {
+                    "token1": "<span>",
+                    "token2": "</",
+                    "prefix": {
+                        "full_search": true,
+                        "token1": "class=\"selected \">",
+                        "token2": "</",
+                        "replace": {
+                            "sufix": ": "
+                        }
+                    }
+                },
+                "uniq": {
+                    "token1": "<span>",
+                    "token2": "</",
+                    "prefix": {
+                        "full_search": true,
+                        "token1": "class=\"selected \">",
+                        "token2": "</",
+                        "replace": {
+                            "sufix": ": "
+                        }
+                    }
+                },
+                "end": "</a"
+            },
+            {
+                "may_be_null": true,
+                "start": "Фильм&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;Субтитры",
+                "next": "href",
+                "link": {
+                    "token1": "href=\"",
+                    "token2": "\""
+                },
+                "title": {
+                    "token1": "<span>",
+                    "token2": "</",
+                    "prefix": {
+                        "full_search": true,
+                        "token1": "class=\"selected \">",
+                        "token2": "</",
+                        "replace": {
+                            "sufix": ": "
+                        }
+                    }
+                },
+                "uniq": {
+                    "token1": "<span>",
+                    "token2": "</",
+                    "prefix": {
+                        "full_search": true,
+                        "token1": "class=\"selected \">",
+                        "token2": "</",
+                        "replace": {
+                            "sufix": ": "
+                        }
+                    }
+                },
+                "end": "</a"
+            },
+            {
+                "may_be_null": true,
+                "episodes_from_page": {
+                    "before": "class=\"\"",
+                    "token1": "href=\"",
+                    "token2": "\"",
+                    "replace": {
+                        "prefix": "$scheme$//$hostname$"
+                    }
+                },
+                "start": "\"episodes-slick\"",
+                "next": "episodes-slick_item",
+                "link": {
+                    "token1": "href=\"",
+                    "token2": "\""
+                },
+                "title": {
+                    "token1": "<span>",
+                    "token2": "</",
+                    "prefix": {
+                        "full_search": true,
+                        "token1": "class=\"selected \">",
+                        "token2": "</",
+                        "replace": {
+                            "sufix": ": "
+                        }
+                    }
+                },
+                "uniq": {
+                    "token1": "<span>",
+                    "token2": "</",
+                    "prefix": {
+                        "full_search": true,
+                        "token1": "class=\"selected \">",
+                        "token2": "</",
+                        "replace": {
+                            "sufix": ": "
+                        }
+                    }
+                },
+                "end": "block--container"
+            }
+        ]
+    },
+    "episode_complete": {},
+    "test": [
+        {
+            "proc": "anime_list_complete",
+            "testpages": 3,
+            "assert": {
+                "animes": [
+                    {
+                        "title": "@^(\\w+)",
+                        "link": "@https://sovetromantica.com/",
+                        "uniq": "@^(\\w+)"
+                    }
+                ],
+                "animes_count": ">=30"
+            }
+        },
+        {
+            "proc": "anime_complete",
+            "link": "https://sovetromantica.com/dorama/774-lovely-horribly",
+            "assert": {
+                "title": "Lovely Horribly",
+                "alt_title": "Страшно прекрасный",
+                "cover": "https://sovetromantica.com/chitoge-sub/anime/774_lovely-horribly/images/774.jpg",
+                "dubbers": "[baxrayder, indominusrex]",
+                "year": "2018",
+                "episodes": "32",
+                "content_type": "dorama",
+                "summary": "@^(Главные герои)",
+                "genres": "@comedy",
+                "genres_count": ">=2"
+            }
+        }
+    ]
+}

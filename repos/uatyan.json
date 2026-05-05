@@ -1,0 +1,471 @@
+{
+    "id": 20119,
+    "version": 8,
+    "title": "UAchan",
+    "host": "https://uachan.top",
+    "public_link": "https://uachan.top",
+    "hash_tag": "uatyan",
+    "folder": "uatyan",
+    "name": "uatyan",
+    "language": "ru",
+    "content_type": "anime",
+    "episodes_order": true,
+    "icon_link": "http://images.mangawatcherx.com/parser/icon/anime/uatyan.png",
+    "self_link": "https://api.anilabx.xyz/v3/parser/get?type=anime&parser=uatyan",
+    "author": {
+        "name": "AniLabX Team",
+        "email": "anilabx.supp@gmail.com"
+    },
+    "custom_settings": {
+        "use_okhttp_client": true
+    },
+    "anime_search_complete": {
+        "search_link": "$scheme$//$hostname$/index.php?do=search&subaction=search&search_start=$page$&full_search=0&result_from=1&story=$query$",
+        "query_type": "GET",
+        "add_anime": {
+            "start": "search_result_num",
+            "next": "poster grid-item",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "title": {
+                "skip": "poster__title",
+                "token1": "\">",
+                "token2": "</"
+            },
+            "cover": {
+                "skip": "src=",
+                "token1": "\"",
+                "token2": "\""
+            },
+            "info_1": {
+                "skip": "poster__series",
+                "token1": "\">",
+                "token2": "</"
+            },
+            "info_2": {
+                "skip": "main_title_new",
+                "token1": "\">",
+                "token2": "</"
+            }
+        }
+    },
+    "anime_list_filters_complete": {
+        "genre_filters": {
+            "link": "$scheme$//$hostname$/anime/zhanry/$filter$/page/$page$",
+            "filters": [
+                {
+                    "value": "boiovi-mystectva",
+                    "name": "Бойові мистецтва"
+                },
+                {
+                    "value": "viina",
+                    "name": "Війна"
+                },
+                {
+                    "value": "drama",
+                    "name": "Драма"
+                },
+                {
+                    "value": "istoriia",
+                    "name": "Історія"
+                },
+                {
+                    "value": "komediia",
+                    "name": "Комедія"
+                },
+                {
+                    "value": "makho-sodzo",
+                    "name": "Махо-шьоджьо"
+                },
+                {
+                    "value": "mekha",
+                    "name": "Меха"
+                },
+                {
+                    "value": "misteriia",
+                    "name": "Містерія"
+                },
+                {
+                    "value": "mistyka",
+                    "name": "Містика"
+                },
+                {
+                    "value": "muzychnyi",
+                    "name": "Музичний"
+                },
+                {
+                    "value": "parodiia",
+                    "name": "Сатира / Пародія"
+                },
+                {
+                    "value": "povsiakdennist",
+                    "name": "Повсякденність"
+                },
+                {
+                    "value": "policiia",
+                    "name": "Поліція"
+                },
+                {
+                    "value": "postapokaliptyka",
+                    "name": "Постапокаліптика"
+                },
+                {
+                    "value": "prygody",
+                    "name": "Пригоди"
+                },
+                {
+                    "value": "psykhologiia",
+                    "name": "Психологія"
+                },
+                {
+                    "value": "romantyka",
+                    "name": "Романтика"
+                },
+                {
+                    "value": "samuraiskyi-boiovyk",
+                    "name": "Самурайський бойовик"
+                },
+                {
+                    "value": "sodzo",
+                    "name": "Шьодзьо"
+                },
+                {
+                    "value": "sonen",
+                    "name": "Шьонен"
+                },
+                {
+                    "value": "kazka",
+                    "name": "Казка"
+                },
+                {
+                    "value": "sport",
+                    "name": "Спорт"
+                },
+                {
+                    "value": "seinen",
+                    "name": "Сейнен"
+                },
+                {
+                    "value": "tryler",
+                    "name": "Трилер"
+                },
+                {
+                    "value": "fantastyka",
+                    "name": "Фантастика"
+                },
+                {
+                    "value": "erotyka",
+                    "name": "Еротика"
+                },
+                {
+                    "value": "etti",
+                    "name": "Еччі"
+                },
+                {
+                    "value": "zhakhy",
+                    "name": "Жахи"
+                },
+                {
+                    "value": "uri",
+                    "name": "Юрі"
+                },
+                {
+                    "value": "iaoi",
+                    "name": "Яой"
+                },
+                {
+                    "value": "dzosei",
+                    "name": "Джьосей"
+                },
+                {
+                    "value": "detektyv",
+                    "name": "Детектив"
+                }
+            ]
+        },
+        "add_anime": {
+            "start": "sect__content",
+            "next": "poster grid-item",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "title": {
+                "skip": "poster__title",
+                "token1": "\">",
+                "token2": "</"
+            },
+            "cover": {
+                "skip": "src=",
+                "token1": "\"",
+                "token2": "\""
+            },
+            "info_1": {
+                "skip": "poster__series",
+                "token1": "\">",
+                "token2": "</"
+            },
+            "info_2": {
+                "skip": "main_title_new",
+                "token1": "\">",
+                "token2": "</"
+            }
+        }
+    },
+    "anime_list_complete": {
+        "iterator": [
+            {
+                "category": {
+                    "tag": "main",
+                    "name": "Последние"
+                },
+                "base_url": "$scheme$//$hostname$/page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 5,
+                    "step": 1,
+                    "sufix": "/"
+                }
+            },
+            {
+                "category": {
+                    "tag": "novynky",
+                    "name": "Новинки"
+                },
+                "base_url": "$scheme$//$hostname$/novynky/page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 5,
+                    "step": 1,
+                    "sufix": "/"
+                }
+            }
+        ],
+        "add_anime": {
+            "start": "sect__content",
+            "next": "poster grid-item",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "title": {
+                "skip": "poster__title",
+                "token1": "\">",
+                "token2": "</"
+            },
+            "cover": {
+                "skip": "src=",
+                "token1": "\"",
+                "token2": "\""
+            },
+            "info_1": {
+                "skip": "poster__series",
+                "token1": "\">",
+                "token2": "</"
+            },
+            "info_2": {
+                "skip": "main_title_new",
+                "token1": "\">",
+                "token2": "</"
+            }
+        }
+    },
+    "anime_complete": {
+        "title": {
+            "token1": "original-title\">",
+            "token2": "<"
+        },
+        "alt_title": {
+            "token1": "<h1>",
+            "token2": "</"
+        },
+        "cover": {
+            "skip": "og:image",
+            "token1": "content=\"",
+            "token2": "\""
+        },
+        "add_producer": {
+            "token1": "<span>Режисер:</span>",
+            "token2": "</li>"
+        },
+        "add_dubber": {
+            "token1": "<span>Озвучення від:</span>",
+            "token2": "</li>",
+            "split": ",",
+            "replace": {
+                "match": "Озвучка:",
+                "text": ""
+            }
+        },
+        "production_year": {
+            "skip": ">Дата виходу:<",
+            "token1": "\">",
+            "token2": "<"
+        },
+        "episodes": {
+            "skip": ">Кількість епізодів:<",
+            "token1": "n>",
+            "token2": "<"
+        },
+        "summary": {
+            "skip": "page__text full-text",
+            "token1": "\">",
+            "token2": "</div"
+        },
+        "status": {
+            "default": "unknown"
+        },
+        "content_type": {
+            "default": "anime"
+        },
+        "add_genres": {
+            "start": ">Жанр:<",
+            "next": "a href",
+            "token1": "\">",
+            "token2": "<",
+            "end": "</li>"
+        },
+        "add_tags": {
+            "start": ">Теми:<",
+            "next": "a href",
+            "token1": "\">",
+            "token2": "<",
+            "end": "</li>"
+        }
+    },
+    "!seasons_complete": {
+        "get_translations": true,
+        "seasons_from_page": {
+            "token1": "file:\"",
+            "token2": "\""
+        },
+        "add_season": {
+            "if": {
+                "mode": "AND",
+                "!contains": [
+                    "folder"
+                ],
+                "then_values": {
+                    "break": "true"
+                },
+                "default": {
+                    "break": "true"
+                }
+            },
+            "start": "[",
+            "next": {
+                "value_regexp": "\"title\":\"(.*?)\",\"folder\""
+            },
+            "link": "@null",
+            "title": {
+                "token1": "title\":\"",
+                "token2": "\"",
+                "replace": {
+                    "match": "\\d+ серія",
+                    "text": ""
+                }
+            },
+            "end": "]}]"
+        }
+    },
+    "seasons_complete": {
+        "get_translations": true
+    },
+    "translations_complete": {
+        "get_episodes": true
+    },
+    "episodes_complete": {
+        "episodes_from_page": {
+            "token1": "file:\"",
+            "token2": "\""
+        },
+        "add_episode": [
+            {
+                "direct_links": true,
+                "links": {
+                    "start": "{",
+                    "token1": "\"file\":\"",
+                    "token2": "\"",
+                    "end": "}]"
+                },
+                "title_auto_num": {
+                    "start": 1,
+                    "prefix": "Серія ",
+                    "string_format": "%02d"
+                }
+            }
+        ],
+        "!add_episode": [
+            {
+                "direct_links": true,
+                "start": "[{",
+                "if": {
+                    "contains": [
+                        "folder"
+                    ]
+                },
+                "next": "{",
+                "link": {
+                    "token1": "\"file\":\"",
+                    "token2": "\""
+                },
+                "title": {
+                    "token1": "\"title\":\"",
+                    "token2": "\""
+                },
+                "end": "}]"
+            },
+            {
+                "direct_links": true,
+                "start": "[{",
+                "next": "{",
+                "link": {
+                    "token1": "\"file\":\"",
+                    "token2": "\""
+                },
+                "title": {
+                    "token1": "\"title\":\"",
+                    "token2": "\""
+                },
+                "end": "}]"
+            }
+        ]
+    },
+    "episode_complete": {
+        "form_data_tag": "shikimori"
+    },
+    "test": [
+        {
+            "proc": "anime_list_complete",
+            "testpages": 3,
+            "assert": {
+                "animes": [
+                    {
+                        "title": "@^(\\p{L}+)",
+                        "link": "@https://uachan.top/",
+                        "uniq": "@^(\\w+)"
+                    }
+                ],
+                "animes_count": ">=30"
+            }
+        },
+        {
+            "proc": "anime_complete",
+            "link": "https://uachan.top/anime/9-oshi-no-ko.html",
+            "assert": {
+                "title": "OSHI NO KO",
+                "alt_title": "@^(Дитина)",
+                "cover": "https://uachan.top/uploads/posts/2023-06/dytyna-ulub-2.webp",
+                "dubbers": "[kaizoku]",
+                "year": "2023",
+                "episodes": "1-11 із 11",
+                "content_type": "anime",
+                "genres": "@drama",
+                "genres_count": ">=1",
+                "tags": "@[детектив]"
+            }
+        }
+    ]
+}

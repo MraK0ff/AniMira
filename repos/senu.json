@@ -1,0 +1,798 @@
+{
+    "id": 20041,
+    "version": 5,
+    "title": "SENU Project",
+    "host": "https://senu.pro",
+    "public_link": "https://senu.pro",
+    "hash_tag": "senu",
+    "folder": "senu",
+    "name": "senu",
+    "language": "ru",
+    "content_type": "anime",
+    "episodes_order": true,
+    "icon_link": "http://images.mangawatcherx.com/parser/icon/anime/senu.png",
+    "self_link": "https://api.anilabx.xyz/v3/parser/get?type=anime&parser=senu",
+    "author": {
+        "name": "AniLabX Team",
+        "email": "anilabx.supp@gmail.com"
+    },
+    "custom_settings": {
+        "use_okhttp_client": true
+    },
+    "anime_search_complete": {
+        "search_link": "$scheme$//$hostname$/search/index.json",
+        "filter_with_query": true,
+        "query_type": "GET",
+        "add_anime": {
+            "start": "[",
+            "next": "{",
+            "link": {
+                "token1": "permalink\":\"",
+                "token2": "\""
+            },
+            "title": {
+                "token1": "content\":\"",
+                "token2": "\"",
+                "replace": {
+                    "match": "\\\\n.*",
+                    "text": ""
+                }
+            },
+            "alt_title": {
+                "token1": "title\":\"",
+                "token2": "\"",
+                "replace": {
+                    "match": " - SENU Project",
+                    "text": ""
+                }
+            },
+            "cover": {
+                "token1": "image\":\"",
+                "token2": "\""
+            },
+            "end": "}]"
+        }
+    },
+    "anime_list_filters_complete": {
+        "base_link": "$scheme$//$hostname$/tags/$dubber$/page/$page$/",
+        "filters": {
+            "01_dubber": {
+                "name": "Даббер",
+                "choice_mode": "single",
+                "filter_type": "path",
+                "path_name": "$dubber$",
+                "values": [
+                    {
+                        "value": "eladiel",
+                        "name": "Eladiel"
+                    },
+                    {
+                        "value": "zendos",
+                        "name": "Zendos"
+                    },
+                    {
+                        "value": "absurd",
+                        "name": "Absurd"
+                    },
+                    {
+                        "value": "liandry",
+                        "name": "LiaNdrY"
+                    },
+                    {
+                        "value": "dark-man",
+                        "name": "Dark Man"
+                    },
+                    {
+                        "value": "amutyan",
+                        "name": "Amutyan"
+                    },
+                    {
+                        "value": "jam",
+                        "name": "Jam"
+                    },
+                    {
+                        "value": "koikut",
+                        "name": "koikut"
+                    },
+                    {
+                        "value": "%D1%81%D0%B0%D1%84%D0%B0",
+                        "name": "Сафа"
+                    },
+                    {
+                        "value": "%D1%81%D0%BB%D0%B8%D0%BF%D0%BF%D0%B8",
+                        "name": "Слиппи"
+                    },
+                    {
+                        "value": "sher-khan",
+                        "name": "Sher Khan"
+                    },
+                    {
+                        "value": "zafkiel",
+                        "name": "Zafkiel"
+                    },
+                    {
+                        "value": "%D0%B0%D1%80%D1%85%D0%B0%D0%BD%D0%B3%D0%B5%D0%BB",
+                        "name": "Архангел"
+                    },
+                    {
+                        "value": "klay",
+                        "name": "Klay"
+                    },
+                    {
+                        "value": "mistake",
+                        "name": "Mistake"
+                    },
+                    {
+                        "value": "happy",
+                        "name": "Happy"
+                    },
+                    {
+                        "value": "mayd",
+                        "name": "Mayd"
+                    },
+                    {
+                        "value": "okadzaki",
+                        "name": "Okadzaki"
+                    },
+                    {
+                        "value": "ruri",
+                        "name": "Ruri"
+                    },
+                    {
+                        "value": "sunriz",
+                        "name": "SuNRiZ"
+                    },
+                    {
+                        "value": "%D0%B0%D0%BA%D0%B2%D0%B0%D1%80%D0%B5%D0%BB%D1%8C%D0%BA%D0%B0",
+                        "name": "Акварелька"
+                    },
+                    {
+                        "value": "black-eyed",
+                        "name": "Black-eyed"
+                    },
+                    {
+                        "value": "enilou",
+                        "name": "Enilou"
+                    },
+                    {
+                        "value": "shoker",
+                        "name": "Shoker"
+                    },
+                    {
+                        "value": "dio",
+                        "name": "Dio"
+                    },
+                    {
+                        "value": "ray",
+                        "name": "Ray"
+                    },
+                    {
+                        "value": "sayumi",
+                        "name": "Sayumi"
+                    },
+                    {
+                        "value": "agito",
+                        "name": "Agito"
+                    },
+                    {
+                        "value": "jesterfool",
+                        "name": "JesterFool"
+                    },
+                    {
+                        "value": "anhel",
+                        "name": "Anhel"
+                    },
+                    {
+                        "value": "furux",
+                        "name": "Furux"
+                    },
+                    {
+                        "value": "%D0%B4%D0%BC%D0%B8%D1%82%D1%80%D0%B8%D0%B9",
+                        "name": "Дмитрий"
+                    },
+                    {
+                        "value": "avad0n",
+                        "name": "Avad0n"
+                    },
+                    {
+                        "value": "lissa",
+                        "name": "Lissa"
+                    },
+                    {
+                        "value": "say",
+                        "name": "Say"
+                    },
+                    {
+                        "value": "aveacvale",
+                        "name": "AveAcVale"
+                    },
+                    {
+                        "value": "buka63",
+                        "name": "Buka63"
+                    },
+                    {
+                        "value": "sunniva-nort",
+                        "name": "Sunniva Nort"
+                    },
+                    {
+                        "value": "tomaz",
+                        "name": "Tomaz"
+                    },
+                    {
+                        "value": "%D0%B1%D0%B5%D0%B7%D1%8B%D0%BC%D1%8F%D0%BD%D0%BD%D1%8B%D0%B9",
+                        "name": "Безымянный"
+                    },
+                    {
+                        "value": "shachiburi",
+                        "name": "Shachiburi"
+                    },
+                    {
+                        "value": "snagvoice",
+                        "name": "SnagVoice"
+                    },
+                    {
+                        "value": "vielis",
+                        "name": "VieliS"
+                    },
+                    {
+                        "value": "deven",
+                        "name": "Deven"
+                    },
+                    {
+                        "value": "ford0s",
+                        "name": "Ford0S"
+                    },
+                    {
+                        "value": "i3lackwing",
+                        "name": "I3lackwing"
+                    },
+                    {
+                        "value": "kaize",
+                        "name": "KaiZe"
+                    },
+                    {
+                        "value": "sitri",
+                        "name": "Sitri"
+                    },
+                    {
+                        "value": "tamara",
+                        "name": "Tamara"
+                    },
+                    {
+                        "value": "xander",
+                        "name": "Xander"
+                    },
+                    {
+                        "value": "%D1%85%D0%B8%D0%B4%D0%B5%D0%BA%D0%B8",
+                        "name": "Хидеки"
+                    },
+                    {
+                        "value": "greh",
+                        "name": "GreH"
+                    },
+                    {
+                        "value": "milirina",
+                        "name": "Milirina"
+                    },
+                    {
+                        "value": "trouble",
+                        "name": "Trouble"
+                    },
+                    {
+                        "value": "valkrist",
+                        "name": "Valkrist"
+                    },
+                    {
+                        "value": "allestra",
+                        "name": "Allestra"
+                    },
+                    {
+                        "value": "artihrist",
+                        "name": "Artihrist"
+                    },
+                    {
+                        "value": "dlighter",
+                        "name": "DLighter"
+                    },
+                    {
+                        "value": "fobia",
+                        "name": "Fobia"
+                    },
+                    {
+                        "value": "friks",
+                        "name": "Friks"
+                    },
+                    {
+                        "value": "iiyiiok",
+                        "name": "IIyIIoK"
+                    },
+                    {
+                        "value": "juice",
+                        "name": "Juice"
+                    },
+                    {
+                        "value": "korbut",
+                        "name": "Korbut"
+                    },
+                    {
+                        "value": "metacarmex",
+                        "name": "Metacarmex"
+                    },
+                    {
+                        "value": "nuriko",
+                        "name": "Nuriko"
+                    },
+                    {
+                        "value": "slivcis",
+                        "name": "SlivciS"
+                    },
+                    {
+                        "value": "zabr",
+                        "name": "Zabr"
+                    },
+                    {
+                        "value": "greymoon",
+                        "name": "GreyMoon"
+                    },
+                    {
+                        "value": "keima",
+                        "name": "Keima"
+                    },
+                    {
+                        "value": "kvolik",
+                        "name": "Kvolik"
+                    },
+                    {
+                        "value": "neotopia",
+                        "name": "Neotopia"
+                    },
+                    {
+                        "value": "rablador",
+                        "name": "Rablador"
+                    },
+                    {
+                        "value": "rey",
+                        "name": "Rey"
+                    },
+                    {
+                        "value": "sorentbeil",
+                        "name": "SoReNtBeiL"
+                    },
+                    {
+                        "value": "tinda",
+                        "name": "Tinda"
+                    },
+                    {
+                        "value": "warbos",
+                        "name": "Warbos"
+                    },
+                    {
+                        "value": "%D0%BD%D0%B8%D0%BA%D0%BE%D0%BD%D0%BE%D1%8047",
+                        "name": "Никонор47"
+                    },
+                    {
+                        "value": "alexeyonly",
+                        "name": "AlexeyONLY"
+                    },
+                    {
+                        "value": "bratiwka",
+                        "name": "Bratiwka"
+                    },
+                    {
+                        "value": "ceaser",
+                        "name": "Ceaser"
+                    },
+                    {
+                        "value": "chaika",
+                        "name": "Chaika"
+                    },
+                    {
+                        "value": "dinas",
+                        "name": "DiNaS"
+                    },
+                    {
+                        "value": "djatom",
+                        "name": "DJATOM"
+                    },
+                    {
+                        "value": "duke-nighteon",
+                        "name": "Duke Nighteon"
+                    },
+                    {
+                        "value": "falcao",
+                        "name": "Fal'cao"
+                    },
+                    {
+                        "value": "flongot",
+                        "name": "Flongot"
+                    },
+                    {
+                        "value": "gilushka",
+                        "name": "Gilushka"
+                    },
+                    {
+                        "value": "gomer",
+                        "name": "Gomer"
+                    },
+                    {
+                        "value": "happytroll",
+                        "name": "HappyTroll"
+                    },
+                    {
+                        "value": "heathcl1ff",
+                        "name": "Heathcl1ff"
+                    },
+                    {
+                        "value": "jen_goro",
+                        "name": "Jen_Goro"
+                    },
+                    {
+                        "value": "kazu",
+                        "name": "Kazu"
+                    },
+                    {
+                        "value": "kitsune",
+                        "name": "Kitsune"
+                    },
+                    {
+                        "value": "kona_chan",
+                        "name": "Kona_chan"
+                    },
+                    {
+                        "value": "krondir",
+                        "name": "Krondir"
+                    },
+                    {
+                        "value": "m1nta",
+                        "name": "M1nta"
+                    },
+                    {
+                        "value": "megera",
+                        "name": "MEGERA"
+                    },
+                    {
+                        "value": "primary-alex",
+                        "name": "Primary Alex"
+                    },
+                    {
+                        "value": "radomyr",
+                        "name": "Radomyr"
+                    },
+                    {
+                        "value": "reantaro",
+                        "name": "Reantaro"
+                    }
+                ]
+            }
+        },
+        "add_anime": {
+            "next": "<article>",
+            "link": {
+                "token1": "href=",
+                "token2": "/"
+            },
+            "cover": {
+                "skip": "article-image",
+                "token1": "src=",
+                "token2": " "
+            },
+            "title": {
+                "skip": "article-title",
+                "token1": ">",
+                "token2": "</",
+                "replace": {
+                    "match": " - SENU Project",
+                    "text": ""
+                }
+            },
+            "skip_anime": {
+                "link_contains": [
+                    "rkpozor"
+                ]
+            }
+        }
+    },
+    "anime_list_complete": {
+        "iterator": [
+            {
+                "category": {
+                    "tag": "main",
+                    "name": "Последние"
+                },
+                "first_page_url": "$scheme$//$hostname$/",
+                "base_url": "$scheme$//$hostname$/page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 50,
+                    "step": 1,
+                    "sufix": "/"
+                }
+            }
+        ],
+        "add_anime": {
+            "next": "article-header",
+            "link": {
+                "token1": "href=",
+                "token2": ">"
+            },
+            "cover": {
+                "token1": "src=",
+                "token2": " "
+            },
+            "title": {
+                "skip": "article-subtitle",
+                "token1": ">",
+                "token2": "</",
+                "replace": {
+                    "match": " - SENU Project",
+                    "text": ""
+                }
+            },
+            "alt_title": {
+                "skip": "article-title",
+                "token1": ">",
+                "token2": "</",
+                "replace": {
+                    "match": " - SENU Project",
+                    "text": ""
+                }
+            },
+            "add_genres": {
+                "start": "article-category",
+                "next": "a href",
+                "token1": ">",
+                "token2": "</",
+                "end": "</header>"
+            },
+            "skip_anime": {
+                "link_contains": [
+                    "rkpozor"
+                ]
+            }
+        }
+    },
+    "anime_complete": {
+        "title": {
+            "skip": "description",
+            "token1": "content=\"",
+            "token2": "\"",
+            "replace": {
+                "match": " - SENU Project",
+                "text": ""
+            }
+        },
+        "alt_title": {
+            "token1": "<title>",
+            "token2": "</",
+            "replace": {
+                "match": " - SENU Project",
+                "text": ""
+            }
+        },
+        "cover": {
+            "skip": "og:image",
+            "token1": "content='",
+            "token2": "'"
+        },
+        "author": {
+            "after": ">Автор оригинала:<",
+            "token1": ">",
+            "token2": "</"
+        },
+        "add_studios": {
+            "start": ">Студия<",
+            "next": "code>",
+            "token1": "code>",
+            "token2": "<",
+            "split": ", ",
+            "end": "</li>"
+        },
+        "add_producers": {
+            "start": ">Режиссёр<",
+            "next": "code>",
+            "token1": "code>",
+            "token2": "<",
+            "split": ", ",
+            "end": "</li>"
+        },
+        "add_scenarists": {
+            "start": ">Сценарист<",
+            "next": "code>",
+            "token1": "code>",
+            "token2": "<",
+            "split": ", ",
+            "end": "</li>"
+        },
+        "add_dubbers": {
+            "start": ">Роли озвучивали<",
+            "next": "code>",
+            "token1": "code>",
+            "token2": "<",
+            "split": ", ",
+            "end": "</li>"
+        },
+        "aired_date": {
+            "skip": ">Даты выпуска<",
+            "token1": "<code>",
+            "token2": "</"
+        },
+        "episodes": {
+            "skip": ">Тип<",
+            "token1": "<code>",
+            "token2": "</"
+        },
+        "summary": {
+            "skip": "Описание</",
+            "token1": "h3>",
+            "token2": "<h3"
+        },
+        "content_type": {
+            "default": "anime"
+        },
+        "add_genres": {
+            "start": "article-category",
+            "next": "a href",
+            "token1": ">",
+            "token2": "</",
+            "end": "</header>"
+        }
+    },
+    "torrents_complete": {
+        "add_torrent": {
+            "may_be_null": true,
+            "start": "Скачать torrent<",
+            "next": "class=link",
+            "link": {
+                "token1": "href=",
+                "token2": ">"
+            },
+            "title": {
+                "skip": "href=",
+                "token1": ">",
+                "token2": "</"
+            },
+            "size": {
+                "token1": "<strong>[",
+                "token2": "]"
+            }
+        }
+    },
+    "seasons_complete": {
+        "get_translations": true
+    },
+    "translations_complete": {
+        "get_episodes": true
+    },
+    "episodes_complete": {
+        "add_episode": {
+            "may_be_null": true,
+            "direct_links": true,
+            "episodes_from_page": {
+                "after": "new Playerjs",
+                "token1": "file:\"",
+                "token2": "\"",
+                "replace": {
+                    "match": "^/",
+                    "text": "https://senu.pro/"
+                }
+            },
+            "start": "[",
+            "next": "{",
+            "link": {
+                "token1": "\"file\": \"",
+                "token2": "\""
+            },
+            "title": {
+                "token1": "\"title\": \"",
+                "token2": "\"",
+                "replace": {
+                    "match": "РЎРµСЂРёСЏ",
+                    "text": ""
+                }
+            },
+            "uniq": {
+                "token1": "\"title\": \"",
+                "token2": "\"",
+                "replace": {
+                    "match": "РЎРµСЂРёСЏ",
+                    "text": ""
+                }
+            }
+        },
+        "link_corrector": [
+            {
+                "match": "\\[.*?\\]",
+                "text": ""
+            }
+        ]
+    },
+    "episode_complete": {},
+    "test": [
+        {
+            "proc": "anime_list_filters_complete",
+            "disable": true,
+            "filters": {
+                "01_dubber": [
+                    {
+                        "value": "eladiel",
+                        "name": "Eladiel"
+                    }
+                ]
+            },
+            "assert": {
+                "animes": [
+                    {
+                        "title": "@^(\\w+)",
+                        "link": "@https://senu.pro/",
+                        "uniq": "@^(\\w+)"
+                    }
+                ],
+                "animes_count": ">=12"
+            }
+        },
+        {
+            "proc": "anime_search_complete",
+            "query": "jojo",
+            "assert": {
+                "animes": [
+                    {
+                        "title": "@^(\\w+)",
+                        "link": "@https://senu.pro/",
+                        "uniq": "@^(\\w+)"
+                    }
+                ],
+                "animes_count": ">=2"
+            }
+        },
+        {
+            "proc": "anime_list_complete",
+            "testpages": 3,
+            "assert": {
+                "animes": [
+                    {
+                        "title": "@^(\\w+)",
+                        "link": "@https://senu.pro/",
+                        "uniq": "@^(\\w+)"
+                    }
+                ],
+                "animes_count": ">=29"
+            }
+        },
+        {
+            "proc": "anime_complete",
+            "link": "https://senu.pro/p/1638/",
+            "assert": {
+                "title": "Shuumatsu no Walküre",
+                "alt_title": "Хроники рагнарёка",
+                "cover": "https://senu.pro/p/1638/poster.webp",
+                "producers": "@(масао)",
+                "studios": "[Graphinica]",
+                "dubbers": "[Absurd, Amutyan, Fobia, JesterFool]",
+                "episodes": "Сериал, 12 эп., ~24 мин.",
+                "aired_date": "17.06.2021",
+                "content_type": "anime",
+                "genres": "@drama",
+                "genres_count": ">=3",
+                "summary": "@^(Каждо)"
+            }
+        },
+        {
+            "proc": "anime_complete",
+            "link": "https://senu.pro/p/1641/",
+            "assert": {
+                "title": "Sabikui Bisco",
+                "alt_title": "Биско-ржавоед",
+                "cover": "https://senu.pro/p/1641/poster.webp",
+                "producers": "[Ацуси Икария]",
+                "studios": "[OZ]",
+                "dubbers": "[Chaika, HappyTroll, JesterFool]",
+                "episodes": "Сериал, 12 эп., ~24 мин.",
+                "aired_date": "с 11.01.2022",
+                "content_type": "anime",
+                "genres": "@adventure",
+                "genres_count": ">=1",
+                "summary": "@^(Действие разворачивается)"
+            }
+        }
+    ]
+}

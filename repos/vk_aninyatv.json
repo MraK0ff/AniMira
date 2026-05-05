@@ -1,0 +1,150 @@
+{
+    "id": 20105,
+    "version": 5,
+    "title": "VK: AniNya.TV",
+    "host": "https://vk.ru/aninyatv",
+    "public_link": "https://vk.ru/aninyatv",
+    "api": "vk_group",
+    "hash_tag": "vk_aninyatv",
+    "folder": "vk_aninyatv",
+    "name": "vk_aninyatv",
+    "language": "ru",
+    "content_type": "anime",
+    "episodes_order": false,
+    "icon_link": "http://images.mangawatcherx.com/parser/icon/anime/vk_aninyatv.png",
+    "self_link": "https://api.anilabx.xyz/v3/parser/get?type=anime&parser=vk_aninyatv",
+    "author": {
+        "name": "AniLabX Team",
+        "email": "anilabx.supp@gmail.com"
+    },
+    "custom_settings": {
+        "vk_catalog_app_client_id": "2685278",
+        "vk_videos_owner_id": "-142125365",
+        "is_ignore_dynamic_link_system": "true",
+        "card_size": "LAND"
+    },
+    "anime_search_complete": {},
+    "anime_list_complete": {
+        "iterator": [
+            {
+                "category": {
+                    "tag": "main",
+                    "name": "Последние"
+                },
+                "base_url": "https://api3.anilabx.xyz/v3/provider/vk/aninyatv/list"
+            }
+        ],
+        "add_anime": {
+            "start": "\"items\":",
+            "next": "\"count\"",
+            "link": {
+                "token1": "\"id\":",
+                "token2": ",",
+                "replace": [
+                    {
+                        "match": "\\}",
+                        "text": ""
+                    },
+                    {
+                        "prefix": "https://api3.anilabx.xyz/v3/provider/vk/aninyatv/details/"
+                    }
+                ]
+            },
+            "title": {
+                "token1": "\"title\":\"",
+                "token2": "\"",
+                "replace": {
+                    "match": "\\\\",
+                    "text": ""
+                }
+            },
+            "cover": {
+                "token1": "\"photo_320\":\"",
+                "token2": "\"",
+                "replace": {
+                    "match": "\\\\",
+                    "text": ""
+                }
+            },
+            "episodes_aired": {
+                "token1": "\"count\":",
+                "token2": ",",
+                "prefix": "Эпизодов: "
+            }
+        }
+    },
+    "anime_complete": {
+        "title": {
+            "token1": "\"title\":\"",
+            "token2": "\"",
+            "replace": {
+                "match": "\\\\",
+                "text": ""
+            }
+        },
+        "cover": {
+            "token1": "\"photo_320\":\"",
+            "token2": "\"",
+            "replace": {
+                "match": "\\\\",
+                "text": ""
+            }
+        },
+        "add_dubber": "AniNya.TV",
+        "country": "Япония",
+        "episodes": {
+            "token1": "\"count\":\"",
+            "token2": ","
+        },
+        "!summary": {
+            "token1": ">",
+            "token2": "<"
+        },
+        "status": {
+            "default": "ongoing"
+        },
+        "content_type": {
+            "default": "anime"
+        }
+    },
+    "seasons_complete": {
+        "link_corrector_in": [
+            {
+                "match": "/details/",
+                "text": "/episodes/"
+            }
+        ],
+        "get_translations": true
+    },
+    "translations_complete": {
+        "get_episodes": true
+    },
+    "episodes_complete": {
+        "add_episode": [
+            {
+                "may_be_null": true,
+                "start": "\"items\":",
+                "next": "\"owner_id\":",
+                "link": {
+                    "token1": "\"player\":\"",
+                    "token2": "\"",
+                    "replace": {
+                        "match": "\\\\",
+                        "text": ""
+                    }
+                },
+                "title": {
+                    "token1": "\"title\":\"",
+                    "token2": "\"",
+                    "replace": {
+                        "match": "\\\\",
+                        "text": ""
+                    }
+                },
+                "end": "]}}"
+            }
+        ]
+    },
+    "episode_complete": {},
+    "test": []
+}

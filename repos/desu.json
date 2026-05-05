@@ -1,0 +1,686 @@
+{
+    "id": 40009,
+    "migration_id": 30402,
+    "version": 46,
+    "title": "Desu",
+    "host": "https://desu.uno",
+    "public_link": "https://desu.uno",
+    "api": "desu",
+    "api_endpoint": "https://desu.uno/",
+    "hash_tag": "desu",
+    "folder": "desu",
+    "name": "desu",
+    "language": "ru",
+    "content_type": "manga",
+    "chapters_order": true,
+    "icon_link": "http://images.mangawatcherx.com/parser/icon/manga/desu.png",
+    "self_link": "https://api.anilabx.xyz/v3/parser/get?type=manga&parser=desu",
+    "custom_settings": {
+        "pages_referer": "https://desu.uno",
+        "is_allow_host_mirroring": true,
+        "is_allow_endpoint_mirroring": true,
+        "!on_catalog_loading_error_hint": "<b>Подсказка:</b> Если каталог не работает, попробуйте сменить зеркала в настройках <b>Desu</b>. По умолчанию, каталог доступен только в <b>Ру и СНГ регионах</b>",
+        "!mirrors": [
+            {
+                "name": "Ру и СНГ",
+                "url": "https://desu.uno"
+            },
+            {
+                "name": "Весь мир",
+                "url": "https://desu.city"
+            }
+        ],
+        "!endpoint_mirrors": [
+            {
+                "name": "Ру и СНГ",
+                "url": "https://desu.uno/"
+            },
+            {
+                "name": "Весь мир",
+                "url": "https://desu.city/"
+            }
+        ]
+    },
+    "manga_search_complete": {},
+    "manga_list_filters_complete": {
+        "base_link": "$scheme$//$hostname$/catalog?offset=$page$",
+        "page_addition_by": -1,
+        "page_multiply_by": 20,
+        "filters": {
+            "0_search": {
+                "name": "Поиск",
+                "choice_mode": "search",
+                "filter_type": "get_query",
+                "query_name": "search",
+                "values": [
+                    {
+                        "name": "Search",
+                        "value": ""
+                    }
+                ]
+            },
+            "1_order": {
+                "name": "Порядок",
+                "choice_mode": "single",
+                "filter_type": "get_query",
+                "query_name": "order_by",
+                "values": [
+                    {
+                        "name": "По новизне",
+                        "value": "updated"
+                    },
+                    {
+                        "name": "По популярности",
+                        "value": "popular"
+                    },
+                    {
+                        "name": "По алфавиту",
+                        "value": "name"
+                    }
+                ]
+            },
+            "2_genres": {
+                "name": "Жанры",
+                "choice_mode": "multiple",
+                "filter_type": "get_query",
+                "query_name": "genres",
+                "values": [
+                    {
+                        "value": "Dementia",
+                        "name": "Безумие"
+                    },
+                    {
+                        "value": "Martial Arts",
+                        "name": "Боевые искусства"
+                    },
+                    {
+                        "value": "Color",
+                        "name": "В цвете"
+                    },
+                    {
+                        "value": "Vampire",
+                        "name": "Вампиры"
+                    },
+                    {
+                        "value": "Web",
+                        "name": "Веб"
+                    },
+                    {
+                        "value": "Harem",
+                        "name": "Гарем"
+                    },
+                    {
+                        "value": "Heroic Fantasy",
+                        "name": "Героическое фэнтези"
+                    },
+                    {
+                        "value": "Demons",
+                        "name": "Демоны"
+                    },
+                    {
+                        "value": "Mystery",
+                        "name": "Детектив"
+                    },
+                    {
+                        "value": "Josei",
+                        "name": "Дзёсей"
+                    },
+                    {
+                        "value": "Drama",
+                        "name": "Драма"
+                    },
+                    {
+                        "value": "Yonkoma",
+                        "name": "Ёнкома"
+                    },
+                    {
+                        "value": "Game",
+                        "name": "Игры"
+                    },
+                    {
+                        "value": "Isekai",
+                        "name": "Исекай"
+                    },
+                    {
+                        "value": "Historical",
+                        "name": "Исторический"
+                    },
+                    {
+                        "value": "Comedy",
+                        "name": "Комедия"
+                    },
+                    {
+                        "value": "Space",
+                        "name": "Космос"
+                    },
+                    {
+                        "value": "LitRPG",
+                        "name": "ЛитRPG"
+                    },
+                    {
+                        "value": "Magic",
+                        "name": "Магия"
+                    },
+                    {
+                        "value": "Mecha",
+                        "name": "Меха"
+                    },
+                    {
+                        "value": "Mystic",
+                        "name": "Мистика"
+                    },
+                    {
+                        "value": "Music",
+                        "name": "Музыка"
+                    },
+                    {
+                        "value": "Sci-Fi",
+                        "name": "Научная фантастика"
+                    },
+                    {
+                        "value": "Parody",
+                        "name": "Пародия"
+                    },
+                    {
+                        "value": "Slice of Life",
+                        "name": "Повседневность"
+                    },
+                    {
+                        "value": "Post Apocalyptic",
+                        "name": "Постапокалиптика"
+                    },
+                    {
+                        "value": "Adventure",
+                        "name": "Приключения"
+                    },
+                    {
+                        "value": "Psychological",
+                        "name": "Психологическое"
+                    },
+                    {
+                        "value": "Romance",
+                        "name": "Романтика"
+                    },
+                    {
+                        "value": "Samurai",
+                        "name": "Самураи"
+                    },
+                    {
+                        "value": "Supernatural",
+                        "name": "Сверхъестественное"
+                    },
+                    {
+                        "value": "Shoujo",
+                        "name": "Сёдзе"
+                    },
+                    {
+                        "value": "Shoujo Ai",
+                        "name": "Сёдзе Ай"
+                    },
+                    {
+                        "value": "Seinen",
+                        "name": "Сейнен"
+                    },
+                    {
+                        "value": "Shounen",
+                        "name": "Сёнен"
+                    },
+                    {
+                        "value": "Shounen Ai",
+                        "name": "Сёнен Ай"
+                    },
+                    {
+                        "value": "Gender Bender",
+                        "name": "Смена пола"
+                    },
+                    {
+                        "value": "Sports",
+                        "name": "Спорт"
+                    },
+                    {
+                        "value": "Super Power",
+                        "name": "Супер сила"
+                    },
+                    {
+                        "value": "Tragedy",
+                        "name": "Трагедия"
+                    },
+                    {
+                        "value": "Thriller",
+                        "name": "Триллер"
+                    },
+                    {
+                        "value": "Horror",
+                        "name": "Ужасы"
+                    },
+                    {
+                        "value": "Fiction",
+                        "name": "Фантастика"
+                    },
+                    {
+                        "value": "Fantasy",
+                        "name": "Фэнтези"
+                    },
+                    {
+                        "value": "Hentai",
+                        "name": "Хентай"
+                    },
+                    {
+                        "value": "School",
+                        "name": "Школа"
+                    },
+                    {
+                        "value": "Action",
+                        "name": "Экшен"
+                    },
+                    {
+                        "value": "Ecchi",
+                        "name": "Этти"
+                    },
+                    {
+                        "value": "Yuri",
+                        "name": "Юри"
+                    },
+                    {
+                        "value": "Yaoi",
+                        "name": "Яой"
+                    }
+                ]
+            },
+            "3_type": {
+                "name": "Тип контента",
+                "choice_mode": "multiple",
+                "filter_type": "get_query",
+                "query_name": "kinds",
+                "values": [
+                    {
+                        "value": "manga",
+                        "name": "Манга"
+                    },
+                    {
+                        "value": "manhwa",
+                        "name": "Манхва"
+                    },
+                    {
+                        "value": "manhua",
+                        "name": "Маньхуа"
+                    },
+                    {
+                        "value": "one_shot",
+                        "name": "Ваншот"
+                    },
+                    {
+                        "value": "comics",
+                        "name": "Комикс"
+                    }
+                ]
+            }
+        },
+        "add_manga": {
+            "next": "\"id\"",
+            "link": {
+                "after": "\"url\"",
+                "token1": ":\"",
+                "token2": "\",",
+                "replace": {
+                    "match": "desu.uno/manga/",
+                    "text": "desu.uno/manga/api/"
+                }
+            },
+            "uniq": {
+                "after": "\"name\"",
+                "token1": ":\"",
+                "token2": "\","
+            },
+            "title": {
+                "after": "\"russian\"",
+                "token1": ":\"",
+                "token2": "\","
+            }
+        }
+    },
+    "manga_list_complete": {
+        "iterator": {
+            "base_url": "$scheme$//$hostname$/manga/api/?limit=30&order=popular&page=",
+            "append_nums": {
+                "from": 1,
+                "to": 80
+            }
+        },
+        "add_manga": {
+            "next": "\"id\"",
+            "link": {
+                "after": "\"url\"",
+                "token1": ":\"",
+                "token2": "\",",
+                "replace": {
+                    "match": "desu.uno/manga/",
+                    "text": "desu.uno/manga/api/"
+                }
+            },
+            "uniq": {
+                "after": "\"name\"",
+                "token1": ":\"",
+                "token2": "\","
+            },
+            "title": {
+                "after": "\"name\"",
+                "token1": ":\"",
+                "token2": "\","
+            },
+            "alt_title": {
+                "after": "\"russian\"",
+                "token1": ":\"",
+                "token2": "\","
+            }
+        }
+    },
+    "manga_complete": [
+        {
+            "condition": "response",
+            "title": {
+                "after": "\"name\"",
+                "token1": ":\"",
+                "token2": "\",\"im",
+                "replace": {
+                    "match": "\",\"russian\":\"",
+                    "text": " / "
+                }
+            },
+            "uniq": {
+                "after": "\"name\"",
+                "token1": ":\"",
+                "token2": "\","
+            },
+            "status": {
+                "complete": [
+                    "\"status\":\"singl\"",
+                    "\"status\":\"released\""
+                ],
+                "ongoing": "\"status\":\"ongoing\"",
+                "empty": "\"status\":\"anons\""
+            },
+            "summary": {
+                "skip": "\"description\"",
+                "token1": ":\"",
+                "token2": "\","
+            },
+            "read_dir": {
+                "right_to_left": "\"right-to-left\"",
+                "left_to_right": "\"left-to-right\""
+            },
+            "cover": {
+                "skip": "\"original\"",
+                "token1": ":\"",
+                "token2": "\""
+            },
+            "is_adult": "\"adult\":1,",
+            "add_genre": {
+                "!start": "\"genres\":[",
+                "!end": "],",
+                "token1": "\"text\":\"",
+                "token2": "\""
+            },
+            "add_chapter": {
+                "start": "\"list\":[",
+                "next": "\"id\"",
+                "end": "}}}",
+                "link": {
+                    "token1": "\"id\":",
+                    "token2": ",",
+                    "replace": {
+                        "prefix": "%%url%%chapter/"
+                    }
+                },
+                "title": {
+                    "token1": "\"vol\":",
+                    "token2": "\"date\"",
+                    "replace": [
+                        {
+                            "match": ",\"ch\":",
+                            "text": " - "
+                        },
+                        {
+                            "match": "\"title\"",
+                            "text": ""
+                        },
+                        {
+                            "match": ",:null,",
+                            "text": ""
+                        },
+                        {
+                            "match": ",:\"",
+                            "text": " - "
+                        },
+                        {
+                            "match": "\",",
+                            "text": ""
+                        }
+                    ]
+                },
+                "uniq": {
+                    "token1": "\"ch\":",
+                    "token2": "\"date\"",
+                    "replace": [
+                        {
+                            "match": "\"title\"",
+                            "text": ""
+                        },
+                        {
+                            "match": ",:null,",
+                            "text": ""
+                        },
+                        {
+                            "match": ",:\"",
+                            "text": " - "
+                        },
+                        {
+                            "match": "\",",
+                            "text": ""
+                        },
+                        {
+                            "match": "\\\\",
+                            "text": ""
+                        },
+                        {
+                            "match": "\\?",
+                            "text": ""
+                        },
+                        {
+                            "match": "!",
+                            "text": ""
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "condition": "",
+            "title": {
+                "skip": "<span class=\"rus-name\"",
+                "token1": "\">",
+                "token2": "</"
+            },
+            "uniq": {
+                "skip": "<span class=\"rus-name\"",
+                "token1": "\">",
+                "token2": "</"
+            },
+            "status": {
+                "complete": [
+                    "Сингл",
+                    "вышло"
+                ],
+                "ongoing": "выходит"
+            },
+            "summary": {
+                "skip": "<div class=\"prgrph\"",
+                "token1": ">",
+                "token2": "</div>"
+            },
+            "read_dir": {
+                "right_to_left": "class=\"valuev\">Манга",
+                "left_to_right": "class=\"valuev\">Манхва"
+            },
+            "cover": {
+                "skip": "<div class=\"c-poster\"",
+                "token1": "src=\"",
+                "token2": "\""
+            },
+            "add_genre": {
+                "!start": "<ul class=\"tagList\"",
+                "!end": "</ul>",
+                "token1": "href=\"manga/?genres=",
+                "token2": "\""
+            },
+            "chapters_from_page": {
+                "skip": "<meta property=\"og:url\"",
+                "token1": "content=\"",
+                "token2": "\"",
+                "replace": {
+                    "match": "desu.uno/manga/",
+                    "text": "desu.uno/manga/api/"
+                }
+            },
+            "add_chapter": {
+                "start": "\"list\":[",
+                "next": "\"id\"",
+                "end": "user_list",
+                "link": {
+                    "token1": "\"id\":",
+                    "token2": ",",
+                    "replace": {
+                        "prefix": "%%url%%chapter/"
+                    }
+                },
+                "title": {
+                    "token1": "\"vol\":",
+                    "token2": "\"date\"",
+                    "replace": [
+                        {
+                            "match": ",\"ch\":",
+                            "text": " - "
+                        },
+                        {
+                            "match": "\"title\"",
+                            "text": ""
+                        },
+                        {
+                            "match": ",:null,",
+                            "text": ""
+                        },
+                        {
+                            "match": ",:\"",
+                            "text": " - "
+                        },
+                        {
+                            "match": "\",",
+                            "text": ""
+                        }
+                    ]
+                },
+                "uniq": {
+                    "token1": "\"ch\":",
+                    "token2": "\"date\"",
+                    "replace": [
+                        {
+                            "match": "\"title\"",
+                            "text": ""
+                        },
+                        {
+                            "match": ",:null,",
+                            "text": ""
+                        },
+                        {
+                            "match": ",:\"",
+                            "text": " - "
+                        },
+                        {
+                            "match": "\",",
+                            "text": ""
+                        },
+                        {
+                            "match": "\\\\",
+                            "text": ""
+                        },
+                        {
+                            "match": "\\?",
+                            "text": ""
+                        },
+                        {
+                            "match": "!",
+                            "text": ""
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "chapter_complete": {
+        "images": true,
+        "add_pages": {
+            "start": "\"pages\"",
+            "token1": "\"img\":\"",
+            "token2": "\"",
+            "end": "}]"
+        }
+    },
+    "test": [
+        {
+            "proc": "manga_list_complete",
+            "testpages": "3",
+            "assert": {
+                "mangas": [
+                    {
+                        "link": "https://desu.uno/manga/api/one-piece.12/",
+                        "uniq": "One Piece"
+                    },
+                    {
+                        "link": "https://desu.uno/manga/api/onepunch-man.48/"
+                    }
+                ],
+                "mangas_count": ">25"
+            }
+        },
+        {
+            "proc": "manga_complete",
+            "link": "https://desu.me/manga/api/fairy-tail.10/",
+            "title": "Фейри Тейл",
+            "assert": {
+                "cover": "https://desu.me/data/manga/covers/original/10.jpg",
+                "summary": "@^(Фейри Тейл – знаменитая на весь мир)",
+                "genres": "@comedy",
+                "status": "complete",
+                "genres_count": ">=2",
+                "chapters_count": ">=511",
+                "chapters": [
+                    {
+                        "title": "1 - Фейри Тейл",
+                        "link": "https://desu.me/manga/api/fairy-tail.10/chapter/37975",
+                        "folder": "1 - Фейри Тейл/"
+                    },
+                    {
+                        "title": "@(2 - Появление)",
+                        "link": "https://desu.me/manga/api/fairy-tail.10/chapter/37976"
+                    }
+                ]
+            }
+        },
+        {
+            "proc": "chapter_complete",
+            "link": "https://desu.me/manga/api/fairy-tail.10/chapter/37975",
+            "title": "1 - Фейри Тейл",
+            "assert": {
+                "pages": [
+                    {
+                        "image": "@^http://img2.desu.me/manga/rus/fairy_tail/vol01_ch001/fairy_tail_vol1_ch001_p001.jpg"
+                    },
+                    {
+                        "image": "@^http://img2.desu.me/manga/rus/fairy_tail/vol01_ch001/fairy_tail_vol1_ch001_p002.jpg"
+                    }
+                ],
+                "pages_count": "77"
+            }
+        }
+    ]
+}

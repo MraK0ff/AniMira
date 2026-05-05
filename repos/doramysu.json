@@ -1,0 +1,378 @@
+{
+    "id": 30000,
+    "version": 49,
+    "title": "VDorame",
+    "host": "https://v16.vdorame.net",
+    "public_link": "https://v16.vdorame.net",
+    "hash_tag": "doramysu",
+    "folder": "doramysu",
+    "name": [
+        "doramysu",
+        "vdorame"
+    ],
+    "language": "ru",
+    "content_type": "dorama",
+    "episodes_order": true,
+    "icon_link": "http://images.mangawatcherx.com/parser/icon/dorams/doramy.png",
+    "self_link": "https://api.anilabx.xyz/v3/parser/get?type=dorama&parser=doramysu",
+    "author": {
+        "name": "AniLabX Team",
+        "email": "anilabx.supp@gmail.com"
+    },
+    "anime_search_complete": {
+        "search_link": "$scheme$//$hostname$/page/$page$?s=$query$",
+        "query_type": "GET",
+        "add_anime": {
+            "next": "class=\"entry-header\"",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "title": {
+                "after": "href=\"",
+                "token1": ">",
+                "token2": "</"
+            },
+            "cover": {
+                "token1": "src=\"",
+                "token2": "\""
+            },
+            "season": {
+                "token1": "id=\"ratvkat\">",
+                "token2": "</"
+            },
+            "episodes_aired": {
+                "token1": "epizodov\">Серий:</span>",
+                "token2": "<b"
+            },
+            "add_genres": {
+                "start": ">Жанры:<",
+                "token1": "n>",
+                "token2": "<",
+                "split": ","
+            },
+            "uniq": {
+                "after": "href=\"",
+                "token1": ">",
+                "token2": "</"
+            }
+        }
+    },
+    "anime_list_complete": {
+        "iterator": [
+            {
+                "category": {
+                    "tag": "main",
+                    "name": "Последние"
+                },
+                "base_url": "$scheme$//$hostname$/page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 56,
+                    "step": 1
+                }
+            },
+            {
+                "category": {
+                    "tag": "korean",
+                    "name": "Корейские"
+                },
+                "base_url": "$scheme$//$hostname$/news/koreia_dorams/1-0-1/page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 48,
+                    "step": 1,
+                    "sufix": "-0-1"
+                }
+            },
+            {
+                "category": {
+                    "tag": "japan",
+                    "name": "Японские"
+                },
+                "base_url": "$scheme$//$hostname$/news/japonija_dorams/1-0-2/page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 6,
+                    "step": 1,
+                    "sufix": "-0-2"
+                }
+            },
+            {
+                "category": {
+                    "tag": "tajvan",
+                    "name": "Тайваньские"
+                },
+                "base_url": "$scheme$//$hostname$/news/tajvan_dorams/1-0-4/page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 2,
+                    "step": 1,
+                    "sufix": "-0-4"
+                }
+            },
+            {
+                "category": {
+                    "tag": "kitaj",
+                    "name": "Китайские"
+                },
+                "base_url": "$scheme$//$hostname$/news/kitaj_dorams/1-0-3/page/"
+            },
+            {
+                "category": {
+                    "tag": "tailand",
+                    "name": "Тайские"
+                },
+                "base_url": "$scheme$//$hostname$/news/tailand_lakorn/1-0-5"
+            }
+        ],
+        "add_anime": {
+            "next": "class=\"post-column\">",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "title": {
+                "after": "\"bookmark\"",
+                "token1": ">",
+                "token2": "</"
+            },
+            "cover": {
+                "token1": "src=\"",
+                "token2": "\""
+            }
+        }
+    },
+    "anime_complete": {
+        "title": {
+            "skip": "itemprop=\"name\"",
+            "token1": "content=\"",
+            "token2": "\""
+        },
+        "uniq": {
+            "skip": "itemprop=\"name\"",
+            "token1": "content=\"",
+            "token2": "\""
+        },
+        "cover": {
+            "after": "itemprop=\"image\"",
+            "token1": "src=\"",
+            "token2": "\""
+        },
+        "country": {
+            "skip": ">Страна:<",
+            "token1": ">",
+            "token2": "<"
+        },
+        "production_year": {
+            "skip": ">Год:<",
+            "token1": ">",
+            "token2": "<"
+        },
+        "aired_date": {
+            "skip": ">Год:<",
+            "token1": ">",
+            "token2": "<"
+        },
+        "episodes": {
+            "skip": ">Серий:<",
+            "token1": ">",
+            "token2": "<"
+        },
+        "summary": {
+            "skip": "class=\"sharblo\"",
+            "token1": "<p>",
+            "token2": "<div class=\"related_posts_items\">"
+        },
+        "status": {
+            "ongoing": "Онгоинг. Доступны не все серии",
+            "default": "complete"
+        },
+        "content_type": {
+            "default": "dorama"
+        },
+        "add_genres": {
+            "start": ">Жанры:<",
+            "token1": "span>",
+            "token2": "<",
+            "split": ", ",
+            "end": "<"
+        }
+    },
+    "seasons_complete": {
+        "get_translations": true
+    },
+    "translations_complete": {
+        "get_episodes": true
+    },
+    "episodes_complete": {
+        "add_episode": [
+            {
+                "may_be_null": true,
+                "start": "pleer-serii",
+                "next": "uvk.player",
+                "link": {
+                    "token1": "('",
+                    "token2": "'"
+                },
+                "title": {
+                    "token1": "\">",
+                    "token2": "<",
+                    "replace": [
+                        {
+                            "trim": "true"
+                        },
+                        {
+                            "match": "Все серии",
+                            "text": ""
+                        }
+                    ]
+                },
+                "uniq": {
+                    "token1": "\">",
+                    "token2": "<",
+                    "replace": [
+                        {
+                            "trim": "true"
+                        },
+                        {
+                            "match": "Все серии",
+                            "text": ""
+                        }
+                    ]
+                },
+                "end": "</ul>"
+            },
+            {
+                "may_be_null": true,
+                "episodes_from_page": {
+                    "after": "id=\"pleer-video\"",
+                    "token1": "src=\"",
+                    "token2": "\"",
+                    "replace": {
+                        "match": "^//",
+                        "text": "http://"
+                    }
+                },
+                "start": "class=\"serial-series-box",
+                "next": "<option",
+                "link": {
+                    "token1": "value=\"",
+                    "token2": "\"",
+                    "replace": [
+                        {
+                            "prefix": "%%url%%?episode="
+                        },
+                        {
+                            "match": "\\?translations=false",
+                            "text": ""
+                        }
+                    ]
+                },
+                "title": {
+                    "token1": ">",
+                    "token2": "</",
+                    "replace": [
+                        {
+                            "match": "(Серия) (\\d+)(.*)",
+                            "text": "Серия $2"
+                        },
+                        {
+                            "match": "(\\d+) серия(.*)",
+                            "text": "Серия $1"
+                        }
+                    ]
+                },
+                "uniq": {
+                    "token1": ">",
+                    "token2": "</"
+                },
+                "end": "</select>"
+            }
+        ],
+        "link_corrector": [
+            {
+                "match": "&quot; frameborder=&quot;0&quot; scrolling=&quot;no",
+                "text": ""
+            },
+            {
+                "match": "'",
+                "text": ""
+            },
+            {
+                "match": "\"",
+                "text": ""
+            }
+        ]
+    },
+    "episode_complete": {
+        "form_data_tag": "doramysu",
+        "headers": {
+            "Referer": "https://v16.vdorame.net"
+        }
+    },
+    "test": [
+        {
+            "proc": "anime_search_complete",
+            "query": "зомби",
+            "assert": {
+                "animes": [
+                    {
+                        "title": "Зомби-детектив",
+                        "link": "https://v16.vdorame.net/zombi_detektiv_dorama_662",
+                        "uniq": "Зомби-детектив"
+                    }
+                ],
+                "animes_count": ">=1"
+            }
+        },
+        {
+            "proc": "anime_list_complete",
+            "testpages": 3,
+            "assert": {
+                "animes": [
+                    {
+                        "title": "@^(\\p{L}+)",
+                        "link": "@https://v16.vdorame.net/",
+                        "uniq": "@^(\\p{L}+)"
+                    }
+                ],
+                "animes_count": ">=30"
+            }
+        },
+        {
+            "proc": "anime_complete",
+            "link": "https://v16.vdorame.net/zombi_detektiv_dorama_662",
+            "assert": {
+                "country": "Южная Корея",
+                "title": "Зомби-детектив",
+                "cover": "https://v16.vdorame.net/_nw/6/662.jpg",
+                "year": "2020",
+                "episodes": "12 по 60 мин.",
+                "content_type": "dorama",
+                "genres": "@drama",
+                "genres_count": ">=3",
+                "tags": "[детектив]",
+                "status": "complete",
+                "summary": "@^(Каково это)"
+            }
+        },
+        {
+            "proc": "anime_complete",
+            "link": "https://v16.vdorame.net/news/eshio_odin_schastlivyi_konec_online/2016-03-17-358",
+            "assert": {
+                "title": "Ещё один счастливый конец",
+                "cover": "https://v16.vdorame.net/_nw/3/19285884.jpg",
+                "country": "Южная Корея",
+                "year": "2016",
+                "episodes": "16 по 60 мин.",
+                "content_type": "dorama",
+                "genres": "@comedy",
+                "genres_count": ">=1",
+                "status": "complete",
+                "summary": "@^(Что случается)",
+                "tags": "[мелодрама]"
+            }
+        }
+    ]
+}

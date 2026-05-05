@@ -1,0 +1,436 @@
+{
+    "id": 40161,
+    "migration_id": 40161,
+    "version": 40,
+    "title": "MangaNato (MangaNelo)",
+    "host": "https://www.natomanga.com",
+    "public_link": "https://www.natomanga.com",
+    "folder": "manganelo",
+    "hash_tag": "manganelo",
+    "name": [
+        "manganelo",
+        "manganato",
+        "readmanganato",
+        "natomanga",
+        "2xstorage",
+        "waitst"
+    ],
+    "chapters_order": false,
+    "language": "en",
+    "content_type": "manga",
+    "user_agent": "Mozilla/5.0 (Linux; Android 15; 2412DPC0AG Build/AP3A.240905.015.A2; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/133.0.6943.137 Mobile Safari/537.36 GoogleApp/16.8.37.ve.arm64",
+    "icon_link": "http://images.mangawatcherx.com/parser/icon/manga/manganelo.png",
+    "self_link": "https://api.anilabx.xyz/v3/parser/get?type=manga&parser=manganelo",
+    "author": {
+        "name": "AniLabX Team",
+        "email": "anilabx.supp@gmail.com"
+    },
+    "custom_settings": {
+        "pages_referer": "https://www.natomanga.com/",
+        "use_host_as_cover_referer": true,
+        "is_ignore_dynamic_link_system": true
+    },
+    "engine_settings": {
+        "delay_list_complete": 10,
+        "delay_complete": 10,
+        "queries_before_complete_delay": 10
+    },
+    "!manga_filters_complete": {
+        "genre_filters": {
+            "link": "$scheme$//$hostname$/manga_list?type=latest&category=$filter$&state=all&page=$page$",
+            "filters": [
+                {
+                    "value": "all",
+                    "name": "All Manga"
+                },
+                {
+                    "value": "2",
+                    "name": "Action"
+                },
+                {
+                    "value": "3",
+                    "name": "Adult"
+                },
+                {
+                    "value": "4",
+                    "name": "Adventure"
+                },
+                {
+                    "value": "6",
+                    "name": "Comedy"
+                },
+                {
+                    "value": "7",
+                    "name": "Cooking"
+                },
+                {
+                    "value": "9",
+                    "name": "Doujinshi"
+                },
+                {
+                    "value": "10",
+                    "name": "Drama"
+                },
+                {
+                    "value": "11",
+                    "name": "Ecchi"
+                },
+                {
+                    "value": "12",
+                    "name": "Fantasy"
+                },
+                {
+                    "value": "13",
+                    "name": "Gender bender"
+                },
+                {
+                    "value": "14",
+                    "name": "Harem"
+                },
+                {
+                    "value": "15",
+                    "name": "Historical"
+                },
+                {
+                    "value": "16",
+                    "name": "Horror"
+                },
+                {
+                    "value": "17",
+                    "name": "Josei"
+                },
+                {
+                    "value": "44",
+                    "name": "Manhua"
+                },
+                {
+                    "value": "43",
+                    "name": "Manhwa"
+                },
+                {
+                    "value": "19",
+                    "name": "Martial arts"
+                },
+                {
+                    "value": "20",
+                    "name": "Mature"
+                },
+                {
+                    "value": "21",
+                    "name": "Mecha"
+                },
+                {
+                    "value": "22",
+                    "name": "Medical"
+                },
+                {
+                    "value": "24",
+                    "name": "Mystery"
+                },
+                {
+                    "value": "25",
+                    "name": "One shot"
+                },
+                {
+                    "value": "26",
+                    "name": "Psychological"
+                },
+                {
+                    "value": "27",
+                    "name": "Romance"
+                },
+                {
+                    "value": "28",
+                    "name": "School life"
+                },
+                {
+                    "value": "29",
+                    "name": "Sci fi"
+                },
+                {
+                    "value": "30",
+                    "name": "Seinen"
+                },
+                {
+                    "value": "31",
+                    "name": "Shoujo"
+                },
+                {
+                    "value": "32",
+                    "name": "Shoujo ai"
+                },
+                {
+                    "value": "33",
+                    "name": "Shounen"
+                },
+                {
+                    "value": "34",
+                    "name": "Shounen ai"
+                },
+                {
+                    "value": "35",
+                    "name": "Slice of life"
+                },
+                {
+                    "value": "36",
+                    "name": "Smut"
+                },
+                {
+                    "value": "37",
+                    "name": "Sports"
+                },
+                {
+                    "value": "38",
+                    "name": "Supernatural"
+                },
+                {
+                    "value": "39",
+                    "name": "Tragedy"
+                },
+                {
+                    "value": "40",
+                    "name": "Webtoons"
+                },
+                {
+                    "value": "41",
+                    "name": "Yaoi"
+                },
+                {
+                    "value": "42",
+                    "name": "Yuri"
+                }
+            ]
+        },
+        "add_manga": {
+            "next": "class=\"list-truyen-item-wrap\">",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "cover": {
+                "token1": "img src=\"",
+                "token2": "\""
+            },
+            "title": {
+                "token1": "title=\"",
+                "token2": "\""
+            }
+        }
+    },
+    "manga_search_complete": {
+        "search_link": "$scheme$//$hostname$/search/story/$query$",
+        "query_type": "GET",
+        "add_manga": {
+            "next": "class=\"story_item\"",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "cover": {
+                "token1": "src=\"",
+                "token2": "\""
+            },
+            "title": {
+                "skip": "class=\"story_name\">",
+                "token1": "\">",
+                "token2": "<"
+            }
+        }
+    },
+    "manga_list_complete": {
+        "iterator": [
+            {
+                "category": {
+                    "tag": "main",
+                    "name": "Latest"
+                },
+                "base_url": "$scheme$//$hostname$/manga-list/latest-manga?page=",
+                "append_nums": {
+                    "from": 1,
+                    "to": 2300,
+                    "step": 1
+                }
+            }
+        ],
+        "add_manga": {
+            "next": "list-comic-item-wrap",
+            "link": {
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "cover": {
+                "token1": "src=\"",
+                "token2": "\""
+            },
+            "title": {
+                "token1": "title=\"",
+                "token2": "\""
+            }
+        }
+    },
+    "manga_complete": {
+        "title": {
+            "token1": "<h1>",
+            "token2": "</"
+        },
+        "cover": {
+            "skip": "og:image",
+            "token1": "content=\"",
+            "token2": "\""
+        },
+        "author": {
+            "skip": "Author(s)",
+            "token1": "p>",
+            "token2": "<"
+        },
+        "summary": {
+            "skip": " summary:",
+            "token1": "</p>",
+            "token2": "</div>"
+        },
+        "status": {
+            "complete": "Completed</li>",
+            "ongoing": "Ongoing</li>"
+        },
+        "is_mature": {
+            "start": "\"genres\"",
+            "end": "</li>",
+            "values": [
+                "16",
+                "Ecchi",
+                "Horror"
+            ]
+        },
+        "is_adult": {
+            "start": "\"genres\"",
+            "end": "</li>",
+            "values": [
+                "18",
+                "Adult"
+            ]
+        },
+        "add_genres": {
+            "start": "\"genres\"",
+            "token1": "\">",
+            "token2": "</",
+            "end": "</li>"
+        },
+        "content_type": {
+            "default": "manga"
+        },
+        "chapters_from_page": {
+            "skip": "<meta property=\"og:url\"",
+            "token1": "content=\"",
+            "token2": "\"",
+            "replace": [
+                {
+                    "match": "/manga/",
+                    "text": "/api/manga/"
+                },
+                {
+                    "sufix": "/chapters?limit=-1"
+                }
+            ]
+        },
+        "add_chapter": {
+            "start": "\"data\":",
+            "next": "\"chapter_name\":",
+            "link": {
+                "token1": "\"chapter_slug\":\"",
+                "token2": "\"",
+                "replace": [
+                    {
+                        "prefix": "%%url%%"
+                    },
+                    {
+                        "match": "/api/manga/",
+                        "text": "/manga/"
+                    },
+                    {
+                        "match": "chapters\\?limit=-1",
+                        "text": ""
+                    }
+                ]
+            },
+            "title": {
+                "token1": "\"chapter_name\":\"",
+                "token2": "\"",
+                "replace": {
+                    "match": "&nbsp;",
+                    "text": ""
+                }
+            },
+            "end": "}]"
+        }
+    },
+    "chapter_complete": {
+        "add_images": {
+            "start": "class=\"container-chapter-reader",
+            "token1": " src='http",
+            "token2": "'",
+            "end": "<div class",
+            "replace": {
+                "prefix": "http"
+            }
+        }
+    },
+    "test": [
+        {
+            "proc": "manga_list_complete",
+            "testpages": "3",
+            "assert": {
+                "mangas": [
+                    {
+                        "title": "@^(\\w+)",
+                        "link": "@https://www.natomanga.com/",
+                        "uniq": "@^(\\w+)"
+                    }
+                ],
+                "mangas_count": ">=48"
+            }
+        },
+        {
+            "proc": "manga_complete",
+            "link": "https://www.natomanga.com/manga/bleach",
+            "assert": {
+                "title": "Bleach",
+                "author": "Tite Kubo",
+                "cover": "https://img-r1.2xstorage.com/thumb/bleach.webp",
+                "summary": "@Despite always",
+                "genres": "@action",
+                "status": "complete",
+                "genres_count": ">=7",
+                "chapters_count": ">=600",
+                "chapters": [
+                    {
+                        "title": "Chapter 0",
+                        "link": "https://www.natomanga.com/manga/bleach/chapter-0",
+                        "folder": "chapter-0/"
+                    },
+                    {
+                        "title": "Chapter 2",
+                        "link": "https://www.natomanga.com/manga/bleach/chapter-2"
+                    }
+                ]
+            }
+        },
+        {
+            "proc": "chapter_complete",
+            "link": "https://www.natomanga.com/manga/bleach/chapter-2",
+            "assert": {
+                "pages": [
+                    {
+                        "image": "@https://imgs-\\d+.2xstorage\\.com/.*/\\d+/0.webp"
+                    },
+                    {
+                        "image": "@https://imgs-\\d+.2xstorage\\.com/.*/\\d+/1.webp"
+                    },
+                    {
+                        "image": "@https://imgs-\\d+.2xstorage\\.com/.*/\\d+/2.webp"
+                    }
+                ],
+                "pages_count": ">=24"
+            }
+        }
+    ]
+}

@@ -1,0 +1,1216 @@
+{
+    "id": 40011,
+    "migration_id": 1620,
+    "version": 46,
+    "title": "SelfManga",
+    "host": "https://1.selfmanga.live",
+    "public_link": "https://1.selfmanga.live",
+    "hash_tag": "selfmanga",
+    "folder": "selfmanga",
+    "name": "selfmanga",
+    "language": "ru",
+    "content_type": "manga",
+    "chapters_order": false,
+    "user_agent": "arora",
+    "icon_link": "http://images.mangawatcherx.com/parser/icon/manga/selfmanga.png",
+    "self_link": "https://api.anilabx.xyz/v3/parser/get?type=manga&parser=selfmanga",
+    "author": {
+        "name": "AniLabX Team",
+        "email": "anilabx.supp@gmail.com"
+    },
+    "custom_settings": {
+        "updates_check_delay": 5000,
+        "autobind_with_shikimori": false,
+        "is_decline_html_content_in_manga_reader": false
+    },
+    "engine_settings": {
+        "delay_list_complete": 10,
+        "delay_complete": 10,
+        "queries_before_complete_delay": 10
+    },
+    "manga_search_complete": {
+        "search_link": "$scheme$//$hostname$/search/suggestion?query=$query$&types%5B%5D=CREATION&types%5B%5D=FEDERATION_MANGA_SUBJECT",
+        "query_type": "GET",
+        "add_manga": {
+            "start": "\"suggestions\"",
+            "next": "{",
+            "link": {
+                "token1": "\"link\":\"",
+                "token2": "\"",
+                "prefix": "$scheme$//$hostname$"
+            },
+            "title": {
+                "token1": "\"names\":[\"",
+                "token2": "\"",
+                "replace": {
+                    "unescape_unicode": true
+                }
+            },
+            "alt_title": {
+                "token1": "\"value\":\"",
+                "token2": "\"",
+                "replace": {
+                    "unescape_unicode": true
+                }
+            },
+            "cover": {
+                "token1": "\"thumbnail\":\"",
+                "token2": "\""
+            },
+            "end": "]}",
+            "skip_manga": {
+                "link_contains": [
+                    "//readmanga",
+                    "//usagi",
+                    "//seimanga",
+                    "//mintmanga",
+                    "//rumix",
+                    "//librebook",
+                    "//findanime",
+                    "//doramatv",
+                    "//mose",
+                    ".readmanga",
+                    ".usagi",
+                    ".seimanga",
+                    ".mintmanga",
+                    ".rumix",
+                    ".librebook",
+                    ".findanime",
+                    ".doramatv",
+                    ".mose"
+                ]
+            }
+        }
+    },
+    "manga_list_filters_complete": {
+        "base_link": "$scheme$//$hostname$/list$filter$?offset=$page$",
+        "page_addition_by": -1,
+        "page_multiply_by": 70,
+        "default_values": {
+            "path": {
+                "$filter$": ""
+            },
+            "query": {
+                "sortType": "created"
+            }
+        },
+        "filters": {
+            "0_sort": {
+                "name": "Сортировка",
+                "choice_mode": "single",
+                "filter_type": "get_query",
+                "query_name": "sortType",
+                "values": [
+                    {
+                        "name": "По алфавиту",
+                        "value": "name",
+                        "activate_section": "1_name_values"
+                    },
+                    {
+                        "name": "По популярности",
+                        "value": "rate"
+                    },
+                    {
+                        "name": "По рейтингу",
+                        "value": "votes"
+                    },
+                    {
+                        "name": "Новинки",
+                        "value": "created"
+                    },
+                    {
+                        "name": "По дате обновления",
+                        "value": "updated"
+                    }
+                ]
+            },
+            "1_name_values": {
+                "name": "Значения фильтра \"По алфавиту\"",
+                "choice_mode": "single",
+                "filter_type": "get_query",
+                "query_name": "letter",
+                "is_active": false,
+                "values": [
+                    {
+                        "value": "%22",
+                        "name": "\""
+                    },
+                    {
+                        "value": "%23",
+                        "name": "#"
+                    },
+                    {
+                        "value": "%24",
+                        "name": "$"
+                    },
+                    {
+                        "value": "%26",
+                        "name": "&"
+                    },
+                    {
+                        "value": "%28",
+                        "name": "("
+                    },
+                    {
+                        "value": "%2B",
+                        "name": "+"
+                    },
+                    {
+                        "value": "-",
+                        "name": "-"
+                    },
+                    {
+                        "value": ".",
+                        "name": "."
+                    },
+                    {
+                        "value": "0",
+                        "name": "0"
+                    },
+                    {
+                        "value": "1",
+                        "name": "1"
+                    },
+                    {
+                        "value": "2",
+                        "name": "2"
+                    },
+                    {
+                        "value": "3",
+                        "name": "3"
+                    },
+                    {
+                        "value": "4",
+                        "name": "4"
+                    },
+                    {
+                        "value": "5",
+                        "name": "5"
+                    },
+                    {
+                        "value": "6",
+                        "name": "6"
+                    },
+                    {
+                        "value": "7",
+                        "name": "7"
+                    },
+                    {
+                        "value": "8",
+                        "name": "8"
+                    },
+                    {
+                        "value": "9",
+                        "name": "9"
+                    },
+                    {
+                        "value": "%3A",
+                        "name": ":"
+                    },
+                    {
+                        "value": "%40",
+                        "name": "@"
+                    },
+                    {
+                        "value": "A",
+                        "name": "A"
+                    },
+                    {
+                        "value": "B",
+                        "name": "B"
+                    },
+                    {
+                        "value": "C",
+                        "name": "C"
+                    },
+                    {
+                        "value": "D",
+                        "name": "D"
+                    },
+                    {
+                        "value": "E",
+                        "name": "E"
+                    },
+                    {
+                        "value": "F",
+                        "name": "F"
+                    },
+                    {
+                        "value": "G",
+                        "name": "G"
+                    },
+                    {
+                        "value": "H",
+                        "name": "H"
+                    },
+                    {
+                        "value": "I",
+                        "name": "I"
+                    },
+                    {
+                        "value": "J",
+                        "name": "J"
+                    },
+                    {
+                        "value": "K",
+                        "name": "K"
+                    },
+                    {
+                        "value": "L",
+                        "name": "L"
+                    },
+                    {
+                        "value": "M",
+                        "name": "M"
+                    },
+                    {
+                        "value": "N",
+                        "name": "N"
+                    },
+                    {
+                        "value": "O",
+                        "name": "O"
+                    },
+                    {
+                        "value": "P",
+                        "name": "P"
+                    },
+                    {
+                        "value": "Q",
+                        "name": "Q"
+                    },
+                    {
+                        "value": "R",
+                        "name": "R"
+                    },
+                    {
+                        "value": "S",
+                        "name": "S"
+                    },
+                    {
+                        "value": "T",
+                        "name": "T"
+                    },
+                    {
+                        "value": "U",
+                        "name": "U"
+                    },
+                    {
+                        "value": "V",
+                        "name": "V"
+                    },
+                    {
+                        "value": "W",
+                        "name": "W"
+                    },
+                    {
+                        "value": "X",
+                        "name": "X"
+                    },
+                    {
+                        "value": "Y",
+                        "name": "Y"
+                    },
+                    {
+                        "value": "Z",
+                        "name": "Z"
+                    },
+                    {
+                        "value": "%5B",
+                        "name": "["
+                    },
+                    {
+                        "value": "%D0%9E",
+                        "name": "О"
+                    },
+                    {
+                        "value": "%D0%A1",
+                        "name": "С"
+                    },
+                    {
+                        "value": "%E2%80%9C",
+                        "name": "“"
+                    },
+                    {
+                        "value": "%E2%97%8B",
+                        "name": "○"
+                    },
+                    {
+                        "value": "%E2%97%8F",
+                        "name": "●"
+                    }
+                ]
+            },
+            "2_filter": {
+                "name": "Фильтры",
+                "choice_mode": "single",
+                "filter_type": "get_query",
+                "query_name": "filter",
+                "values": [
+                    {
+                        "name": "Все",
+                        "value": ""
+                    },
+                    {
+                        "name": "Высокий рейтинг",
+                        "value": "high_rate"
+                    },
+                    {
+                        "name": "Cингл",
+                        "value": "single"
+                    },
+                    {
+                        "name": "Для взрослых",
+                        "value": "mature"
+                    },
+                    {
+                        "name": "Завершенная",
+                        "value": "completed"
+                    },
+                    {
+                        "name": "Переведено",
+                        "value": "translated"
+                    },
+                    {
+                        "name": "Длинная",
+                        "value": "many_chapters"
+                    },
+                    {
+                        "name": "Ожидает загрузки",
+                        "value": "wait_upload"
+                    },
+                    {
+                        "name": "Продается",
+                        "value": "sale"
+                    }
+                ]
+            },
+            "3_genre": {
+                "name": "Жанры",
+                "uniq": "filter",
+                "choice_mode": "single",
+                "filter_type": "path",
+                "path_name": "$filter$",
+                "values": [
+                    {
+                        "value": "",
+                        "name": "Все"
+                    },
+                    {
+                        "value": "/genre/action",
+                        "name": "боевик"
+                    },
+                    {
+                        "value": "/genre/martial_arts",
+                        "name": "боевые искусства"
+                    },
+                    {
+                        "value": "/genre/vampires",
+                        "name": "вампиры"
+                    },
+                    {
+                        "value": "/genre/harem",
+                        "name": "гарем"
+                    },
+                    {
+                        "value": "/genre/gender_intriga",
+                        "name": "гендерная интрига"
+                    },
+                    {
+                        "value": "/genre/heroic_fantasy",
+                        "name": "героическое фэнтези"
+                    },
+                    {
+                        "value": "/genre/detective",
+                        "name": "детектив"
+                    },
+                    {
+                        "value": "/genre/josei",
+                        "name": "дзёсэй"
+                    },
+                    {
+                        "value": "/genre/doujinshi",
+                        "name": "додзинси"
+                    },
+                    {
+                        "value": "/genre/drama",
+                        "name": "драма"
+                    },
+                    {
+                        "value": "/genre/yonkoma",
+                        "name": "ёнкома"
+                    },
+                    {
+                        "value": "/genre/historical",
+                        "name": "история"
+                    },
+                    {
+                        "value": "/genre/comedy",
+                        "name": "комедия"
+                    },
+                    {
+                        "value": "/genre/maho_shoujo",
+                        "name": "махо-сёдзё"
+                    },
+                    {
+                        "value": "/genre/mystery",
+                        "name": "мистика"
+                    },
+                    {
+                        "value": "/genre/sci_fi",
+                        "name": "научная фантастика"
+                    },
+                    {
+                        "value": "/genre/natural",
+                        "name": "повседневность"
+                    },
+                    {
+                        "value": "/genre/postapocalypse",
+                        "name": "постапокалиптика"
+                    },
+                    {
+                        "value": "/genre/adventure",
+                        "name": "приключения"
+                    },
+                    {
+                        "value": "/genre/psychological",
+                        "name": "психология"
+                    },
+                    {
+                        "value": "/genre/romance",
+                        "name": "романтика"
+                    },
+                    {
+                        "value": "/genre/supernatural",
+                        "name": "сверхъестественное"
+                    },
+                    {
+                        "value": "/genre/shoujo",
+                        "name": "сёдзё"
+                    },
+                    {
+                        "value": "/genre/shoujo_ai",
+                        "name": "сёдзё-ай"
+                    },
+                    {
+                        "value": "/genre/shounen",
+                        "name": "сёнэн"
+                    },
+                    {
+                        "value": "/genre/shounen_ai",
+                        "name": "сёнэн-ай"
+                    },
+                    {
+                        "value": "/genre/sports",
+                        "name": "спорт"
+                    },
+                    {
+                        "value": "/genre/seinen",
+                        "name": "сэйнэн"
+                    },
+                    {
+                        "value": "/genre/tragedy",
+                        "name": "трагедия"
+                    },
+                    {
+                        "value": "/genre/thriller",
+                        "name": "триллер"
+                    },
+                    {
+                        "value": "/genre/horror",
+                        "name": "ужасы"
+                    },
+                    {
+                        "value": "/genre/fantastic",
+                        "name": "фантастика"
+                    },
+                    {
+                        "value": "/genre/fantasy",
+                        "name": "фэнтези"
+                    },
+                    {
+                        "value": "/genre/school",
+                        "name": "школа"
+                    },
+                    {
+                        "value": "/genre/ecchi",
+                        "name": "этти"
+                    }
+                ]
+            },
+            "4_category": {
+                "name": "Категории",
+                "uniq": "filter",
+                "choice_mode": "single",
+                "filter_type": "path",
+                "path_name": "$filter$",
+                "values": [
+                    {
+                        "value": "",
+                        "name": "Все"
+                    },
+                    {
+                        "value": "/tag/artbook",
+                        "name": "Артбук"
+                    },
+                    {
+                        "value": "/tag/web",
+                        "name": "Веб"
+                    },
+                    {
+                        "value": "/tag/magazine",
+                        "name": "Журнал"
+                    },
+                    {
+                        "value": "/tag/light_novel",
+                        "name": "Ранобэ"
+                    },
+                    {
+                        "value": "/tag/sbornik",
+                        "name": "Сборник"
+                    }
+                ]
+            },
+            "5_year": {
+                "name": "Гoд выпуcкa",
+                "uniq": "filter",
+                "choice_mode": "single",
+                "filter_type": "path",
+                "path_name": "$filter$",
+                "values": [
+                    {
+                        "value": "",
+                        "name": "Все"
+                    },
+                    {
+                        "value": "/year/1946",
+                        "name": "1946"
+                    },
+                    {
+                        "value": "/year/1949",
+                        "name": "1949"
+                    },
+                    {
+                        "value": "/year/1951",
+                        "name": "1951"
+                    },
+                    {
+                        "value": "/year/1953",
+                        "name": "1953"
+                    },
+                    {
+                        "value": "/year/1957",
+                        "name": "1957"
+                    },
+                    {
+                        "value": "/year/1959",
+                        "name": "1959"
+                    },
+                    {
+                        "value": "/year/1960",
+                        "name": "1960"
+                    },
+                    {
+                        "value": "/year/1961",
+                        "name": "1961"
+                    },
+                    {
+                        "value": "/year/1964",
+                        "name": "1964"
+                    },
+                    {
+                        "value": "/year/1966",
+                        "name": "1966"
+                    },
+                    {
+                        "value": "/year/1967",
+                        "name": "1967"
+                    },
+                    {
+                        "value": "/year/1968",
+                        "name": "1968"
+                    },
+                    {
+                        "value": "/year/1969",
+                        "name": "1969"
+                    },
+                    {
+                        "value": "/year/1970",
+                        "name": "1970"
+                    },
+                    {
+                        "value": "/year/1971",
+                        "name": "1971"
+                    },
+                    {
+                        "value": "/year/1972",
+                        "name": "1972"
+                    },
+                    {
+                        "value": "/year/1973",
+                        "name": "1973"
+                    },
+                    {
+                        "value": "/year/1974",
+                        "name": "1974"
+                    },
+                    {
+                        "value": "/year/1975",
+                        "name": "1975"
+                    },
+                    {
+                        "value": "/year/1976",
+                        "name": "1976"
+                    },
+                    {
+                        "value": "/year/1977",
+                        "name": "1977"
+                    },
+                    {
+                        "value": "/year/1978",
+                        "name": "1978"
+                    },
+                    {
+                        "value": "/year/1979",
+                        "name": "1979"
+                    },
+                    {
+                        "value": "/year/1980",
+                        "name": "1980"
+                    },
+                    {
+                        "value": "/year/1981",
+                        "name": "1981"
+                    },
+                    {
+                        "value": "/year/1982",
+                        "name": "1982"
+                    },
+                    {
+                        "value": "/year/1983",
+                        "name": "1983"
+                    },
+                    {
+                        "value": "/year/1984",
+                        "name": "1984"
+                    },
+                    {
+                        "value": "/year/1985",
+                        "name": "1985"
+                    },
+                    {
+                        "value": "/year/1986",
+                        "name": "1986"
+                    },
+                    {
+                        "value": "/year/1987",
+                        "name": "1987"
+                    },
+                    {
+                        "value": "/year/1988",
+                        "name": "1988"
+                    },
+                    {
+                        "value": "/year/1989",
+                        "name": "1989"
+                    },
+                    {
+                        "value": "/year/1990",
+                        "name": "1990"
+                    },
+                    {
+                        "value": "/year/1991",
+                        "name": "1991"
+                    },
+                    {
+                        "value": "/year/1992",
+                        "name": "1992"
+                    },
+                    {
+                        "value": "/year/1993",
+                        "name": "1993"
+                    },
+                    {
+                        "value": "/year/1994",
+                        "name": "1994"
+                    },
+                    {
+                        "value": "/year/1995",
+                        "name": "1995"
+                    },
+                    {
+                        "value": "/year/1996",
+                        "name": "1996"
+                    },
+                    {
+                        "value": "/year/1997",
+                        "name": "1997"
+                    },
+                    {
+                        "value": "/year/1998",
+                        "name": "1998"
+                    },
+                    {
+                        "value": "/year/1999",
+                        "name": "1999"
+                    },
+                    {
+                        "value": "/year/2000",
+                        "name": "2000"
+                    },
+                    {
+                        "value": "/year/2001",
+                        "name": "2001"
+                    },
+                    {
+                        "value": "/year/2002",
+                        "name": "2002"
+                    },
+                    {
+                        "value": "/year/2003",
+                        "name": "2003"
+                    },
+                    {
+                        "value": "/year/2004",
+                        "name": "2004"
+                    },
+                    {
+                        "value": "/year/2005",
+                        "name": "2005"
+                    },
+                    {
+                        "value": "/year/2006",
+                        "name": "2006"
+                    },
+                    {
+                        "value": "/year/2007",
+                        "name": "2007"
+                    },
+                    {
+                        "value": "/year/2008",
+                        "name": "2008"
+                    },
+                    {
+                        "value": "/year/2009",
+                        "name": "2009"
+                    },
+                    {
+                        "value": "/year/2010",
+                        "name": "2010"
+                    },
+                    {
+                        "value": "/year/2011",
+                        "name": "2011"
+                    },
+                    {
+                        "value": "/year/2012",
+                        "name": "2012"
+                    },
+                    {
+                        "value": "/year/2013",
+                        "name": "2013"
+                    },
+                    {
+                        "value": "/year/2014",
+                        "name": "2014"
+                    },
+                    {
+                        "value": "/year/2015",
+                        "name": "2015"
+                    },
+                    {
+                        "value": "/year/2016",
+                        "name": "2016"
+                    },
+                    {
+                        "value": "/year/2017",
+                        "name": "2017"
+                    },
+                    {
+                        "value": "/year/2018",
+                        "name": "2018"
+                    },
+                    {
+                        "value": "/year/2019",
+                        "name": "2019"
+                    },
+                    {
+                        "value": "/year/2020",
+                        "name": "2020"
+                    },
+                    {
+                        "value": "/year/2021",
+                        "name": "2021"
+                    },
+                    {
+                        "value": "/year/2022",
+                        "name": "2022"
+                    },
+                    {
+                        "value": "/year/2023",
+                        "name": "2023"
+                    },
+                    {
+                        "value": "/year/2024",
+                        "name": "2024"
+                    },
+                    {
+                        "value": "/year/2025",
+                        "name": "2025"
+                    },
+                    {
+                        "value": "/year/2026",
+                        "name": "2026"
+                    }
+                ]
+            }
+        },
+        "add_manga": {
+            "start": "\"tiles",
+            "next": "class=\"img\"",
+            "link": {
+                "after": "<h3>",
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "title": {
+                "after": "img class",
+                "token1": "title='",
+                "token2": "' a",
+                "replace": {
+                    "match": ".*\\((.*)\\)$",
+                    "text": "$1"
+                }
+            },
+            "additional_title": {
+                "after": "img class",
+                "token1": "title='",
+                "token2": "' a",
+                "replace": {
+                    "match": " \\(.*\\)$",
+                    "text": ""
+                }
+            },
+            "cover": {
+                "token1": "data-original='",
+                "token2": "'",
+                "replace": {
+                    "match": "_p.",
+                    "text": "."
+                }
+            },
+            "is_mature": {
+                "start": "tile-info",
+                "values": [
+                    ">ужасы<",
+                    ">эротика<"
+                ],
+                "end": "</div>"
+            },
+            "is_adult": {
+                "start": "tile-info",
+                "values": [
+                    ">юри<",
+                    ">яой<"
+                ],
+                "end": "</div>"
+            },
+            "end": "class=\"rightContent"
+        }
+    },
+    "manga_list_complete": {
+        "iterator": {
+            "category": {
+                "tag": "main",
+                "name": "Последние"
+            },
+            "base_url": "$scheme$//$hostname$/list?sortType=updated&max=70&offset=",
+            "append_nums": {
+                "from": 0,
+                "to": 2660,
+                "step": 70,
+                "last_page": {
+                    "after": "step gap",
+                    "token1": "offset=",
+                    "token2": "&amp"
+                }
+            }
+        },
+        "add_manga": {
+            "start": "\"tiles",
+            "next": "class=\"img\"",
+            "link": {
+                "after": "<h3>",
+                "token1": "href=\"",
+                "token2": "\""
+            },
+            "title": {
+                "after": "img class",
+                "token1": "title='",
+                "token2": "' a",
+                "replace": {
+                    "match": ".*\\((.*)\\)$",
+                    "text": "$1"
+                }
+            },
+            "additional_title": {
+                "after": "img class",
+                "token1": "title='",
+                "token2": "' a",
+                "replace": {
+                    "match": " \\(.*\\)$",
+                    "text": ""
+                }
+            },
+            "cover": {
+                "token1": "data-original='",
+                "token2": "'",
+                "replace": {
+                    "match": "_p.",
+                    "text": "."
+                }
+            },
+            "is_mature": {
+                "start": "tile-info",
+                "values": [
+                    ">ужасы<",
+                    ">эротика<"
+                ],
+                "end": "</div>"
+            },
+            "is_adult": {
+                "start": "tile-info",
+                "values": [
+                    ">юри<",
+                    ">яой<"
+                ],
+                "end": "</div>"
+            },
+            "end": "class=\"rightContent"
+        }
+    },
+    "manga_complete": {
+        "title": {
+            "skip": "alternativeHeadline",
+            "token1": "=\"",
+            "token2": "\""
+        },
+        "alt_title": {
+            "skip": "itemprop=\"name\"",
+            "token1": "=\"",
+            "token2": "\""
+        },
+        "uniq": {
+            "skip": "alternativeHeadline",
+            "token1": "=\"",
+            "token2": "\""
+        },
+        "author": {
+            "after": "cr-main-person-item__name",
+            "skip": "href=\"/list/person",
+            "token1": "\">",
+            "token2": "</a>"
+        },
+        "production_year": {
+            "skip": "href=\"/list/year/",
+            "token1": "\">",
+            "token2": "</",
+            "replace": {
+                "match": " г.",
+                "text": ""
+            }
+        },
+        "publisher": {
+            "skip": ">Журнал<",
+            "token1": "\">",
+            "token2": "</div>"
+        },
+        "summary": {
+            "after": "cr-description__content",
+            "token1": ">",
+            "token2": "</"
+        },
+        "translation_status": {
+            "complete": "data-translation-status=\"FINISHED\"",
+            "ongoing": "data-translation-status=\"PROGRESS\"",
+            "on_hold": "data-translation-status=\"POSTPONED\"",
+            "default": "ongoing"
+        },
+        "status": {
+            "complete": "data-production-status=\"FINISHED\"",
+            "ongoing": "data-production-status=\"PROGRESS\"",
+            "on_hold": "data-production-status=\"POSTPONED\"",
+            "single": "<b>Сингл</b>",
+            "licensed": "Главы удалены",
+            "unknown": "нет ни одной главы"
+        },
+        "read_dir": {
+            "right_to_left": "tag/noyaoi",
+            "left_to_right": "category/manhwa"
+        },
+        "cover": {
+            "after": "main-carousel__swiper",
+            "token1": "src=\"",
+            "token2": "\""
+        },
+        "add_artists": {
+            "start": "<span>Художник</span>",
+            "next": "entity-card-tile__title",
+            "token1": "entity-card-tile__title\">",
+            "token2": "</",
+            "end": "entity-card-tile__meta"
+        },
+        "add_translators": {
+            "start": ">Переводчики<",
+            "next": "cr-team-item__name",
+            "token1": "line-clamp-2\">",
+            "token2": "</",
+            "end": "</div>"
+        },
+        "add_genres": {
+            "start": "class=\"cr-tags\"",
+            "token1": "<span>",
+            "token2": "</",
+            "end": "cr-tags__toggle"
+        },
+        "add_tags": {
+            "start": ">Теги:",
+            "token1": "element-link\" hideLink=\"\">",
+            "token2": "<",
+            "end": "</p>"
+        },
+        "content_type": {
+            "manhwa": "manhwa\">Манхва",
+            "manhua": "manhua\">Маньхуа",
+            "default": "manga"
+        },
+        "is_mature": ">NC-17<",
+        "is_adult": ">R<",
+        "add_chapter": {
+            "start": "<table class=\"table table-hover\"",
+            "next": "item-status",
+            "link": {
+                "token1": "<a href=\"",
+                "token2": "\"",
+                "replace": {
+                    "prefix": "$scheme$//$hostname$",
+                    "sufix": "?mtr=1"
+                }
+            },
+            "title": {
+                "after": "<a href=\"",
+                "token1": ">",
+                "token2": "<",
+                "replace": [
+                    {
+                        "match": "(.*)\n          \n          ",
+                        "text": ""
+                    },
+                    {
+                        "match": "^(\\d+) - (\\d+.\\d+)",
+                        "text": "Том $1 - Глава $2:"
+                    },
+                    {
+                        "match": "^(\\d+) - (\\d+)",
+                        "text": "Том $1 - Глава $2:"
+                    },
+                    {
+                        "match": ":$",
+                        "text": ""
+                    }
+                ]
+            },
+            "date": {
+                "after": "cell date",
+                "token1": "data-date=\"",
+                "token2": "\""
+            },
+            "uniq": {
+                "after": "href=\"",
+                "token1": "/vol",
+                "token2": "\"",
+                "replace": {
+                    "match": "\\?.*",
+                    "text": ""
+                }
+            },
+            "end": "</table>"
+        }
+    },
+    "chapter_complete": {
+        "images": true,
+        "add_pages": {
+            "start": "rm_h.readerInit(",
+            "token1": "['",
+            "token2": "]",
+            "end": "]],",
+            "replace": [
+                {
+                    "match": "(.*?)','(.*?)',\"(.*?)\".*",
+                    "text": "$1$3"
+                },
+                {
+                    "match": "one-way.work",
+                    "text": "h1.rmr.rocks"
+                },
+                {
+                    "match": "h17.rmr.rocks",
+                    "text": "h1.rmr.rocks"
+                }
+            ]
+        },
+        "postfix": "?mtr=1&mature=1"
+    },
+    "test": [
+        {
+            "proc": "manga_list_complete",
+            "testpages": "3",
+            "assert": {
+                "mangas": [
+                    {
+                        "title": "@^(\\w+)",
+                        "link": "@https://1.selfmanga.live/",
+                        "uniq": "@^(\\w+)"
+                    }
+                ],
+                "mangas_count": ">70"
+            }
+        },
+        {
+            "proc": "manga_complete",
+            "title": "Yaoi-fangirl",
+            "link": "https://1.selfmanga.live/yaoi_fangirl",
+            "assert": {
+                "author": "@Анастасия Усовски",
+                "cover": "https://staticsm.rmr.rocks/uploads/pics/00/07/121.jpg",
+                "summary": "@^(Истории)",
+                "genres": "@comedy",
+                "status": "complete",
+                "genres_count": ">=1",
+                "chapters_count": ">=1",
+                "chapters": [
+                    {
+                        "title": "Том 1 - Глава 29: Киношка",
+                        "link": "https://1.selfmanga.live/yaoi_fangirl/vol1/29?mtr=1",
+                        "folder": "1/29/"
+                    }
+                ]
+            }
+        },
+        {
+            "proc": "chapter_complete",
+            "title": "Яойщица 1 - 5 Кровавая ночь",
+            "link": "https://1.selfmanga.live/yaoi_fangirl/vol1/5",
+            "assert": {
+                "pages": [
+                    {
+                        "image": "@https://.*.rmr.rocks/auto/\\d+/\\d+/\\d+/\\d+.png_res.jpg?\\.*"
+                    },
+                    {
+                        "image": "@https://.*.rmr.rocks/auto/\\d+/\\d+/\\d+/\\d+.png_res.jpg?\\.*"
+                    }
+                ]
+            }
+        }
+    ]
+}
