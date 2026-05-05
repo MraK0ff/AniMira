@@ -133,7 +133,7 @@ async def proxy_media(url: str, referer: str = ""):
                 lines.append(line)
         
         await client.aclose()
-        return Response(content="\\n".join(lines), media_type=res.headers.get("Content-Type", "application/vnd.apple.mpegurl"))
+        return Response(content="\n".join(lines), media_type=res.headers.get("Content-Type", "application/vnd.apple.mpegurl"))
 
     # For TS segments or MP4, stream it directly
     async def stream_generator():

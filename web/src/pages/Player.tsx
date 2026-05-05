@@ -1,23 +1,45 @@
 import { useEffect, useRef, useState } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams, useNavigate, useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getVideoInfo } from '../api/client';
 import Hls from 'hls.js';
-import { ArrowLeft, Loader2 } from 'lucide-react';
+import { ArrowLeft, Loader2, Settings } from 'lucide-react';
+import { Episode } from '../types/api';
+import clsx from 'clsx';
 
 export default function Player() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const source = searchParams.get('source');
-  const episodeUrl = searchParams.get('episode_url');
+  const fallbackEpisodeUrl = searchParams.get('episode_url');
+  
+  const episode = location.state?.episode as Episode | undefined;
   
   const videoRef = useRef<HTMLVideoElement>(null);
   const [error, setError] = useState<string | null>(null);
+  const [showSettings, setShowSettings] = useState(false);
+
+  // Build qualities array
+  const qualities: { name: string; url: string }[] = [];
+  if (episode?.url720) qualities.push({ name: '720p', url: episode.url720 });
+  if (episode?.url360) qualities.push({ name: '360p', url: episode.url360 });
+  if (episode?.links) {
+    episode.links.forEach(l => {
+      // Avoid duplicates
+      if (!qualities.some(q => q.url === l.url)) qualities.push(l);
+    });
+  }
+  if (qualities.length === 0 && fallbackEpisodeUrl) {
+    qualities.push({ name: 'Default', url: fallbackEpisodeUrl });
+  }
+
+  const [activeUrl, setActiveUrl] = useState<string>(qualities[0]?.url || fallbackEpisodeUrl!);
 
   const { data: videoInfo, isLoading } = useQuery({
-    queryKey: ['video', source, episodeUrl],
-    queryFn: () => getVideoInfo(source!, episodeUrl!),
-    enabled: !!source && !!episodeUrl
+    queryKey: ['video', source, activeUrl],
+    queryFn: () => getVideoInfo(source!, activeUrl),
+    enabled: !!source && !!activeUrl
   });
 
   useEffect(() => {
@@ -76,10 +98,50 @@ export default function Player() {
       <div className="absolute top-0 left-0 right-0 p-6 z-10 bg-gradient-to-b from-black/80 to-transparent flex items-center justify-between opacity-0 hover:opacity-100 transition-opacity">
         <button 
           onClick={() => navigate(-1)}
-          className="text-white flex items-center gap-2 hover:text-primary transition-colors font-semibold"
+          className="text-white flex items-center gap-2 hover:text-primary transition-colors font-semibold drop-shadow-md"
         >
           <ArrowLeft size={24} /> Назад
         </button>
+
+        <div className="flex items-center gap-4">
+          {episode?.title && (
+            <h2 className="text-white font-semibold drop-shadow-md hidden md:block">
+              {episode.title}
+            </h2>
+          )}
+          
+          {qualities.length > 1 && (
+            <div className="relative">
+              <button 
+                onClick={() => setShowSettings(!showSettings)}
+                className="text-white p-2 hover:bg-white/10 rounded-full transition-colors flex items-center gap-2"
+              >
+                <Settings size={24} />
+                <span className="text-sm font-semibold">{qualities.find(q => q.url === activeUrl)?.name || 'Качество'}</span>
+              </button>
+              
+              {showSettings && (
+                <div className="absolute top-full right-0 mt-2 w-32 bg-[#18181b]/95 backdrop-blur-md rounded-xl border border-white/10 shadow-2xl overflow-hidden">
+                  {qualities.map(q => (
+                    <button
+                      key={q.url}
+                      onClick={() => {
+                        setActiveUrl(q.url);
+                        setShowSettings(false);
+                      }}
+                      className={clsx(
+                        "w-full text-left px-4 py-3 text-sm font-semibold transition-colors",
+                        activeUrl === q.url ? "bg-primary text-white" : "text-white/70 hover:bg-white/10 hover:text-white"
+                      )}
+                    >
+                      {q.name}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Video Container */}

@@ -126,7 +126,8 @@ export default function AnimeDetail() {
                 className="bg-white text-black px-8 py-3.5 rounded-lg font-bold hover:bg-white/90 transition-colors flex items-center gap-2"
                 onClick={() => {
                   if (epData?.episodes?.[0]) {
-                    navigate(`/player?source=${source}&episode_url=${encodeURIComponent(epData.episodes[0].url)}`);
+                    const ep = epData.episodes[0];
+                    navigate(`/player?source=${source}&episode_url=${encodeURIComponent(ep.url)}`, { state: { episode: ep } });
                   }
                 }}
               >
@@ -188,7 +189,7 @@ export default function AnimeDetail() {
                   <motion.div
                     key={ep.url || idx}
                     whileHover={{ scale: 1.02 }}
-                    onClick={() => navigate(`/player?source=${source}&episode_url=${encodeURIComponent(ep.url)}`)}
+                    onClick={() => navigate(`/player?source=${source}&episode_url=${encodeURIComponent(ep.url)}`, { state: { episode: ep } })}
                     className="glass p-4 rounded-xl cursor-pointer hover:border-primary/50 transition-colors group flex items-center gap-4"
                   >
                     <div className="w-12 h-12 flex-shrink-0 bg-white/5 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">
