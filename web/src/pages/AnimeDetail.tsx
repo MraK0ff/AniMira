@@ -430,11 +430,12 @@ export default function AnimeDetail() {
                                     return (
                                       <button
                                         key={ep.url}
+                                        tabIndex={0}
                                         onClick={(e) => {
                                           e.stopPropagation();
                                           setSelectedSources(prev => ({ ...prev, [uniq]: originalIdx }));
                                         }}
-                                        className={`tv-focusable text-xs px-2 py-1 rounded transition-colors ${
+                                        className={`tv-focusable text-xs px-2 py-1 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-primary ${
                                           selectedIdx === originalIdx
                                             ? 'bg-primary text-white'
                                             : 'bg-white/10 text-text-muted hover:bg-white/20'
@@ -448,23 +449,38 @@ export default function AnimeDetail() {
                               )}
                               {torrent1080p && (
                                 <>
-                                  <a
-                                    href={`http://localhost:8090/stream?link=${encodeURIComponent(torrent1080p.url)}&play`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    onClick={(e) => e.stopPropagation()}
-                                    className="text-xs px-2 py-1 rounded bg-green-500/20 text-green-400 hover:bg-green-500/30 transition-colors flex items-center gap-1"
+                                  <button
+                                    tabIndex={0}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      // Try to call Android interface if available
+                                      if ((window as any).AndroidTorrServe) {
+                                        (window as any).AndroidTorrServe.onTorrServeLinkClicked(`http://localhost:8090/stream?link=${encodeURIComponent(torrent1080p.url)}&play`);
+                                      } else {
+                                        // Fallback: open in new tab for browser
+                                        window.open(`http://localhost:8090/stream?link=${encodeURIComponent(torrent1080p.url)}&play`, '_blank');
+                                      }
+                                    }}
+                                    className="tv-focusable text-xs px-3 py-1.5 rounded bg-green-500/20 text-green-400 hover:bg-green-500/30 transition-all flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-green-500 focus:scale-110 active:scale-95 font-semibold"
                                   >
                                     <Play size={12} /> 1080p
-                                  </a>
-                                  <a
-                                    href={torrent1080p.url}
-                                    download
-                                    onClick={(e) => e.stopPropagation()}
-                                    className="text-xs px-2 py-1 rounded bg-green-500/10 text-green-400 hover:bg-green-500/20 transition-colors flex items-center gap-1"
+                                  </button>
+                                  <button
+                                    tabIndex={0}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      // Trigger download
+                                      const link = document.createElement('a');
+                                      link.href = torrent1080p.url;
+                                      link.download = '';
+                                      document.body.appendChild(link);
+                                      link.click();
+                                      document.body.removeChild(link);
+                                    }}
+                                    className="tv-focusable text-xs px-3 py-1.5 rounded bg-green-500/10 text-green-400 hover:bg-green-500/20 transition-all flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-green-500 focus:scale-110 active:scale-95"
                                   >
                                     <Download size={12} />
-                                  </a>
+                                  </button>
                                 </>
                               )}
                             </div>

@@ -2,7 +2,6 @@ import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
-import Browse from './pages/Browse';
 import Search from './pages/Search';
 import AnimeDetail from './pages/AnimeDetail';
 import Player from './pages/Player';
@@ -48,7 +47,6 @@ function App() {
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/browse" element={<Browse />} />
           <Route path="/search" element={<Search />} />
           <Route path="/anime" element={<AnimeDetail />} />
           <Route path="/player" element={<Player />} />

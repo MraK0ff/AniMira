@@ -1,14 +1,6 @@
-@import "tailwindcss";
-
-@theme {
-  --color-primary: #8b5cf6;
-  --color-primary-hover: #7c3aed;
-  --color-bg-base: #0f1115;
-  --color-bg-surface: rgba(30, 33, 40, 0.7);
-  --color-bg-elevated: rgba(45, 49, 58, 0.8);
-  --color-text-main: #f8fafc;
-  --color-text-muted: #94a3b8;
-}
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 @layer base {
   body {
@@ -27,6 +19,24 @@
 
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-400;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* TV mode: use solid color instead of gradient for better visibility */
+  .tv-mode .text-gradient {
+    @apply text-white;
+    background: none;
+    -webkit-text-fill-color: white;
+  }
+  
+  /* Fallback for TV browsers that don't support text gradients well */
+  @supports not (-webkit-background-clip: text) {
+    .text-gradient {
+      @apply text-white;
+      background: none;
+    }
   }
   
   .hide-scrollbar::-webkit-scrollbar {
@@ -59,7 +69,18 @@
   
   .tv-focusable:focus-visible,
   .tv-focusable.tv-focused {
-    @apply ring-4 ring-primary ring-offset-2 ring-offset-bg-base scale-105;
+    @apply ring-4 ring-primary ring-offset-2 ring-offset-bg-base;
+    outline: 3px solid #8b5cf6 !important;
+    outline-offset: 3px;
+    transform: scale(1.02);
+    z-index: 100;
+  }
+  
+  /* Card-specific focus styles */
+  .tv-focusable:focus-visible.rounded-xl,
+  .tv-focusable.tv-focused.rounded-xl {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.6), 0 0 40px rgba(139, 92, 246, 0.3);
+    border-color: #8b5cf6 !important;
   }
   
   /* Large touch targets for TV */

@@ -24,7 +24,7 @@ interface AppState {
 export const useStore = create<AppState>()(
   persist(
     (set, get) => ({
-      currentSource: 'anilibria', // default
+      currentSource: 'anistar', // default
       setSource: (source) => set({ currentSource: source }),
 
       favorites: [],

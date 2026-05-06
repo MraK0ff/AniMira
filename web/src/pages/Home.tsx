@@ -82,14 +82,16 @@ export default function Home() {
               >
                 <Link
                   to={`/anime?source=${currentSource}&url=${encodeURIComponent(listData.items[0].url)}`}
-                  className="bg-primary text-white px-8 py-3 rounded-lg font-bold hover:bg-primary/90 transition-colors flex items-center gap-2 shadow-lg shadow-primary/20"
+                  tabIndex={0}
+                  className="tv-focusable bg-primary text-white px-8 py-3 rounded-lg font-bold hover:bg-primary/90 transition-colors flex items-center gap-2 shadow-lg shadow-primary/20"
                 >
                   <Play size={20} fill="currentColor" />
                   Смотреть
                 </Link>
                 <Link
                   to={`/anime?source=${currentSource}&url=${encodeURIComponent(listData.items[0].url)}`}
-                  className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-3 rounded-lg font-bold hover:bg-white/20 transition-colors flex items-center gap-2"
+                  tabIndex={0}
+                  className="tv-focusable bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-3 rounded-lg font-bold hover:bg-white/20 transition-colors flex items-center gap-2"
                 >
                   <Info size={20} />
                   Подробнее

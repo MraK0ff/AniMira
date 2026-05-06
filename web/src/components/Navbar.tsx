@@ -38,21 +38,21 @@ export default function Navbar() {
   return (
     <nav className="sticky top-0 z-50 glass border-b border-white/5 px-6 py-4 flex items-center justify-between">
       <div className="flex items-center gap-8">
-        <Link to="/" className="tv-focusable text-2xl font-black tracking-tighter text-gradient">
+        <Link to="/" tabIndex={0} className="tv-focusable text-2xl font-black tracking-tighter text-white">
           ANILABX
         </Link>
         
         <div className="hidden md:flex items-center gap-6 text-sm font-medium text-text-muted">
-          <Link to="/" className="tv-focusable hover:text-white transition-colors">Home</Link>
-          <Link to="/browse" className="tv-focusable hover:text-white transition-colors">Browse</Link>
+          <Link to="/" tabIndex={0} className="tv-focusable hover:text-white transition-colors">Home</Link>
           <div className="h-4 w-px bg-white/10" />
         </div>
 
         {/* Source selector - visible on all devices */}
         <select
-          className="tv-focusable bg-transparent text-white outline-none cursor-pointer text-sm"
+          className="tv-focusable bg-transparent text-white outline-none cursor-pointer text-sm p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary"
           value={currentSource}
           onChange={(e) => setSource(e.target.value)}
+          tabIndex={0}
         >
           {animeSources.map(s => (
             <option key={s.name} value={s.name} className="bg-bg-elevated text-white">
@@ -63,16 +63,16 @@ export default function Navbar() {
       </div>
 
       <div className="flex items-center gap-5 text-text-muted">
-        <Link to="/search" className="tv-focusable hover:text-white transition-colors p-2">
+        <Link to="/search" tabIndex={0} className="tv-focusable hover:text-white transition-colors p-2">
           <Search size={20} />
         </Link>
-        <Link to="/history" className="tv-focusable hover:text-white transition-colors p-2">
+        <Link to="/history" tabIndex={0} className="tv-focusable hover:text-white transition-colors p-2">
           <History size={20} />
         </Link>
-        <Link to="/favorites" className="tv-focusable hover:text-white transition-colors p-2">
+        <Link to="/favorites" tabIndex={0} className="tv-focusable hover:text-white transition-colors p-2">
           <Heart size={20} />
         </Link>
-        <button className="tv-focusable h-8 w-8 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white">
+        <button tabIndex={0} className="tv-focusable h-8 w-8 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white">
           <User size={16} />
         </button>
       </div>

@@ -9,21 +9,15 @@ import android.util.Log
 import android.view.KeyEvent
 import android.webkit.*
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var webView: WebView
     private lateinit var settingsManager: SettingsManager
-    private var isMenuVisible = false
 
     companion object {
         private const val TAG = "AnistarTV"
-        private const val TORRSERVE_SCHEME = "torrserve"
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -81,6 +75,12 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // Handle file downloads
+        webView.setDownloadListener { url, userAgent, contentDisposition, mimetype, contentLength ->
+            Log.d(TAG, "Download requested: $url")
+            handleTorrentDownload(url)
+        }
+
         // Enable focus for TV navigation
         webView.isFocusable = true
         webView.isFocusableInTouchMode = true
@@ -88,10 +88,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun handleUrl(url: String): Boolean {
         val uri = Uri.parse(url)
+        Log.d(TAG, "handleUrl called with: $url")
 
-        // Handle TorrServe links
-        if (isTorrServeUrl(uri)) {
-            handleTorrServeLink(url)
+        // Handle torrent/magnet links for download
+        if (url.endsWith(".torrent") || url.contains("gettorrent.php") || uri.scheme == "magnet") {
+            Log.d(TAG, "Detected as torrent download")
+            handleTorrentDownload(url)
             return true
         }
 
@@ -103,85 +105,18 @@ class MainActivity : AppCompatActivity() {
         return false
     }
 
-    private fun isTorrServeUrl(uri: Uri): Boolean {
-        val torrserveHost = settingsManager.getTorrServeHost()
-        val host = torrserveHost.split(":")[0]
-        val port = torrserveHost.split(":").getOrNull(1)?.toIntOrNull() ?: 8090
-
-        return (uri.scheme == "http" || uri.scheme == "https") &&
-               (uri.host == host || uri.host == "127.0.0.1" || uri.host == "localhost") &&
-               uri.port == port
-    }
-
-    private fun handleTorrServeLink(url: String) {
-        val uri = Uri.parse(url)
-        val torrserveUri = uri.buildUpon()
-            .scheme(TORRSERVE_SCHEME)
-            .authority("play")
-            .build()
-
-        val intent = Intent(Intent.ACTION_VIEW, torrserveUri).apply {
-            setPackage("com.torrserve")
-            putExtra("link", url)
-        }
-
+    private fun handleTorrentDownload(url: String) {
         try {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse(url)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
             startActivity(intent)
-            Log.d(TAG, "Launched TorrServe with link: $url")
+            Log.d(TAG, "Opened torrent download with external app")
         } catch (e: ActivityNotFoundException) {
-            // Try alternative TorrServe package names
-            tryAlternativeTorrServe(url)
+            Log.e(TAG, "No app found to handle torrent download")
+            Toast.makeText(this, "Нет приложения для скачивания торрентов", Toast.LENGTH_SHORT).show()
         }
-    }
-
-    private fun tryAlternativeTorrServe(url: String) {
-        val alternativePackages = listOf(
-            "yourok.torrserve",
-            "ru.yourok.torrserve",
-            "com.torrserve.android"
-        )
-
-        for (packageName in alternativePackages) {
-            try {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url)).apply {
-                    setPackage(packageName)
-                }
-                startActivity(intent)
-                Log.d(TAG, "Launched TorrServe ($packageName) with link: $url")
-                return
-            } catch (e: ActivityNotFoundException) {
-                continue
-            }
-        }
-
-        // No TorrServe app found, show dialog
-        showTorrServeNotInstalledDialog(url)
-    }
-
-    private fun showTorrServeNotInstalledDialog(url: String) {
-        AlertDialog.Builder(this)
-            .setTitle(R.string.torrserve_not_found_title)
-            .setMessage(R.string.torrserve_not_found_message)
-            .setPositiveButton(R.string.download) { _, _ ->
-                openTorrServeDownloadPage()
-            }
-            .setNegativeButton(R.string.copy_link) { _, _ ->
-                copyToClipboard(url)
-                Toast.makeText(this, R.string.link_copied, Toast.LENGTH_SHORT).show()
-            }
-            .setNeutralButton(R.string.cancel, null)
-            .show()
-    }
-
-    private fun openTorrServeDownloadPage() {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/YouROK/TorrServe"))
-        startActivity(intent)
-    }
-
-    private fun copyToClipboard(text: String) {
-        val clipboard = getSystemService(CLIPBOARD_SERVICE) as android.content.ClipboardManager
-        val clip = android.content.ClipData.newPlainText("TorrServe Link", text)
-        clipboard.setPrimaryClip(clip)
     }
 
     private fun handleIntentUrl(url: String): Boolean {
@@ -218,14 +153,6 @@ class MainActivity : AppCompatActivity() {
                     }
                 `;
                 document.head.appendChild(style);
-                
-                // Improve keyboard navigation
-                document.addEventListener('keydown', function(e) {
-                    if (e.key === 'ArrowUp' || e.key === 'ArrowDown' || 
-                        e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-                        // Let default handling work for D-pad
-                    }
-                });
             })();
         """.trimIndent()
         
