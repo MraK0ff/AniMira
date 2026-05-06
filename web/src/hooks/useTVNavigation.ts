@@ -226,18 +226,15 @@ export function useTVNavigation(options: TVNavigationOptions = {}) {
 
   useEffect(() => {
     let hasUserInteracted = false;
-    
+
     // Delay initial update to ensure DOM is ready
     const initTimeout = setTimeout(() => {
       updateElements();
       console.log('[TV Navigation] Found elements:', elementsRef.current.length);
-      
-      // Focus first element on mount only if user hasn't interacted yet
-      if (elementsRef.current.length > 0 && !hasUserInteracted && 
-          (document.activeElement === document.body || document.activeElement === null)) {
-        focusElement(elementsRef.current[0]);
-        console.log('[TV Navigation] Focused first element on mount');
-      }
+
+      // Only auto-focus on TV when arrow keys are used, not on PC
+      // TV mode is detected via arrow key press in handleKeyDown
+      // We don't auto-focus on mount to avoid focus ring showing on PC
     }, 500);
     
     // Track user interaction to prevent resetting focus

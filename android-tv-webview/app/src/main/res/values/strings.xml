@@ -2,14 +2,9 @@
     <string name="app_name">Anistar TV</string>
     <string name="settings">Настройки</string>
     <string name="site_url">URL сайта</string>
-    <string name="url_hint">http://localhost:5173</string>
-    <string name="torrserve_host">TorrServe хост</string>
-    <string name="torrserve_hint">localhost:8090</string>
+    <string name="url_hint">http://192.168.2.7:5173</string>
     <string name="save">Сохранить</string>
     <string name="cancel">Отмена</string>
-    <string name="download">Скачать</string>
-    <string name="copy_link">Копировать ссылку</string>
-    <string name="link_copied">Ссылка скопирована</string>
-    <string name="torrserve_not_found_title">TorrServe не найден</string>
-    <string name="torrserve_not_found_message">Приложение TorrServe не установлено. Хотите скачать его или скопировать ссылку для ручного открытия?</string>
+    <string name="app_version">Версия приложения</string>
+    <string name="check_for_updates">Проверить обновления</string>
 </resources>

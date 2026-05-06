@@ -5,11 +5,13 @@ import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
-from fastapi.responses import Response, StreamingResponse
+from fastapi.responses import Response, StreamingResponse, FileResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from urllib.parse import urljoin, quote
 import httpx
 import json
+import os
+from pathlib import Path
 
 from app.config_loader import ConfigLoader
 from app.http_client import HttpClient
@@ -175,11 +177,52 @@ async def proxy_media(url: str, referer: str = "", headers: str = "{}"):
                 await client.aclose()
         
         return StreamingResponse(
-            stream_generator(), 
+            stream_generator(),
             status_code=response.status_code,
             media_type=response.headers.get("content-type", "application/octet-stream")
         )
     except Exception as e:
         logger.error("Proxy error for %s: %s", url, e)
         return Response(status_code=500, content=str(e))
+
+
+# APK Update endpoints
+APK_VERSION = {
+    "version_code": 2,
+    "version_name": "1.1",
+    "changelog": "Добавлена функция автообновления"
+}
+
+APK_PATH = Path("android-tv-webview/app/build/outputs/apk/debug/app-debug.apk")
+
+@app.get("/api/version", tags=["update"])
+async def get_version():
+    """Get current APK version info for auto-updater."""
+    base_url = os.environ.get("BASE_URL", "http://192.168.2.7:8000")
+    return {
+        "version_code": APK_VERSION["version_code"],
+        "version_name": APK_VERSION["version_name"],
+        "download_url": f"{base_url}/api/download/apk",
+        "changelog": APK_VERSION["changelog"]
+    }
+
+@app.get("/api/download/apk", tags=["update"])
+async def download_apk():
+    """Download the latest APK file."""
+    apk_file = APK_PATH
+
+    if not apk_file.exists():
+        logger.error(f"APK file not found at: {apk_file.absolute()}")
+        return JSONResponse(
+            status_code=404,
+            content={"error": "APK file not found. Please build the app first."}
+        )
+
+    logger.info(f"Serving APK file: {apk_file.absolute()} ({apk_file.stat().st_size} bytes)")
+
+    return FileResponse(
+        path=apk_file,
+        filename="anistar-tv.apk",
+        media_type="application/vnd.android.package-archive"
+    )
 

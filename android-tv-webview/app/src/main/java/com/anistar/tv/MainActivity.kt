@@ -30,6 +30,25 @@ class MainActivity : AppCompatActivity() {
 
         setupWebView()
         loadUrl()
+
+        // Check for updates after a short delay
+        checkForUpdatesDelayed()
+    }
+
+    private fun checkForUpdatesDelayed() {
+        android.os.Handler(mainLooper).postDelayed({
+            val updater = Updater(this)
+            updater.checkForUpdates(
+                onUpdateAvailable = { updateInfo ->
+                    updater.showUpdateDialog(
+                        updateInfo,
+                        onDownload = {
+                            updater.downloadAndInstallApk(updateInfo.downloadUrl)
+                        }
+                    )
+                }
+            )
+        }, 5000) // Check after 5 seconds to not block app startup
     }
 
     @SuppressLint("SetJavaScriptEnabled")

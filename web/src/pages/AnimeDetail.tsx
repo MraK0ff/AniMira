@@ -330,12 +330,12 @@ export default function AnimeDetail() {
                             <Download size={20} className="text-primary flex-shrink-0 mt-0.5" />
                             <div className="flex-1">
                               <p className="text-white font-medium mb-1">
-                                Дополнительные серии доступны в торрентах
+                                {missingInTorrents.length === 1 ? 'Дополнительная серия доступна в торрентах' : 'Дополнительные серии доступны в торрентах'}
                               </p>
                               <p className="text-text-muted text-sm">
-                                Серии {missingInTorrents.slice(0, 5).map(m => m.episodeNum).join(', ')}
+                                {missingInTorrents.length === 1 ? 'Серия' : 'Серии'} {missingInTorrents.slice(0, 5).map(m => m.episodeNum).join(', ')}
                                 {missingInTorrents.length > 5 && ` и еще ${missingInTorrents.length - 5}`}
-                                {' '}доступны только в торрентах
+                                {' '}{missingInTorrents.length === 1 ? 'пока доступна' : 'пока доступны'} только в торрентах — будет загружена в плеер позже
                               </p>
                               <button
                                 onClick={() => {
@@ -448,40 +448,22 @@ export default function AnimeDetail() {
                                 </>
                               )}
                               {torrent1080p && (
-                                <>
-                                  <button
-                                    tabIndex={0}
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      // Try to call Android interface if available
-                                      if ((window as any).AndroidTorrServe) {
-                                        (window as any).AndroidTorrServe.onTorrServeLinkClicked(`http://localhost:8090/stream?link=${encodeURIComponent(torrent1080p.url)}&play`);
-                                      } else {
-                                        // Fallback: open in new tab for browser
-                                        window.open(`http://localhost:8090/stream?link=${encodeURIComponent(torrent1080p.url)}&play`, '_blank');
-                                      }
-                                    }}
-                                    className="tv-focusable text-xs px-3 py-1.5 rounded bg-green-500/20 text-green-400 hover:bg-green-500/30 transition-all flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-green-500 focus:scale-110 active:scale-95 font-semibold"
-                                  >
-                                    <Play size={12} /> 1080p
-                                  </button>
-                                  <button
-                                    tabIndex={0}
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      // Trigger download
-                                      const link = document.createElement('a');
-                                      link.href = torrent1080p.url;
-                                      link.download = '';
-                                      document.body.appendChild(link);
-                                      link.click();
-                                      document.body.removeChild(link);
-                                    }}
-                                    className="tv-focusable text-xs px-3 py-1.5 rounded bg-green-500/10 text-green-400 hover:bg-green-500/20 transition-all flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-green-500 focus:scale-110 active:scale-95"
-                                  >
-                                    <Download size={12} />
-                                  </button>
-                                </>
+                                <button
+                                  tabIndex={0}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    // Trigger download
+                                    const link = document.createElement('a');
+                                    link.href = torrent1080p.url;
+                                    link.download = '';
+                                    document.body.appendChild(link);
+                                    link.click();
+                                    document.body.removeChild(link);
+                                  }}
+                                  className="tv-focusable text-xs px-3 py-1.5 rounded bg-green-500/20 text-green-400 hover:bg-green-500/30 transition-all flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-green-500 focus:scale-110 active:scale-95 font-semibold"
+                                >
+                                  <Download size={12} /> Торрент 1080p
+                                </button>
                               )}
                             </div>
                           </motion.div>
