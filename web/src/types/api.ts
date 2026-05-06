@@ -49,6 +49,17 @@ export interface AnimeDetails {
   related?: string;
   is_have_subs: boolean;
   uniq?: string;
+  torrents?: Torrent[];
+}
+
+export interface Torrent {
+  title: string;
+  url: string;
+  size?: string;
+  seeders?: string;
+  leechers?: string;
+  downloads?: string;
+  date?: string;
 }
 
 export interface EpisodeLink {

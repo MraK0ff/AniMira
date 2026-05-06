@@ -940,7 +940,8 @@
                 "next": "class=\"torrent\"",
                 "link": {
                     "token1": "href=\"",
-                    "token2": "\""
+                    "token2": "\"",
+                    "prefix": "$scheme$//$hostname$"
                 },
                 "title": {
                     "token1": "info_d1\">",

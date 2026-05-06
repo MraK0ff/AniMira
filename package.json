@@ -1,0 +1,10 @@
+{
+  "name": "anilabx",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "start python run.py && cd web && npm run dev",
+    "dev:backend": "python run.py",
+    "dev:web": "cd web && npm run dev"
+  }
+}

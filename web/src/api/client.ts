@@ -51,3 +51,17 @@ export const getVideoInfo = async (source: string, episode_url: string): Promise
   });
   return data;
 };
+
+export interface TorrentInfo {
+  torrent_url: string;
+  filename: string | null;
+  quality: string | null;
+  error?: string;
+}
+
+export const getTorrentInfo = async (torrent_url: string): Promise<TorrentInfo> => {
+  const { data } = await api.get('/anime/torrent/info', {
+    params: { torrent_url }
+  });
+  return data;
+};

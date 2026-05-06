@@ -37,3 +37,56 @@
     scrollbar-width: none;
   }
 }
+
+/* TV Remote Navigation Support */
+@layer base {
+  /* Ensure all interactive elements are focusable */
+  button, a, input, select, textarea, [tabindex]:not([tabindex="-1"]) {
+    @apply outline-none;
+  }
+  
+  /* Visible focus ring for TV navigation */
+  button:focus-visible,
+  a:focus-visible,
+  [tabindex]:focus-visible {
+    @apply ring-4 ring-primary ring-offset-2 ring-offset-bg-base;
+  }
+  
+  /* TV-optimized hover/focus combined state */
+  .tv-focusable {
+    @apply transition-all duration-200;
+  }
+  
+  .tv-focusable:focus-visible,
+  .tv-focusable.tv-focused {
+    @apply ring-4 ring-primary ring-offset-2 ring-offset-bg-base scale-105;
+  }
+  
+  /* Large touch targets for TV */
+  @media (hover: none) and (pointer: coarse) {
+    button, a {
+      @apply min-h-[44px] min-w-[44px];
+    }
+  }
+}
+
+/* TV Screen optimizations */
+@media screen and (min-width: 1280px) {
+  html {
+    font-size: 18px;
+  }
+}
+
+/* Overscan safe area for TVs */
+.tv-safe {
+  padding: 3vh 3vw;
+}
+
+/* Hide cursor on TV mode */
+.tv-mode {
+  cursor: none;
+}
+
+.tv-mode * {
+  cursor: none !important;
+}

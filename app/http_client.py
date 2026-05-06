@@ -227,3 +227,41 @@ class HttpClient:
         """Clear the response cache."""
         self._cache.clear()
         logger.info("HTTP cache cleared")
+
+    async def get_bytes(
+        self,
+        url: str,
+        *,
+        headers: dict[str, str] | None = None,
+        user_agent: str | None = None,
+    ) -> bytes:
+        """Perform GET request and return raw bytes (no caching).
+
+        Args:
+            url: Target URL.
+            headers: Extra headers to merge.
+            user_agent: Override default User-Agent.
+
+        Returns:
+            Response body as raw bytes.
+        """
+        merged_headers = self._build_headers(headers, user_agent)
+        client = await self._get_client()
+
+        for attempt in range(1, self._max_retries + 1):
+            try:
+                logger.info("[GET_BYTES] %s (attempt %d)", url[:120], attempt)
+                response = await client.get(url, headers=merged_headers)
+                response.raise_for_status()
+                return response.content
+            except httpx.HTTPStatusError as e:
+                if 400 <= e.response.status_code < 500 and e.response.status_code != 429:
+                    raise
+            except (httpx.ConnectError, httpx.ReadTimeout, httpx.ConnectTimeout) as e:
+                if attempt == self._max_retries:
+                    raise
+                import asyncio
+                await asyncio.sleep(2 ** (attempt - 1))
+            except Exception:
+                raise
+        return b""

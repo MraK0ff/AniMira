@@ -19,7 +19,7 @@ export default function AnimeCard({ anime, source }: Props) {
       transition={{ duration: 0.2 }}
       className="group relative flex-none w-40 md:w-56 aspect-[2/3] rounded-xl overflow-hidden bg-bg-elevated cursor-pointer"
     >
-      <Link to={`/anime?source=${source}&url=${encodeURIComponent(anime.url)}`} className="block w-full h-full">
+      <Link to={`/anime?source=${source}&url=${encodeURIComponent(anime.url)}`} className="tv-focusable block w-full h-full focus:outline-none">
         <img 
           src={anime.cover || 'https://via.placeholder.com/300x450?text=No+Cover'} 
           alt={anime.title}

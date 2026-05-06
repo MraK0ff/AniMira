@@ -4,6 +4,8 @@ import { useStore } from '../store/useStore';
 import AnimeCard, { SkeletonCard } from '../components/AnimeCard';
 import Carousel from '../components/Carousel';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { Play, Info } from 'lucide-react';
 
 export default function Home() {
   const { currentSource } = useStore();
@@ -38,27 +40,61 @@ export default function Home() {
             <div className="absolute inset-0 bg-gradient-to-r from-bg-base via-bg-base/50 to-transparent" />
           </div>
           
-          <div className="absolute bottom-0 left-0 px-6 md:px-12 pb-12 w-full max-w-4xl">
-            <motion.h1 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-4xl md:text-6xl font-black text-white mb-4 shadow-black drop-shadow-2xl"
-            >
-              {listData.items[0].title}
-            </motion.h1>
+          <div className="absolute bottom-0 left-0 px-6 md:px-12 pb-12 w-full max-w-6xl flex flex-col md:flex-row items-end gap-8">
             <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="flex gap-4"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="hidden md:block w-48 lg:w-64 aspect-[2/3] rounded-2xl overflow-hidden shadow-2xl border-2 border-white/10"
             >
-              <button className="bg-white text-black px-8 py-3 rounded-lg font-bold hover:bg-white/90 transition-colors flex items-center gap-2">
-                Смотреть
-              </button>
-              <button className="bg-white/20 backdrop-blur-md text-white px-8 py-3 rounded-lg font-bold hover:bg-white/30 transition-colors">
-                Подробнее
-              </button>
+              <img 
+                src={listData.items[0].cover} 
+                alt="Poster" 
+                className="w-full h-full object-cover"
+              />
             </motion.div>
+
+            <div className="flex-1">
+              <motion.h1 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-4xl md:text-6xl font-black text-white mb-2 shadow-black drop-shadow-2xl"
+              >
+                {listData.items[0].title}
+              </motion.h1>
+              
+              {listData.items[0].additional_title && (
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.05 }}
+                  className="text-lg md:text-2xl font-medium text-white/70 mb-6 line-clamp-1"
+                >
+                  {listData.items[0].additional_title}
+                </motion.p>
+              )}
+
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="flex gap-4"
+              >
+                <Link 
+                  to={`/anime?source=${currentSource}&url=${encodeURIComponent(listData.items[0].url)}`}
+                  className="tv-focusable bg-primary text-white px-8 py-3 rounded-lg font-bold hover:bg-primary/90 transition-colors flex items-center gap-2 shadow-lg shadow-primary/20"
+                >
+                  <Play size={20} fill="currentColor" />
+                  Смотреть
+                </Link>
+                <Link 
+                  to={`/anime?source=${currentSource}&url=${encodeURIComponent(listData.items[0].url)}`}
+                  className="tv-focusable bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-3 rounded-lg font-bold hover:bg-white/20 transition-colors flex items-center gap-2"
+                >
+                  <Info size={20} />
+                  Подробнее
+                </Link>
+              </motion.div>
+            </div>
           </div>
         </div>
       )}
