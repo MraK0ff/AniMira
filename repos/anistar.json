@@ -86,7 +86,8 @@
             "cover": {
                 "skip": "news_avatar",
                 "token1": "src=\"",
-                "token2": "\""
+                "token2": "\"",
+                "prefix": "$scheme$//$hostname$"
             },
             "season": {
                 "token1": "ratingValue\">",
@@ -105,6 +106,7 @@
                     "end": "</p>"
                 },
                 "link_contains": [
+                    "dle_change_sort",
                     "liga-angelov-2-zhdet-svoih-novyh-geroev",
                     "hunter-x-rpg",
                     "pirate-king",
@@ -630,7 +632,8 @@
             "cover": {
                 "skip": "news_avatar",
                 "token1": "src=\"",
-                "token2": "\""
+                "token2": "\"",
+                "prefix": "$scheme$//$hostname$"
             },
             "season": {
                 "token1": "ratingValue\">",
@@ -649,6 +652,7 @@
                     "end": "</p>"
                 },
                 "link_contains": [
+                    "dle_change_sort",
                     "liga-angelov-2-zhdet-svoih-novyh-geroev",
                     "hunter-x-rpg",
                     "pirate-king",
@@ -785,7 +789,8 @@
             "cover": {
                 "skip": "news_avatar",
                 "token1": "src=\"",
-                "token2": "\""
+                "token2": "\"",
+                "prefix": "$scheme$//$hostname$"
             },
             "season": {
                 "token1": "ratingValue\">",
@@ -804,6 +809,7 @@
                     "end": "</p>"
                 },
                 "link_contains": [
+                    "dle_change_sort",
                     "liga-angelov-2-zhdet-svoih-novyh-geroev",
                     "hunter-x-rpg",
                     "pirate-king",
@@ -940,7 +946,8 @@
                 "next": "class=\"torrent\"",
                 "link": {
                     "token1": "href=\"",
-                    "token2": "\""
+                    "token2": "\"",
+                    "prefix": "$scheme$//$hostname$"
                 },
                 "title": {
                     "token1": "info_d1\">",
@@ -990,6 +997,7 @@
             "headers": {
                 "Cookie": "3d3b81c3810f50abfa556d8a468c805b=1"
             },
+            "encoding": "UTF-8",
             "skip": "class=\"video_as\" id=",
             "token1": "src=\"/test",
             "token2": "\"",

@@ -42,11 +42,11 @@ export default function AnimeCard({ anime, source }: Props) {
         {/* Content */}
         <div className="absolute bottom-0 left-0 right-0 p-3 transform translate-y-2 group-hover:translate-y-0 transition-transform">
           <h3 className="text-white font-bold text-sm line-clamp-2 leading-snug shadow-black drop-shadow-md">
-            {anime.title}
+            {anime.additional_title || anime.title}
           </h3>
           {anime.additional_title && (
             <p className="text-text-muted text-xs line-clamp-1 mt-1">
-              {anime.additional_title}
+              {anime.title}
             </p>
           )}
         </div>

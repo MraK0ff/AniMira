@@ -86,7 +86,8 @@
             "cover": {
                 "skip": "news_avatar",
                 "token1": "src=\"",
-                "token2": "\""
+                "token2": "\"",
+                "prefix": "$scheme$//$hostname$"
             },
             "season": {
                 "token1": "ratingValue\">",
@@ -630,7 +631,8 @@
             "cover": {
                 "skip": "news_avatar",
                 "token1": "src=\"",
-                "token2": "\""
+                "token2": "\"",
+                "prefix": "$scheme$//$hostname$"
             },
             "season": {
                 "token1": "ratingValue\">",
@@ -785,7 +787,8 @@
             "cover": {
                 "skip": "news_avatar",
                 "token1": "src=\"",
-                "token2": "\""
+                "token2": "\"",
+                "prefix": "$scheme$//$hostname$"
             },
             "season": {
                 "token1": "ratingValue\">",
@@ -831,7 +834,13 @@
                     "7197",
                     "8657",
                     "8591",
-                    "8747"
+                    "8747",
+                    "dle_change_sort",
+                    "sort-",
+                    "sort-actv",
+                    "javascript:",
+                    "#\"",
+                    "onclick="
                 ]
             }
         }
