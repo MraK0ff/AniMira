@@ -7,6 +7,7 @@ from typing import Any
 from app.variable_resolver import VariableResolver
 from app.http_client import HttpClient
 from app.config_loader import ParserConfig
+from app import content_parsers
 
 logger = logging.getLogger(__name__)
 
@@ -44,7 +45,9 @@ def apply_single_replace(value: str, rep: dict, resolver: VariableResolver, **kw
                 value = ""
         else:
             try:
-                value = re.sub(resolved_match, resolved_text, value)
+                # Convert $1, $2, etc. backreferences to \1, \2 for Python re.sub
+                python_text = re.sub(r'\$(\d+)', r'\\\1', resolved_text)
+                value = re.sub(resolved_match, python_text, value)
             except re.error:
                 value = value.replace(resolved_match, resolved_text)
     prefix = rep.get("prefix")
@@ -211,16 +214,20 @@ class ParserEngine:
         self.resolver = VariableResolver(config.data)
 
     async def _fetch(self, url: str, *, method: str = "GET", headers: dict | None = None,
-                     form_data: dict | None = None) -> str:
+                     form_data: dict | None = None, encoding: str | None = None) -> str:
         merged = {}
         if self.config.user_agent:
             merged["User-Agent"] = self.config.user_agent
         if headers:
             merged.update(headers)
+        
+        # Use provided encoding or fallback to global config encoding
+        target_encoding = encoding or self.config.encoding
+        
         if method == "POST":
             return await self.http.post(url, headers=merged, form_data=form_data,
-                                        encoding=self.config.encoding, user_agent=self.config.user_agent)
-        return await self.http.get(url, headers=merged, encoding=self.config.encoding,
+                                        encoding=target_encoding, user_agent=self.config.user_agent)
+        return await self.http.get(url, headers=merged, encoding=target_encoding,
                                    user_agent=self.config.user_agent)
 
     def _parse_add_anime(self, html_text: str, add_cfg: dict, **kw) -> list[dict]:
@@ -276,7 +283,8 @@ class ParserEngine:
         form_data = None
         if section.get("form_data"):
             form_data = {k: self.resolver.resolve(v, **rk) for k, v in section["form_data"].items()}
-        html_text = await self._fetch(search_link, method=method, headers=headers, form_data=form_data)
+        encoding = section.get("encoding")
+        html_text = await self._fetch(search_link, method=method, headers=headers, form_data=form_data, encoding=encoding)
         add_cfg = section.get("add_anime", {})
         return self._parse_add_anime(html_text, add_cfg, **rk)
 
@@ -316,7 +324,8 @@ class ParserEngine:
         form_data = None
         if target_iter.get("form_data"):
             form_data = {k: self.resolver.resolve(v, **rk) for k, v in target_iter["form_data"].items()}
-        html_text = await self._fetch(url, method=method, headers=headers, form_data=form_data)
+        encoding = section.get("encoding")
+        html_text = await self._fetch(url, method=method, headers=headers, form_data=form_data, encoding=encoding)
         return self._parse_add_anime(html_text, add_cfg, **rk)
 
     async def parse_details(self, url: str) -> dict:
@@ -324,7 +333,8 @@ class ParserEngine:
         if not section:
             return {"url": url, "title": ""}
         headers = section.get("headers")
-        html_text = await self._fetch(url, headers=headers)
+        encoding = section.get("encoding")
+        html_text = await self._fetch(url, headers=headers, encoding=encoding)
         rk = {"current_url": url}
         result: dict[str, Any] = {"url": url}
         simple_fields = ("title", "additional_title", "alt_title", "cover", "summary",
@@ -374,7 +384,56 @@ class ParserEngine:
                 result["related"] = val
         if "title" not in result:
             result["title"] = ""
+        
+        # Parse torrents if config exists
+        torrents_cfg = self.config.get_section("torrents_complete")
+        if torrents_cfg:
+            result["torrents"] = self._parse_torrents(html_text, torrents_cfg, **rk)
+            
         return result
+
+    def _parse_torrents(self, html_text: str, torrents_cfg: dict, **kw) -> list[dict]:
+        results = []
+        add_torrent = torrents_cfg.get("add_torrent", [])
+        strategies = add_torrent if isinstance(add_torrent, list) else [add_torrent]
+        
+        for strat in strategies:
+            if not isinstance(strat, dict):
+                continue
+            
+            text = html_text
+            start = strat.get("start")
+            if start:
+                idx = text.find(start)
+                if idx != -1:
+                    text = text[idx:]
+            
+            end_marker = strat.get("end")
+            next_cfg = strat.get("next")
+            if not next_cfg:
+                continue
+                
+            next_str, next_re = get_next_delimiter(next_cfg)
+            blocks = split_blocks(text, next_str, next_re, end_marker)
+            
+            for block in blocks:
+                link = extract_value(block, strat.get("link", {}), self.resolver, **kw)
+                if not link:
+                    continue
+                
+                item = {"url": link}
+                for field in ("title", "size", "seeders", "leechers", "downloads", "date"):
+                    cfg = strat.get(field)
+                    if cfg:
+                        val = extract_value(block, cfg, self.resolver, **kw)
+                        if val:
+                            item[field] = val
+                
+                if "title" not in item:
+                    item["title"] = link
+                results.append(item)
+                
+        return results
 
     def _parse_iterate_simple(self, html_text: str, cfg: dict, **kw) -> list[str]:
         text = html_text
@@ -417,7 +476,8 @@ class ParserEngine:
         if not section:
             return {"anime_url": url, "episodes": []}
         headers = section.get("headers")
-        html_text = await self._fetch(url, headers=headers)
+        encoding = section.get("encoding")
+        html_text = await self._fetch(url, headers=headers, encoding=encoding)
         rk = {"current_url": url}
         result = {"anime_url": url, "episodes": [], "episodes_from_page": None}
         efp_cfg = section.get("episodes_from_page")
@@ -427,7 +487,8 @@ class ParserEngine:
             if efp_url:
                 result["episodes_from_page"] = efp_url
                 try:
-                    html_text = await self._fetch(efp_url, headers=efp_headers)
+                    efp_encoding = efp_cfg.get("encoding")
+                    html_text = await self._fetch(efp_url, headers=efp_headers, encoding=efp_encoding)
                 except Exception as e:
                     logger.warning("Failed to fetch episodes_from_page %s: %s", efp_url, e)
         add_ep = section.get("add_episode", [])
@@ -505,6 +566,37 @@ class ParserEngine:
         video_headers = {}
         if section.get("video_headers"):
             video_headers = {k: self.resolver.resolve(v, current_url=url) for k, v in section["video_headers"].items()}
+        
+        logger.info(f"get_video_info called for URL: {url}")
+        logger.info(f"use_content_parser: {section.get('use_content_parser')}")
+        logger.info(f"form_data_tag: {section.get('form_data_tag')}")
+        
+        # Check if content parser should be used
+        if section.get("use_content_parser"):
+            form_data_tag = section.get("form_data_tag")
+            logger.info(f"Content parser enabled with tag: {form_data_tag}")
+            if form_data_tag:
+                parser = content_parsers.get_content_parser(form_data_tag, self.http)
+                logger.info(f"Content parser found: {parser is not None}")
+                if parser and hasattr(parser, 'get_video_info'):
+                    logger.info("Parser has get_video_info method, using async parsing")
+                    # Always use async parsing for content parsers
+                    return {
+                        "url": url,
+                        "headers": {**headers, **video_headers},
+                        "referer": headers.get("Referer"),
+                        "direct": True,
+                        "needs_async_parsing": True,
+                        "form_data_tag": form_data_tag
+                    }
+                else:
+                    logger.warning(f"No content parser found for tag: {form_data_tag}")
+            else:
+                logger.warning("No form_data_tag found")
+        else:
+            logger.info("Content parser not enabled")
+        
+        logger.info("Returning basic video info")
         return {
             "url": url,
             "headers": {**headers, **video_headers},

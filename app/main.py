@@ -9,6 +9,7 @@ from fastapi.responses import Response, StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from urllib.parse import urljoin, quote
 import httpx
+import json
 
 from app.config_loader import ConfigLoader
 from app.http_client import HttpClient
@@ -17,7 +18,7 @@ from app.routes import sources_router, anime_router, shikimori_router
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.DEBUG,
     format="%(asctime)s | %(levelname)-7s | %(name)s | %(message)s",
     datefmt="%H:%M:%S",
 )
@@ -94,56 +95,91 @@ async def clear_cache():
 
 
 @app.get("/proxy", tags=["proxy"])
-async def proxy_media(url: str, referer: str = ""):
-    """Proxy media requests to bypass CORS and Referer checks."""
-    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"}
-    if referer:
-        headers["Referer"] = referer
+async def proxy_media(url: str, referer: str = "", headers: str = "{}"):
+    """Proxy media requests to bypass CORS and Referer/Cookie checks."""
+    try:
+        custom_headers = json.loads(headers)
+    except:
+        custom_headers = {}
+    
+    logger.info("Proxying request to %s (headers: %s)", url[:50], list(custom_headers.keys()))
 
-    client = httpx.AsyncClient(follow_redirects=True)
-    req = client.build_request("GET", url, headers=headers)
-    res = await client.send(req, stream=True)
-
-    # If it's an m3u8 playlist, we must rewrite the URIs inside it to also use the proxy
-    if "mpegurl" in res.headers.get("Content-Type", "") or url.endswith(".m3u8"):
-        await res.aread()
-        text = res.text
-        lines = []
-        for line in text.splitlines():
-            if line and not line.startswith("#"):
-                abs_url = urljoin(url, line)
-                # Proxy the segment too
-                proxy_url = f"/api/proxy?url={quote(abs_url, safe='')}&referer={quote(referer, safe='')}"
-                lines.append(proxy_url)
-            elif line.startswith("#EXT-X-STREAM-INF") or line.startswith("#EXT-X-I-FRAME-STREAM-INF"):
-                lines.append(line)
-            else:
-                # Some tags like URI="key.key" might also need rewriting, but usually anime doesn't use DRM keys
-                # We'll just rewrite basic lines
-                if 'URI="' in line:
-                    # Very basic rewrite for URI="..."
-                    import re
-                    def replace_uri(m):
-                        inner = m.group(1)
-                        if not inner.startswith("data:"):
-                            abs_url = urljoin(url, inner)
-                            return f'URI="/api/proxy?url={quote(abs_url, safe="")}&referer={quote(referer, safe="")}"'
-                        return m.group(0)
-                    line = re.sub(r'URI="([^"]+)"', replace_uri, line)
-                lines.append(line)
+    request_headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    }
+    
+    # Merge custom headers
+    for k, v in custom_headers.items():
+        request_headers[k] = v
         
-        await client.aclose()
-        return Response(content="\n".join(lines), media_type=res.headers.get("Content-Type", "application/vnd.apple.mpegurl"))
+    # Backward compatibility for referer param
+    if referer and "Referer" not in request_headers:
+        request_headers["Referer"] = referer
 
-    # For TS segments or MP4, stream it directly
-    async def stream_generator():
-        async for chunk in res.aiter_bytes(chunk_size=65536):
-            yield chunk
-        await client.aclose()
-
-    return StreamingResponse(
-        stream_generator(),
-        status_code=res.status_code,
-        media_type=res.headers.get("Content-Type"),
-    )
+    try:
+        # Use a fresh client for streaming. We'll close it in the generator's finally block or after reading m3u8.
+        client = httpx.AsyncClient(follow_redirects=True, timeout=30.0)
+        request = client.build_request("GET", url, headers=request_headers)
+        response = await client.send(request, stream=True)
+        
+        if response.status_code != 200:
+            content = await response.aread()
+            await response.aclose()
+            await client.aclose()
+            return Response(status_code=response.status_code, content=content)
+        
+        # If it's a playlist, rewrite segment URLs
+        is_m3u8 = url.lower().endswith(".m3u8") or "m3u8" in url.lower() or "mpegurl" in response.headers.get("content-type", "").lower()
+        
+        if is_m3u8:
+            try:
+                content_bytes = await response.aread()
+                text = content_bytes.decode("utf-8", errors="ignore")
+                lines = []
+                for line in text.splitlines():
+                    line = line.strip()
+                    if not line:
+                        continue
+                    if line.startswith("#"):
+                        # Handle URI="..." in tags (like keys or sub-playlists)
+                        if 'URI="' in line:
+                            import re
+                            def replace_uri(m):
+                                inner = m.group(1)
+                                if not inner.startswith("data:"):
+                                    abs_url = urljoin(url, inner)
+                                    return f'URI="/api/proxy?url={quote(abs_url, safe="")}&headers={quote(json.dumps(custom_headers))}"'
+                                return m.group(0)
+                            line = re.sub(r'URI="([^"]+)"', replace_uri, line)
+                        lines.append(line)
+                    else:
+                        # Segment URL. If relative, make it absolute.
+                        seg_url = urljoin(url, line)
+                        # Proxy the segment too, passing the same headers!
+                        proxied_seg = f"/api/proxy?url={quote(seg_url, safe='')}&headers={quote(json.dumps(custom_headers))}"
+                        lines.append(proxied_seg)
+                
+                final_content = "\n".join(lines)
+                return Response(content=final_content, media_type="application/vnd.apple.mpegurl")
+            finally:
+                await response.aclose()
+                await client.aclose()
+        
+        # For segments or other media, stream the content correctly
+        async def stream_generator():
+            try:
+                async for chunk in response.aiter_bytes():
+                    yield chunk
+            finally:
+                await response.aclose()
+                await client.aclose()
+        
+        return StreamingResponse(
+            stream_generator(), 
+            status_code=response.status_code,
+            media_type=response.headers.get("content-type", "application/octet-stream")
+        )
+    except Exception as e:
+        logger.error("Proxy error for %s: %s", url, e)
+        return Response(status_code=500, content=str(e))
 
