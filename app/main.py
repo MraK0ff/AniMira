@@ -62,9 +62,9 @@ app.add_middleware(
 )
 
 # Routes
-app.include_router(sources_router)
-app.include_router(anime_router)
-app.include_router(shikimori_router)
+app.include_router(sources_router, prefix="/api")
+app.include_router(anime_router, prefix="/api")
+app.include_router(shikimori_router, prefix="/api")
 
 
 @app.get("/", tags=["health"])
