@@ -109,6 +109,16 @@ export default function Home() {
         </Carousel>
       )}
 
+      {/* Debug info */}
+      {!isLoading && (
+        <div className="px-6 py-4 text-xs text-text-muted">
+          Source: {currentSource || 'none'} | 
+          listData: {listData ? 'yes' : 'no'} | 
+          items isArray: {Array.isArray(listData?.items) ? 'yes' : 'no'} | 
+          items length: {listData?.items?.length || 0}
+        </div>
+      )}
+
       {/* Latest Carousel */}
       {!isLoading && listData && Array.isArray(listData.items) && listData.items.length > 0 && (
         <Carousel title={listData.categories?.[0]?.name || "Latest Releases"}>
@@ -116,6 +126,14 @@ export default function Home() {
             <AnimeCard key={anime.url} anime={anime} source={currentSource} />
           ))}
         </Carousel>
+      )}
+
+      {/* Empty state */}
+      {!isLoading && (!listData || !Array.isArray(listData.items) || listData.items.length === 0) && (
+        <div className="px-6 py-12 text-center">
+          <p className="text-text-muted">No anime found for source: {currentSource}</p>
+          <p className="text-text-muted text-sm mt-2">Try selecting a different source</p>
+        </div>
       )}
 
       {/* Category Carousel */}
