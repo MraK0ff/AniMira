@@ -1,5 +1,6 @@
 @import "tailwindcss/index.css";
 
+/* stylelint-disable */
 @theme {
   --color-primary: #8b5cf6;
   --color-primary-hover: #7c3aed;
