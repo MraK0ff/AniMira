@@ -62,9 +62,9 @@ app.add_middleware(
 )
 
 # Routes
-app.include_router(sources_router, prefix="/api")
-app.include_router(anime_router, prefix="/api")
-app.include_router(shikimori_router, prefix="/api")
+app.include_router(sources_router)
+app.include_router(anime_router)
+app.include_router(shikimori_router)
 
 
 @app.get("/", tags=["health"])
@@ -195,7 +195,7 @@ APK_VERSION = {
 
 APK_PATH = Path("android-tv-webview/app/build/outputs/apk/debug/app-debug.apk")
 
-@app.get("/api/version", tags=["update"])
+@app.get("/version", tags=["update"])
 async def get_version(request: Request):
     """Get current APK version info for auto-updater."""
     # Determine base URL from environment or request
@@ -211,11 +211,11 @@ async def get_version(request: Request):
     return {
         "version_code": APK_VERSION["version_code"],
         "version_name": APK_VERSION["version_name"],
-        "download_url": f"{base_url}/api/download/apk",
+        "download_url": f"{base_url}/download/apk",
         "changelog": APK_VERSION["changelog"]
     }
 
-@app.get("/api/download/apk", tags=["update"])
+@app.get("/download/apk", tags=["update"])
 async def download_apk():
     """Download the latest APK file."""
     apk_file = APK_PATH
