@@ -1,5 +1,5 @@
 # Render.com Blueprint Configuration
-# Один сервис: API + Frontend вместе (проще для CORS и единый URL)
+# Единый сервис: API + Frontend
 
 services:
   - type: web
@@ -8,10 +8,8 @@ services:
     plan: free
     region: frankfurt
     buildCommand: |
-      # Install backend dependencies
       pip install -r requirements.txt
-      # Build frontend
-      cd web && npm install && npm run build
+      cd web && npm install && VITE_API_URL=/ npm run build
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PYTHON_VERSION
@@ -20,7 +18,5 @@ services:
         value: 22.12.0
       - key: ENVIRONMENT
         value: production
-      - key: VITE_API_URL
-        value: https://animira-api.onrender.com
     healthCheckPath: /api/
     autoDeploy: true
