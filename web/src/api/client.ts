@@ -22,10 +22,13 @@ export const getSources = async (): Promise<Source[]> => {
 };
 
 export const getAnimeList = async (source: string, page = 1, category?: string): Promise<AnimeListResponse> => {
-  const { data } = await api.get('/anime/list', {
+  const response = await api.get('/anime/list', {
     params: { source, page, category }
   });
-  return data;
+  console.log('[API] getAnimeList raw response:', response);
+  console.log('[API] getAnimeList data:', response.data);
+  console.log('[API] items type:', typeof response.data?.items, 'isArray:', Array.isArray(response.data?.items));
+  return response.data;
 };
 
 export const searchAnime = async (source: string, query: string, page = 1): Promise<{items: AnimeItem[]}> => {
