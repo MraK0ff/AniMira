@@ -9,7 +9,7 @@ import {
 } from '../types/api';
 
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: 'https://animira-api.onrender.com/api',
 });
 
 export const getSources = async (): Promise<Source[]> => {
