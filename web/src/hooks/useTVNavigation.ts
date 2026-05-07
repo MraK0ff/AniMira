@@ -16,19 +16,15 @@ interface ElementRect {
   bottom: number;
 }
 
-// Detect TV devices
+// Detect TV devices by User-Agent only
 const isTVDevice = (): boolean => {
   const ua = navigator.userAgent.toLowerCase();
   // Check for TV devices
-  const isTV = /(smart-tv|smarttv|appletv|googletv|hbbtv|pov_tv|netcast.tv|webos|tizen|android tv|roku|firetv|fire tv|samsung|sony|bravia|lg|philips|playstation|xbox|nintendo)/i.test(ua);
+  const isTV = /(smart-tv|smarttv|appletv|googletv|hbbtv|pov_tv|netcast.tv|webos|tizen|android tv|roku|firetv|fire tv|playstation|xbox|nintendo)/i.test(ua);
   // Check for Android WebView (likely TV app)
   const isAndroidWebView = /android.*wv/i.test(ua) || /android.*webview/i.test(ua);
-  // Check if device has no touch (typical for TV)
-  const hasNoTouch = window.matchMedia('(pointer: coarse)').matches === false && 'ontouchstart' in window === false;
-  // Large screen (TVs usually have large screens)
-  const isLargeScreen = window.innerWidth >= 1280;
   
-  return isTV || isAndroidWebView || (hasNoTouch && isLargeScreen);
+  return isTV || isAndroidWebView;
 };
 
 export function useTVNavigation(options: TVNavigationOptions = {}) {
