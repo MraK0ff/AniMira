@@ -28,10 +28,8 @@ export default function Home() {
     enabled: !!currentSource
   });
 
-  // Use API categories if available, otherwise use defaults
-  const filters = listData?.categories?.length > 0 
-    ? [{ tag: '', name: 'Все' }, ...listData.categories]
-    : DEFAULT_FILTERS;
+  // Always use default filters
+  const filters = DEFAULT_FILTERS;
 
   return (
     <div className="min-h-screen pb-20 px-4 md:px-6 lg:px-8">
