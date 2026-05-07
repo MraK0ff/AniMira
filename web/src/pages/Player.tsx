@@ -85,7 +85,7 @@ export default function Player() {
       ...(videoInfo.headers || {}),
       Referer: videoInfo.referer || videoInfo.headers?.Referer || ''
     };
-    const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://animira-api.onrender.com';
+    const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://animira.onrender.com/api';
     const proxyUrl = `${API_BASE_URL}/api/proxy?url=${encodeURIComponent(videoInfo.url)}&headers=${encodeURIComponent(JSON.stringify(headers))}`;
 
     // Check if it's an m3u8 stream
