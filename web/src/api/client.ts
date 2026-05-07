@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 import axios from 'axios';
 import { 
   Source, 
@@ -8,8 +9,11 @@ import {
   AnimeItem
 } from '../types/api';
 
+// API URL: используем прямой URL к API серверу
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://animira-api.onrender.com';
+
 const api = axios.create({
-  baseURL: 'https://animira-api.onrender.com',
+  baseURL: API_BASE_URL,
 });
 
 export const getSources = async (): Promise<Source[]> => {
