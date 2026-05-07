@@ -113,11 +113,12 @@ async def root():
 
 @app.get("/", tags=["frontend"])
 async def serve_frontend():
-    """Serve the frontend index.html."""
+    """Serve the frontend index.html or redirect to static site."""
     index_file = static_dir / "index.html"
     if index_file.exists():
         return FileResponse(index_file)
-    return {"message": "API is running. Frontend not built yet."}
+    # Redirect to static site if frontend not built in this service
+    return {"message": "API is running. Use https://animira.onrender.com for frontend."}
 
 
 @app.post("/api/cache/clear", tags=["admin"])
