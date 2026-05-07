@@ -2,7 +2,7 @@
 # Единый сервис: API + Frontend на одном домене
 
 services:
-    name: animira
+  - name: animira
     runtime: python
     plan: free
     buildCommand: |
