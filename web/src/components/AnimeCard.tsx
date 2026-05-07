@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Heart } from 'lucide-react';
+import { Heart, Star } from 'lucide-react';
 import { AnimeItem } from '../types/api';
 import { useStore } from '../store/useStore';
 
@@ -8,17 +8,40 @@ interface Props {
   source: string;
 }
 
+// Parse episodes string like "12/24" or "12 из 24" to get current/total
+function parseEpisodes(episodesStr?: string): { current?: number; total?: number } {
+  if (!episodesStr) return {};
+  
+  // Try "12/24" or "12 из 24" format
+  const match = episodesStr.match(/(\d+)[\/\sиз]+(\d+)/);
+  if (match) {
+    return { current: parseInt(match[1]), total: parseInt(match[2]) };
+  }
+  
+  // Try single number
+  const single = episodesStr.match(/(\d+)/);
+  if (single) {
+    return { total: parseInt(single[1]) };
+  }
+  
+  return {};
+}
+
 export default function AnimeCard({ anime, source }: Props) {
   const { isFavorite, toggleFavorite } = useStore();
   const fav = isFavorite(anime.url);
+  
+  const episodes = parseEpisodes(anime.episodes_aired);
+  const rating = (anime as any).rating; // Rating might be added to API later
 
   return (
-    <Link 
-      to={`/anime?source=${source}&url=${encodeURIComponent(anime.url)}`} 
-      tabIndex={0} 
-      className="tv-focusable relative flex-none w-36 sm:w-40 md:w-56 aspect-[2/3] rounded-lg md:rounded-xl overflow-hidden bg-bg-elevated cursor-pointer block transition-transform duration-200 focus:scale-105 focus:z-50 focus:ring-2 md:focus:ring-4 focus:ring-primary focus:ring-offset-2 focus:ring-offset-bg-base focus:outline-none snap-start"
-    >
-      <div className="w-full h-full">
+    <div className="group">
+      {/* Image Container */}
+      <Link 
+        to={`/anime?source=${source}&url=${encodeURIComponent(anime.url)}`} 
+        tabIndex={0} 
+        className="tv-focusable relative block aspect-[2/3] rounded-lg md:rounded-xl overflow-hidden bg-bg-elevated cursor-pointer transition-transform duration-200 focus:scale-105 focus:z-50 focus:ring-2 md:focus:ring-4 focus:ring-primary focus:ring-offset-2 focus:ring-offset-bg-base focus:outline-none"
+      >
         <img 
           src={anime.cover || 'https://via.placeholder.com/300x450?text=No+Cover'} 
           alt={anime.title}
@@ -26,47 +49,73 @@ export default function AnimeCard({ anime, source }: Props) {
           loading="lazy"
         />
         
-        {/* Overlay gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80" />
+        {/* Rating Badge */}
+        {rating && (
+          <div className="absolute top-2 right-2 flex items-center gap-0.5 bg-black/70 backdrop-blur-sm text-white text-xs font-bold px-1.5 py-0.5 rounded">
+            <Star size={10} fill="currentColor" className="text-yellow-400" />
+            {rating}
+          </div>
+        )}
         
-        {/* Badges */}
-        <div className="absolute top-2 left-2 flex flex-col gap-1">
-          {anime.episodes_aired && (
-            <span className="bg-primary/90 text-white text-[10px] font-bold px-2 py-0.5 rounded backdrop-blur-md">
-              {anime.episodes_aired}
-            </span>
-          )}
-        </div>
-
-        {/* Content */}
-        <div className="absolute bottom-0 left-0 right-0 p-3">
-          <h3 className="text-white font-bold text-xs md:text-sm line-clamp-2 leading-snug shadow-black drop-shadow-md">
-            {anime.additional_title || anime.title}
-          </h3>
-          {anime.additional_title && (
-            <p className="text-text-muted text-[10px] md:text-xs line-clamp-1 mt-0.5 md:mt-1">
-              {anime.title}
-            </p>
-          )}
-        </div>
-      </div>
-
-      {/* Quick Actions - always visible */}
-      <div className="absolute top-2 right-2 flex flex-col gap-1.5 md:gap-2 pointer-events-auto">
+        {/* Favorite Button */}
         <button 
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFavorite(anime); }}
-          className="p-1.5 rounded-full bg-black/60 backdrop-blur-md text-white hover:bg-primary transition-colors min-w-[32px] min-h-[32px] flex items-center justify-center"
+          className="absolute top-2 left-2 p-1.5 rounded-full bg-black/60 backdrop-blur-md text-white hover:bg-primary transition-colors min-w-[28px] min-h-[28px] flex items-center justify-center opacity-0 group-hover:opacity-100 focus:opacity-100"
           aria-label={fav ? 'Remove from favorites' : 'Add to favorites'}
         >
           <Heart size={14} fill={fav ? 'currentColor' : 'none'} className={fav ? 'text-pink-500' : ''} />
         </button>
+
+        {/* Episode progress overlay for watching anime */}
+        {episodes.current && episodes.total && episodes.current > 0 && (
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20">
+            <div 
+              className="h-full bg-primary"
+              style={{ width: `${(episodes.current / episodes.total) * 100}%` }}
+            />
+          </div>
+        )}
+      </Link>
+
+      {/* Info Below Image */}
+      <div className="mt-2 space-y-0.5">
+        <h3 className="text-white font-medium text-sm line-clamp-2 leading-tight">
+          {anime.additional_title || anime.title}
+        </h3>
+        
+        {/* Episode Info */}
+        <p className="text-text-muted text-xs">
+          {episodes.current !== undefined && episodes.total !== undefined ? (
+            <>
+              {episodes.current} из {episodes.total} эп
+              {episodes.current < episodes.total && (
+                <span className="text-primary ml-1">• продолжить</span>
+              )}
+            </>
+          ) : episodes.total ? (
+            <>{episodes.total} эп</>
+          ) : anime.episodes_aired ? (
+            <>{anime.episodes_aired}</>
+          ) : null}
+        </p>
+        
+        {/* Additional Title (original) */}
+        {anime.additional_title && (
+          <p className="text-text-muted text-xs line-clamp-1 opacity-70">
+            {anime.title}
+          </p>
+        )}
       </div>
-    </Link>
+    </div>
   );
 }
 
 export function SkeletonCard() {
   return (
-    <div className="flex-none w-36 sm:w-40 md:w-56 aspect-[2/3] rounded-lg md:rounded-xl bg-white/5 animate-pulse snap-start" />
+    <div className="space-y-2">
+      <div className="aspect-[2/3] rounded-lg md:rounded-xl bg-white/5 animate-pulse" />
+      <div className="h-4 bg-white/5 rounded animate-pulse w-3/4" />
+      <div className="h-3 bg-white/5 rounded animate-pulse w-1/2" />
+    </div>
   );
 }

@@ -2,47 +2,77 @@ import { useQuery } from '@tanstack/react-query';
 import { getAnimeList } from '../api/client';
 import { useStore } from '../store/useStore';
 import AnimeCard, { SkeletonCard } from '../components/AnimeCard';
-import Carousel from '../components/Carousel';
+import { useState } from 'react';
+
+const FILTERS = [
+  { id: 'latest', label: 'Последние' },
+  { id: 'ongoing', label: 'Онгоинги' },
+  { id: 'announcements', label: 'Анонсы' },
+  { id: 'completed', label: 'Завершенные' },
+  { id: 'movies', label: 'Фильмы' },
+];
 
 export default function Home() {
   const { currentSource } = useStore();
+  const [activeFilter, setActiveFilter] = useState('latest');
 
   // Fetch initial list (popular/latest)
   const { data: listData, isLoading } = useQuery({
-    queryKey: ['animeList', currentSource, 1],
+    queryKey: ['animeList', currentSource, 1, activeFilter],
     queryFn: () => getAnimeList(currentSource, 1),
     enabled: !!currentSource
   });
 
-
   return (
-    <div className="min-h-screen pb-20">
+    <div className="min-h-screen pb-20 px-4 md:px-6 lg:px-8">
+      {/* Filter Tabs */}
+      <div className="sticky top-16 z-40 -mx-4 md:-mx-6 lg:-mx-8 px-4 md:px-6 lg:px-8 py-3 bg-bg-base/95 backdrop-blur-sm border-b border-white/5">
+        <div className="flex gap-2 overflow-x-auto hide-scrollbar">
+          {FILTERS.map((filter) => (
+            <button
+              key={filter.id}
+              onClick={() => setActiveFilter(filter.id)}
+              tabIndex={0}
+              className={`tv-focusable whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                activeFilter === filter.id
+                  ? 'bg-primary text-white'
+                  : 'bg-white/5 text-text-muted hover:bg-white/10 hover:text-white'
+              }`}
+            >
+              {filter.label}
+            </button>
+          ))}
+        </div>
+      </div>
 
-      {/* Loading State */}
+      {/* Section Title */}
+      <h2 className="text-lg md:text-xl font-bold text-white mt-6 mb-4">
+        {listData?.categories?.[0]?.name || 'Аниме'}
+      </h2>
+
+      {/* Loading State - Grid */}
       {isLoading && (
-        <Carousel title="Latest Releases">
-          {Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />)}
-        </Carousel>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-5">
+          {Array.from({ length: 12 }).map((_, i) => <SkeletonCard key={i} />)}
+        </div>
       )}
 
-
-      {/* Latest Carousel */}
+      {/* Anime Grid */}
       {!isLoading && listData && Array.isArray(listData.items) && listData.items.length > 0 && (
-        <Carousel title={listData.categories?.[0]?.name || "Latest Releases"}>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-5">
           {listData.items.map((anime) => (
             <AnimeCard key={anime.url} anime={anime} source={currentSource} />
           ))}
-        </Carousel>
+        </div>
       )}
 
       {/* Empty state */}
       {!isLoading && (!listData || !Array.isArray(listData.items) || listData.items.length === 0) && (
-        <div className="px-4 md:px-6 py-8 md:py-12 text-center">
-          <p className="text-text-muted text-sm md:text-base">No anime found for source: {currentSource}</p>
-          <p className="text-text-muted text-xs md:text-sm mt-2">Try selecting a different source</p>
+        <div className="py-12 md:py-16 text-center">
+          <p className="text-text-muted text-sm md:text-base">Нет аниме для источника: {currentSource}</p>
+          <p className="text-text-muted text-xs md:text-sm mt-2">Попробуйте выбрать другой источник</p>
         </div>
       )}
-
     </div>
   );
 }
