@@ -5,7 +5,7 @@
 services:
   # Backend API Service
   - type: web
-    name: animira
+    name: animira-api
     runtime: python
     plan: free
     region: frankfurt
@@ -15,6 +15,6 @@ services:
       - key: PYTHON_VERSION
         value: 3.11.0
       - key: BASE_URL
-        value: https://animira.onrender.com
+        value: https://animira-api.onrender.com
     healthCheckPath: /
     autoDeploy: true
