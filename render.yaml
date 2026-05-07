@@ -2,11 +2,9 @@
 # Единый сервис: API + Frontend на одном домене
 
 services:
-  - type: web
     name: animira
     runtime: python
     plan: free
-    region: frankfurt
     buildCommand: |
       pip install -r requirements.txt
       cd web && npm install && VITE_API_URL=/ npm run build
