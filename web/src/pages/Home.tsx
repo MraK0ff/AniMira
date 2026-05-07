@@ -32,12 +32,6 @@ export default function Home() {
         </Carousel>
       )}
 
-      {/* Debug info */}
-      {!isLoading && (
-        <div className="px-4 md:px-6 py-2 md:py-4 text-xs text-text-muted truncate">
-          Source: {currentSource || 'none'} | items: {Array.isArray(listData?.items) ? listData?.items?.length || 0 : 0}
-        </div>
-      )}
 
       {/* Latest Carousel */}
       {!isLoading && listData && Array.isArray(listData.items) && listData.items.length > 0 && (
