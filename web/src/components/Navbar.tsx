@@ -12,8 +12,8 @@ export default function Navbar() {
   });
 
   // Filter out manga, drama and novel sources - only anime
-  const animeSources = sources
-    .filter(s => {
+  const animeSources = Array.isArray(sources) 
+    ? sources.filter(s => {
       const name = s.name.toLowerCase();
       const title = s.title.toLowerCase();
       const mangaKeywords = ['manga', 'manganelo', 'mangaplus', 'remanga', 'readmanga', 'selfmanga', 'zazaza', 'honey-manga'];
@@ -25,15 +25,15 @@ export default function Navbar() {
       const isDrama = dramaKeywords.some(k => name.includes(k) || title.includes(k));
 
       return !isManga && !isNovel && !isDrama;
-    })
-    .sort((a, b) => {
+    }).sort((a, b) => {
       // Priority: anistar first, anilibria second, then alphabetical
       if (a.name === 'anistar') return -1;
       if (b.name === 'anistar') return 1;
       if (a.name === 'anilibria') return -1;
       if (b.name === 'anilibria') return 1;
       return a.title.localeCompare(b.title);
-    });
+    })
+    : [];
 
   return (
     <nav className="sticky top-0 z-50 glass border-b border-white/5 px-6 py-4 flex items-center justify-between">
