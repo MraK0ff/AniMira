@@ -24,6 +24,9 @@ async def anime_list(
     """Get anime catalog list from source."""
     engine = _get_engine(source)
     items = await engine.parse_list(page=page, category=category)
+    # Ensure items is always a list
+    if not isinstance(items, list):
+        items = []
     categories = engine.list_categories()
     return {
         "source": source,
