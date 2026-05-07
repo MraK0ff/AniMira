@@ -6,7 +6,7 @@ services:
   - type: web
     name: animira
     runtime: static
-    buildCommand: cd web && npm install && npm run build
+    buildCommand: cd web && rm -rf node_modules package-lock.json && npm install && npm run build
     staticPublishPath: ./web/dist
     envVars:
       - key: NODE_VERSION
