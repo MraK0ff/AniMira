@@ -1,6 +1,6 @@
 # 🚀 AniMira на Render.com
 
-Быстрая настройка деплоя на Render.com.
+Быстрая настройка деплоя на Render.com. Всё в одном сервисе: API + Frontend.
 
 ## ⚡ Quick Deploy
 
@@ -19,15 +19,14 @@ git push -u origin main
 Или вручную:
 
 1. [Dashboard](https://dashboard.render.com) → **New +** → **Blueprint**
-2. Выберите ваш репозиторий
+2. Выберите ваш репозиторий `AniMira`
 3. Нажмите **Approve**
 
 ## 📁 Что деплоится
 
-| Сервис | Тип | URL |
-|--------|-----|-----|
-| `animira` | Web Service | `https://animira.onrender.com` |
-| `animira-web` | Static Site | `https://animira.onrender.com` |
+| Сервис | Тип | URL | Описание |
+|--------|-----|-----|----------|
+| `animira` | Web Service | `https://animira.onrender.com` | API + Frontend в одном сервисе |
 
 ## 🔧 Настройка Android TV
 
@@ -38,11 +37,12 @@ git push -u origin main
 DEFAULT_URL = "https://animira.onrender.com"
 ```
 
-## 📚 Подробная документация
+## 📚 Полезные ссылки
 
+- [Локальная разработка](./DEV.md) — как запускать локально
 - [Полная инструкция деплоя](./DEPLOY.md)
 - [Настройка GitHub](./GITHUB_SETUP.md)
 
 ---
 
-**Бесплатный план:** API может "засыпать" после 15 мин без запросов. Первый запрос может занять 30-60 сек.
+**Бесплатный план:** Сервис может "засыпать" после 15 мин без запросов. Первый запрос может занять 30-60 сек.

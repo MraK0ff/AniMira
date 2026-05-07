@@ -29,7 +29,7 @@ gh repo create AniMira --private --source=. --push
 ## 📤 Шаг 2: Пуш проекта на GitHub
 
 ```bash
-# Убедитесь, что все изменения закоммичены
+# Убедитесь что все изменения закоммичены
 git add .
 git commit -m "Подготовка к деплою на Render"
 
@@ -42,76 +42,32 @@ git push -u origin main
 
 ---
 
-## 🌐 Шаг 3: Деплой Backend API на Render
+## 🌐 Шаг 3: Деплой на Render (Blueprint)
 
-### Метод 1: Blueprint (Автоматический)
+**Blueprint** — автоматическая конфигурация через `render.yaml`.
 
 1. Войдите в [Render Dashboard](https://dashboard.render.com)
 2. Нажмите **New +** → **Blueprint**
 3. Выберите ваш GitHub репозиторий `AniMira`
-4. Нажмите **Approve** для создания сервисов
-5. Render автоматически создаст:
-   - `animira` — Python FastAPI сервис
-   - `animira-web` — Static site для фронтенда
+4. Нажмите **Approve** для создания сервиса
 
-### Метод 2: Ручной (Web Service)
+Render автоматически создаст сервис `animira` который включает:
+- **Backend**: FastAPI на `/api/*`
+- **Frontend**: React SPA на всех остальных путях
 
-1. Нажмите **New +** → **Web Service**
-2. Выберите репозиторий `AniMira`
-3. Настройки:
-   - **Name**: `animira`
-   - **Runtime**: `Python 3`
-   - **Build Command**: `pip install -r requirements.txt`
-   - **Start Command**: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
-   - **Plan**: Free
-4. Добавьте Environment Variable:
-   - `BASE_URL` = `https://animira.onrender.com` (будет известен после деплоя)
-5. Нажмите **Create Web Service**
-
----
-
-## 🎨 Шаг 4: Деплой Frontend на Render
-
-1. Нажмите **New +** → **Static Site**
-2. Выберите репозиторий `AniMira`
-3. Настройки:
-   - **Name**: `animira-web`
-   - **Build Command**: `cd web && npm install && npm run build`
-   - **Publish Directory**: `web/dist`
-   - **Plan**: Free
-4. Нажмите **Create Static Site**
-
-### Настройка переменных окружения для Frontend:
-
-После создания API, обновите `BASE_URL` в настройках:
-
-1. Перейдите в настройки `animira`
-2. Скопируйте URL (например `https://animira.onrender.com`)
-3. Добавьте в Environment Variables `animira`:
-   - `BASE_URL` = ваш URL
-
----
-
-## ⚙️ Шаг 5: Настройка CORS для Production
-
-После деплоя обновите `BASE_URL` в настройках API:
-
-```bash
-# Проверьте работу API
-curl https://animira.onrender.com/
-```
+**URL**: `https://animira.onrender.com`
 
 ---
 
 ## 🔧 Обновление приложения Android TV
 
-После деплоя API, обновите URL в Android приложении:
+После деплоя обновите URL в Android приложении:
 
 **Файл:** `android-tv-webview/app/src/main/res/values/strings.xml`
 
 ```xml
-<string name="default_web_url">https://animira-web.onrender.com</string>
-<string name="default_api_url">https://animira.onrender.com</string>
+<string name="default_web_url">https://animira.onrender.com</string>
+<string name="default_api_url">https://animira.onrender.com/api</string>
 ```
 
 Или в коде `SettingsManager.kt` обновите `DEFAULT_URL`.
@@ -136,7 +92,7 @@ git push origin main
 
 - **Logs**: В dashboard Render → ваш сервис → Logs
 - **Metrics**: Доступны на платных планах
-- **Health Check**: Endpoint `/` возвращает статус API
+- **Health Check**: Endpoint `/api/` возвращает статус API
 
 ---
 
@@ -150,15 +106,17 @@ git push origin main
 
 ### Ошибка 404 на API
 
-Убедитесь что `BASE_URL` настроен правильно и API доступен:
-
 ```bash
+# Проверьте что API доступен
+curl https://animira.onrender.com/api/
 curl https://animira.onrender.com/api/version
 ```
 
-### Frontend не подключается к API
+### Frontend показывает белый экран
 
-Проверьте настройки CORS в `app/main.py` — `allow_origins` должен включать домен фронтенда.
+1. Проверьте что `web/dist` создался при сборке
+2. В логах Render найдите ошибки сборки фронтенда
+3. Убедитесь что `npm run build` выполняется без ошибок
 
 ### Build fails
 
@@ -169,32 +127,39 @@ curl https://animira.onrender.com/api/version
 ## 📝 Полезные команды
 
 ```bash
-# Проверка API локально
-python run.py
+# Локальная разработка
+python run.py              # Backend
+cd web && npm run dev    # Frontend
 
-# Проверка сборки фронтенда
-cd web && npm run build
-
-# Ручной деплой (если нужно)
-git push origin main --force
+# Справка по локальному запуску
+# См. DEV.md
 ```
 
 ---
 
-## 🎯 Структура сервисов на Render
+## 🎯 Структура сервиса на Render
 
 ```
 ┌─────────────────────────────────────┐
-│         Render.com                  │
+│         animira.onrender.com        │
+│         (Один Web Service)          │
+│                                     │
 │  ┌─────────────────────────────┐    │
-│  │  animira-web (Static)       │    │
-│  │  https://animira.onrender.com│   │
-│  └──────────────┬──────────────┘    │
-│                 │                   │
-│                 ▼                   │
+│  │  /api/* → FastAPI           │    │
+│  │  /api/sources               │    │
+│  │  /api/anime/list            │    │
+│  │  /api/proxy                 │    │
+│  └─────────────────────────────┘    │
+│                                     │
 │  ┌─────────────────────────────┐    │
-│  │  animira (Web Service)  │    │
-│  │  https://animira.onrender.com│
+│  │  /* → React SPA              │    │
+│  │  / → index.html               │    │
+│  │  /anime/123 → index.html      │    │
 │  └─────────────────────────────┘    │
 └─────────────────────────────────────┘
 ```
+
+**Преимущества одного сервиса:**
+- Нет проблем с CORS (один origin)
+- Один URL для всего
+- Проще деплой и настройка
