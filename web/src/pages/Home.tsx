@@ -14,13 +14,6 @@ export default function Home() {
     enabled: !!currentSource
   });
 
-  // Example of fetching a specific category if categories are available
-  const category1 = listData?.categories?.[1]?.tag;
-  const { data: catData, isLoading: isCatLoading } = useQuery({
-    queryKey: ['animeList', currentSource, 1, category1],
-    queryFn: () => getAnimeList(currentSource, 1, category1),
-    enabled: !!currentSource && !!category1
-  });
 
   return (
     <div className="min-h-screen pb-20">
@@ -50,14 +43,6 @@ export default function Home() {
         </div>
       )}
 
-      {/* Category Carousel */}
-      {!isCatLoading && catData && Array.isArray(catData.items) && catData.items.length > 0 && (
-        <Carousel title={listData?.categories?.[1]?.name || "More Anime"}>
-          {catData.items.map((anime) => (
-            <AnimeCard key={anime.url} anime={anime} source={currentSource} />
-          ))}
-        </Carousel>
-      )}
     </div>
   );
 }
