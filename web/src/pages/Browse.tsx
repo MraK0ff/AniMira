@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getAnimeList } from '../api/client';
 import { useStore } from '../store/useStore';
