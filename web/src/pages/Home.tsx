@@ -110,7 +110,7 @@ export default function Home() {
       )}
 
       {/* Latest Carousel */}
-      {!isLoading && listData && listData.items.length > 0 && (
+      {!isLoading && listData && Array.isArray(listData.items) && listData.items.length > 0 && (
         <Carousel title={listData.categories?.[0]?.name || "Latest Releases"}>
           {listData.items.map((anime) => (
             <AnimeCard key={anime.url} anime={anime} source={currentSource} />
@@ -119,7 +119,7 @@ export default function Home() {
       )}
 
       {/* Category Carousel */}
-      {!isCatLoading && catData && catData.items.length > 0 && (
+      {!isCatLoading && catData && Array.isArray(catData.items) && catData.items.length > 0 && (
         <Carousel title={listData?.categories?.[1]?.name || "More Anime"}>
           {catData.items.map((anime) => (
             <AnimeCard key={anime.url} anime={anime} source={currentSource} />
