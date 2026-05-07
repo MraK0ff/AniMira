@@ -1,5 +1,5 @@
 # Render.com Blueprint Configuration
-# Единый сервис: API + Frontend
+# Единый сервис: API + Frontend на одном домене
 
 services:
   - type: web
@@ -9,7 +9,7 @@ services:
     region: frankfurt
     buildCommand: |
       pip install -r requirements.txt
-      cd web && npm install && npm run build
+      cd web && npm install && VITE_API_URL=/ npm run build
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PYTHON_VERSION

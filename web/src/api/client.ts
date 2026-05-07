@@ -9,8 +9,8 @@ import {
   AnimeItem
 } from '../types/api';
 
-// API URL: используем прямой URL к API серверу
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://animira-api.onrender.com';
+// API URL: используем относительный путь для единого домена
+const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
