@@ -7,6 +7,10 @@ export default defineConfig({
   plugins: [
     react(),
   ],
+  base: '/',  // Относительные пути — работает и локально и на Render
+  build: {
+    sourcemap: false,  // Отключаем source maps
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -14,10 +18,11 @@ export default defineConfig({
   },
   server: {
     proxy: {
+      // Проксируем /api/* на бэкенд (FastAPI)
       '/api': {
         target: 'http://localhost:8000',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+        // rewrite убираем — FastAPI ожидает /api/ префикс
       },
     },
   },
