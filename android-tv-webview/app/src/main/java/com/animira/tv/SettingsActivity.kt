@@ -1,4 +1,4 @@
-package com.anistar.tv
+package com.animira.tv
 
 import android.os.Bundle
 import android.widget.Button

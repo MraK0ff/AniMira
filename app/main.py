@@ -1,4 +1,4 @@
-"""FastAPI application — AniLabX Universal Parser Engine."""
+"""FastAPI application — AniMira Universal Parser Engine."""
 from __future__ import annotations
 
 import logging
@@ -46,8 +46,8 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="AniLabX Parser Engine",
-    description="Universal REST API for AniLabX JSON parser configs",
+    title="AniMira Parser Engine",
+    description="Universal REST API for AniMira JSON parser configs",
     version="1.0.0",
     lifespan=lifespan,
 )
@@ -72,7 +72,7 @@ async def root():
     """Health check and API info."""
     names = config_loader.list_names()
     return {
-        "name": "AniLabX Parser Engine",
+        "name": "AniMira Parser Engine",
         "version": "1.0.0",
         "sources_loaded": len(names),
         "sources": names,
@@ -196,9 +196,18 @@ APK_VERSION = {
 APK_PATH = Path("android-tv-webview/app/build/outputs/apk/debug/app-debug.apk")
 
 @app.get("/api/version", tags=["update"])
-async def get_version():
+async def get_version(request: Request):
     """Get current APK version info for auto-updater."""
-    base_url = os.environ.get("BASE_URL", "http://192.168.2.7:8000")
+    # Determine base URL from environment or request
+    env_base_url = os.environ.get("BASE_URL", "")
+    if env_base_url:
+        base_url = env_base_url
+    else:
+        # Auto-detect from request (works on Render and local)
+        scheme = request.headers.get("x-forwarded-proto", request.url.scheme)
+        host = request.headers.get("x-forwarded-host", request.headers.get("host", request.url.hostname))
+        base_url = f"{scheme}://{host}"
+
     return {
         "version_code": APK_VERSION["version_code"],
         "version_name": APK_VERSION["version_name"],
@@ -222,7 +231,7 @@ async def download_apk():
 
     return FileResponse(
         path=apk_file,
-        filename="anistar-tv.apk",
+        filename="animira-tv.apk",
         media_type="application/vnd.android.package-archive"
     )
 

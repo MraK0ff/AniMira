@@ -1,4 +1,4 @@
-package com.anistar.tv
+package com.animira.tv
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -11,13 +11,10 @@ class SettingsManager(context: Context) {
     private val prefs: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
     companion object {
-        private const val PREFS_NAME = "anistar_settings"
+        private const val PREFS_NAME = "animira_settings"
         private const val KEY_BASE_URL = "base_url"
-        private const val KEY_TORRSERVE_HOST = "torrserve_host"
         // Default site URL - user should change this to their PC's IP
         private const val DEFAULT_URL = "http://192.168.2.7:5173"
-        // TorrServe runs on the TV itself (localhost)
-        private const val DEFAULT_TORRSERVE = "localhost:8090"
         private const val TAG = "SettingsManager"
     }
 
@@ -27,14 +24,6 @@ class SettingsManager(context: Context) {
 
     fun setBaseUrl(url: String) {
         prefs.edit().putString(KEY_BASE_URL, url).apply()
-    }
-
-    fun getTorrServeHost(): String {
-        return prefs.getString(KEY_TORRSERVE_HOST, DEFAULT_TORRSERVE) ?: DEFAULT_TORRSERVE
-    }
-
-    fun setTorrServeHost(host: String) {
-        prefs.edit().putString(KEY_TORRSERVE_HOST, host).apply()
     }
 
     fun getLocalIpAddresses(): List<String> {

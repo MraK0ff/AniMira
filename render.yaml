@@ -1,0 +1,37 @@
+# Render.com Blueprint Configuration
+# This file configures automatic deployment on Render.com
+
+services:
+  # Backend API Service
+  - type: web
+    name: animira
+    runtime: python
+    plan: free
+    region: frankfurt  # Closest to most users
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: BASE_URL
+        value: https://animira.onrender.com  # Will be updated with actual URL
+    healthCheckPath: /
+    autoDeploy: true
+
+  # Frontend Static Site
+  - type: static
+    name: animira-web
+    runtime: static
+    plan: free
+    buildCommand: cd web && npm install && npm run build
+    staticPublishPath: ./web/dist
+    envVars:
+      - key: NODE_VERSION
+        value: 20.11.0
+    routes:
+      - type: rewrite
+        source: /api/*
+        destination: https://animira.onrender.com/api/*
+      - type: rewrite
+        source: /*
+        destination: /index.html

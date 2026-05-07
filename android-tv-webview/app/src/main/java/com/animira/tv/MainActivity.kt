@@ -1,4 +1,4 @@
-package com.anistar.tv
+package com.animira.tv
 
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var settingsManager: SettingsManager
 
     companion object {
-        private const val TAG = "AnistarTV"
+        private const val TAG = "AniMiraTV"
     }
 
     @SuppressLint("SetJavaScriptEnabled")

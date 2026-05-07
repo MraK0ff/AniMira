@@ -186,3 +186,7 @@ dmypy.json
 repos/*.b
 start.bat
 clean_repos.py
+
+# Render
+.render
+.env.render

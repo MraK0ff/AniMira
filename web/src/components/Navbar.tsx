@@ -39,7 +39,7 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 glass border-b border-white/5 px-6 py-4 flex items-center justify-between">
       <div className="flex items-center gap-8">
         <Link to="/" tabIndex={0} className="tv-focusable text-2xl font-black tracking-tighter text-white">
-          ANILABX
+          ANIMIRA
         </Link>
         
         <div className="hidden md:flex items-center gap-6 text-sm font-medium text-text-muted">

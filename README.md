@@ -1,6 +1,6 @@
-# 📺 Anistar TV WebView
+# 📺 AniMira TV WebView
 
-Android TV приложение WebView для просмотра аниме с сайта Anistar.
+Android TV приложение WebView для просмотра аниме с сайта AniMira.
 
 ## 🏗️ Архитектура
 
@@ -10,7 +10,17 @@ Android TV приложение WebView для просмотра аниме с 
 - **Android** (`android-tv-webview/`) — WebView-приложение для Android TV
 - **Server** (`app/`) — Python FastAPI сервер (опционально, для автообновлений)
 
-## 🚀 Быстрый старт
+## 🌐 Деплой на Render.com
+
+**Новый способ:** Полный деплой на бесплатном хостинге Render.com
+
+- 📖 [Быстрый старт](./RENDER_README.md) — 5 минут до продакшена
+- 📚 [Полная инструкция](./DEPLOY.md) — подробное руководство
+- � [GitHub Setup](./GITHUB_SETUP.md) — создание private repo
+
+---
+
+## �🚀 Быстрый старт (Локально)
 
 ### 1. Настройка сервера
 
@@ -106,7 +116,7 @@ adb install app\build\outputs\apk\debug\app-debug.apk
 
 ```bash
 # Логи Android
-adb logcat -s AnistarTV:D AnistarUpdater:D
+adb logcat -s AniMiraTV:D AniMiraUpdater:D
 
 # Отладка WebView
 # Открой chrome://inspect на ПК
@@ -119,7 +129,7 @@ adb logcat -s AnistarTV:D AnistarUpdater:D
 
 ```
 android-tv-webview/
-├── app/src/main/java/com/anistar/tv/
+├── app/src/main/java/com/animira/tv/
 │   ├── MainActivity.kt      # Главная активность с WebView
 │   ├── Updater.kt           # Логика автообновления
 │   ├── SettingsActivity.kt  # Экран настроек
@@ -161,7 +171,7 @@ app/
 
 ### Не работает скачивание торрентов
 - Убедись что на TV установлено приложение для торрентов
-- Проверь логи: `adb logcat -s AnistarTV:D`
+- Проверь логи: `adb logcat -s AniMiraTV:D`
 
 ### Не работает автообновление
 - Проверь что `versionCode` и `version_name` совпадают в `build.gradle.kts` и `main.py`

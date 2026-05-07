@@ -1,4 +1,4 @@
-package com.anistar.tv
+package com.animira.tv
 
 import android.app.DownloadManager
 import android.content.BroadcastReceiver
@@ -21,8 +21,8 @@ import java.net.URL
 class Updater(private val context: Context) {
 
     companion object {
-        private const val TAG = "AnistarUpdater"
-        private const val APK_FILENAME = "anistar-tv.apk"
+        private const val TAG = "AniMiraUpdater"
+        private const val APK_FILENAME = "animira-tv.apk"
     }
 
     data class UpdateInfo(
@@ -123,7 +123,7 @@ class Updater(private val context: Context) {
             }
 
             val request = DownloadManager.Request(Uri.parse(downloadUrl)).apply {
-                setTitle("Anistar TV Update")
+                setTitle("AniMira Update")
                 setDescription("Загрузка обновления...")
                 setDestinationInExternalFilesDir(context, Environment.DIRECTORY_DOWNLOADS, APK_FILENAME)
                 setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)

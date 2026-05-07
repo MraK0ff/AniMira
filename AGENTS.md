@@ -1,4 +1,4 @@
-# 🤖 Agent Instructions — Anistar TV WebView
+# 🤖 Agent Instructions — AniMira TV WebView
 
 > Этот файл содержит критически важную информацию для AI ассистентов, работающих с проектом.
 > **ВСЕГДА** проверяй этот файл перед изменениями в Android или Web частях.
@@ -17,7 +17,7 @@ astar/
 ├── android-tv-webview/     # Android TV приложение
 │   ├── app/
 │   │   ├── src/main/
-│   │   │   ├── java/com/anistar/tv/   # Kotlin код
+│   │   │   ├── java/com/animira/tv/   # Kotlin код
 │   │   │   └── res/                   # Layouts, strings, etc.
 │   │   └── build.gradle.kts           # ВЕРСИЯ APK
 │   └── gradle/
@@ -138,7 +138,7 @@ android-tv-webview/app/build/outputs/apk/debug/app-debug.apk
 ### Проверка скачивания торрентов
 1. Открыть страницу аниме с торрентами
 2. Нажать "Скачать 1080p"
-3. На Android TV должно открыться приложение для скачивания (например, TorrServe или браузер)
+3. На Android TV должно открыться приложение для скачивания
 
 ---
 
@@ -153,7 +153,7 @@ adb connect <TV_IP>
 adb install app\build\outputs\apk\debug\app-debug.apk
 
 # Логи Android
-adb logcat -s AnistarTV:D AnistarUpdater:D
+adb logcat -s AniMiraTV:D AniMiraUpdater:D
 
 # Запуск сервера
 python run.py
@@ -174,8 +174,8 @@ npm run dev -- --host
 | Версия APK | `android-tv-webview/app/build.gradle.kts` |
 | Версия сервера | `app/main.py` (`APK_VERSION`) |
 | TV Навигация | `web/src/hooks/useTVNavigation.ts` |
-| Обработка ссылок | `android-tv-webview/app/src/main/java/com/anistar/tv/MainActivity.kt` |
-| Обновления APK | `android-tv-webview/app/src/main/java/com/anistar/tv/Updater.kt` |
+| Обработка ссылок | `android-tv-webview/app/src/main/java/com/animira/tv/MainActivity.kt` |
+| Обновления APK | `android-tv-webview/app/src/main/java/com/animira/tv/Updater.kt` |
 | Стили TV | `web/src/index.css` (`.tv-focusable`) |
 | API Endpoints | `app/main.py` |
 

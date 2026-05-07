@@ -526,19 +526,11 @@ export default function AnimeDetail() {
                     
                     <div className="flex flex-col sm:flex-row gap-3">
                       <a
-                        href={`http://localhost:8090/stream?link=${encodeURIComponent(torrent.url)}&play`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="tv-focusable bg-green-500/20 text-green-400 border border-green-500/30 px-4 py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-green-500/30 transition-colors"
-                      >
-                        <Play size={18} /> Смотреть
-                      </a>
-                      <a
                         href={torrent.url}
                         download={`${torrent.title?.replace(/[^\w\s-]/g, '').replace(/\s+/g, '_') || 'torrent'}.torrent`}
                         className="tv-focusable bg-primary text-white px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary-hover transition-colors shadow-lg shadow-primary/20"
                       >
-                        <Download size={20} /> Скачать
+                        <Download size={20} /> Скачать .torrent
                       </a>
                     </div>
                   </motion.div>

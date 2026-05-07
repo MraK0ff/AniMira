@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.anistar.tv"
+    namespace = "com.animira.tv"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.anistar.tv"
+        applicationId = "com.animira.tv"
         minSdk = 21
         targetSdk = 35
         versionCode = 2
