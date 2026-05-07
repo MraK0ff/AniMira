@@ -85,7 +85,8 @@ export default function Player() {
       ...(videoInfo.headers || {}),
       Referer: videoInfo.referer || videoInfo.headers?.Referer || ''
     };
-    const proxyUrl = `/api/proxy?url=${encodeURIComponent(videoInfo.url)}&headers=${encodeURIComponent(JSON.stringify(headers))}`;
+    const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://animira-api.onrender.com';
+    const proxyUrl = `${API_BASE_URL}/api/proxy?url=${encodeURIComponent(videoInfo.url)}&headers=${encodeURIComponent(JSON.stringify(headers))}`;
 
     // Check if it's an m3u8 stream
     if (videoInfo.url.includes('.m3u8') || videoInfo.url.includes('m3u8')) {
@@ -269,8 +270,16 @@ export default function Player() {
           ref={videoRef}
           className="w-full h-full"
           controls
+          controlsList="nodownload noplaybackrate"
+          disablePictureInPicture
+          disableRemotePlayback
           autoPlay
           playsInline
+          webkit-playsinline="true"
+          x5-playsinline="true"
+          x5-video-player-type="h5"
+          x5-video-player-fullscreen="true"
+          x5-video-orientation="portraint"
         />
       </div>
     </div>
