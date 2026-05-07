@@ -4,17 +4,14 @@ import { useStore } from '../store/useStore';
 import AnimeCard, { SkeletonCard } from '../components/AnimeCard';
 import { useState, useEffect } from 'react';
 
-// Default filters
+// Categories from anistar that actually work
 const DEFAULT_FILTERS = [
   { tag: '', name: 'Последние' },
-  { tag: 'genres', name: 'По жанрам' },
-  { tag: 'years', name: 'По годам' },
   { tag: 'dorama', name: 'Дорамы' },
   { tag: 'dunhua', name: 'Дунхуа' },
-  { tag: 'ongoing', name: 'Онгоинги' },
-  { tag: 'announcements', name: 'Анонсы' },
-  { tag: 'completed', name: 'Завершенные' },
-  { tag: 'movies', name: 'Фильмы' },
+  { tag: 'new', name: 'Новинки' },
+  { tag: 'rpg', name: 'RPG' },
+  { tag: 'china', name: 'Китай' },
 ];
 
 export default function Home() {

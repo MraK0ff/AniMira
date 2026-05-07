@@ -716,6 +716,19 @@
             },
             {
                 "category": {
+                    "tag": "dunhua",
+                    "name": "Дунхуа"
+                },
+                "base_url": "$scheme$//$hostname$/anime/dunhua/page/",
+                "append_nums": {
+                    "from": 1,
+                    "to": 5,
+                    "step": 1,
+                    "sufix": "/"
+                }
+            },
+            {
+                "category": {
                     "tag": "new",
                     "name": "Новинки"
                 },
