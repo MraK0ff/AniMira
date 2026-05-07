@@ -220,7 +220,7 @@ export default function AnimeDetail() {
               <button 
                 className="tv-focusable bg-white text-black px-8 py-3.5 rounded-lg font-bold hover:bg-white/90 transition-colors flex items-center gap-2"
                 onClick={() => {
-                  if (epData?.episodes && epData.episodes.length > 0) {
+                  if (epData?.episodes && Array.isArray(epData.episodes) && epData.episodes.length > 0) {
                     // Берем только эпизоды с прямыми ссылками
                     const directEpisodes = epData.episodes.filter(ep => ep.direct_links);
                     if (directEpisodes.length > 0) {
@@ -382,7 +382,7 @@ export default function AnimeDetail() {
                       
                       return Array.from(groups.entries()).reverse().map(([uniq, episodes]) => {
                         // Filter to only direct links by default
-                        const directEpisodes = episodes.filter(ep => ep.direct_links);
+                        const directEpisodes = Array.isArray(episodes) ? episodes.filter(ep => ep.direct_links) : [];
                         const availableEpisodes = directEpisodes.length > 0 ? directEpisodes : episodes;
                         const hasMultiple = availableEpisodes.length > 1;
                         const selectedIdx = Math.min(selectedSources[uniq] ?? 0, availableEpisodes.length - 1);
@@ -424,7 +424,7 @@ export default function AnimeDetail() {
                             <div className="mt-3 flex flex-wrap gap-1">
                               {hasMultiple && (
                                 <>
-                                  {episodes.filter(ep => ep.direct_links).map((ep, idx, arr) => {
+                                  {Array.isArray(episodes) && episodes.filter(ep => ep.direct_links).map((ep, idx, arr) => {
                                     // Find original index in full episodes array
                                     const originalIdx = episodes.indexOf(ep);
                                     return (
