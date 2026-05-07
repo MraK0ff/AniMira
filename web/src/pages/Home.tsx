@@ -2,44 +2,56 @@ import { useQuery } from '@tanstack/react-query';
 import { getAnimeList } from '../api/client';
 import { useStore } from '../store/useStore';
 import AnimeCard, { SkeletonCard } from '../components/AnimeCard';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-const FILTERS = [
-  { id: 'latest', label: 'Последние' },
-  { id: 'ongoing', label: 'Онгоинги' },
-  { id: 'announcements', label: 'Анонсы' },
-  { id: 'completed', label: 'Завершенные' },
-  { id: 'movies', label: 'Фильмы' },
+// Default filters like the first screenshot
+const DEFAULT_FILTERS = [
+  { tag: '', name: 'Последние' },
+  { tag: 'genres', name: 'По жанрам' },
+  { tag: 'years', name: 'По годам' },
+  { tag: 'dorama', name: 'Дорамы' },
+  { tag: 'new', name: 'Новинки' },
+  { tag: 'rpg', name: 'RPG' },
+  { tag: 'china', name: 'Китай' },
+  { tag: 'ongoing', name: 'Онгоинги' },
+  { tag: 'announcements', name: 'Анонсы' },
+  { tag: 'completed', name: 'Завершенные' },
+  { tag: 'movies', name: 'Фильмы' },
 ];
 
 export default function Home() {
   const { currentSource } = useStore();
-  const [activeFilter, setActiveFilter] = useState('latest');
+  const [activeFilter, setActiveFilter] = useState('');
 
-  // Fetch initial list (popular/latest)
+  // Fetch list with selected category
   const { data: listData, isLoading } = useQuery({
     queryKey: ['animeList', currentSource, 1, activeFilter],
-    queryFn: () => getAnimeList(currentSource, 1),
+    queryFn: () => getAnimeList(currentSource, 1, activeFilter || undefined),
     enabled: !!currentSource
   });
+
+  // Use API categories if available, otherwise use defaults
+  const filters = listData?.categories?.length > 0 
+    ? [{ tag: '', name: 'Все' }, ...listData.categories]
+    : DEFAULT_FILTERS;
 
   return (
     <div className="min-h-screen pb-20 px-4 md:px-6 lg:px-8">
       {/* Filter Tabs */}
       <div className="sticky top-16 z-40 -mx-4 md:-mx-6 lg:-mx-8 px-4 md:px-6 lg:px-8 py-3 bg-bg-base/95 backdrop-blur-sm border-b border-white/5">
         <div className="flex gap-2 overflow-x-auto hide-scrollbar">
-          {FILTERS.map((filter) => (
+          {filters.map((filter) => (
             <button
-              key={filter.id}
-              onClick={() => setActiveFilter(filter.id)}
+              key={filter.tag}
+              onClick={() => setActiveFilter(filter.tag)}
               tabIndex={0}
               className={`tv-focusable whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                activeFilter === filter.id
+                activeFilter === filter.tag
                   ? 'bg-primary text-white'
                   : 'bg-white/5 text-text-muted hover:bg-white/10 hover:text-white'
               }`}
             >
-              {filter.label}
+              {filter.name}
             </button>
           ))}
         </div>
