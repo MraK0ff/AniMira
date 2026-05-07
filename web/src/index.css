@@ -1,24 +1,45 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #8b5cf6;
+  --color-primary-hover: #7c3aed;
+  --color-bg-base: #0f1115;
+  --color-bg-surface: rgba(30, 33, 40, 0.7);
+  --color-bg-elevated: rgba(45, 49, 58, 0.8);
+  --color-text-main: #f8fafc;
+  --color-text-muted: #94a3b8;
+}
 
 @layer base {
   body {
-    @apply bg-bg-base text-text-main antialiased selection:bg-primary selection:text-white;
+    background-color: var(--color-bg-base);
+    color: var(--color-text-main);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  ::selection {
+    background-color: var(--color-primary);
+    color: white;
   }
 }
 
 @layer utilities {
   .glass {
-    @apply bg-bg-surface backdrop-blur-md border border-white/10 shadow-xl;
+    background-color: var(--color-bg-surface);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
   }
   
   .glass-elevated {
-    @apply bg-bg-elevated backdrop-blur-xl border border-white/20 shadow-2xl;
+    background-color: var(--color-bg-elevated);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   }
 
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-400;
+    background: linear-gradient(to right, #a78bfa, #60a5fa);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -26,7 +47,7 @@
   
   /* TV mode: use solid color instead of gradient for better visibility */
   .tv-mode .text-gradient {
-    @apply text-white;
+    color: white;
     background: none;
     -webkit-text-fill-color: white;
   }
@@ -34,7 +55,7 @@
   /* Fallback for TV browsers that don't support text gradients well */
   @supports not (-webkit-background-clip: text) {
     .text-gradient {
-      @apply text-white;
+      color: white;
       background: none;
     }
   }
@@ -52,28 +73,29 @@
 @layer base {
   /* Ensure all interactive elements are focusable */
   button, a, input, select, textarea, [tabindex]:not([tabindex="-1"]) {
-    @apply outline-none;
+    outline: none;
   }
   
   /* Visible focus ring for TV navigation */
   button:focus-visible,
   a:focus-visible,
   [tabindex]:focus-visible {
-    @apply ring-4 ring-primary ring-offset-2 ring-offset-bg-base;
+    outline: none;
+    box-shadow: 0 0 0 4px var(--color-primary), 0 0 0 6px var(--color-bg-base);
   }
   
   /* TV-optimized hover/focus combined state */
   .tv-focusable {
-    @apply transition-all duration-200;
+    transition: all 0.2s ease;
   }
   
   .tv-focusable:focus-visible,
   .tv-focusable.tv-focused {
-    @apply ring-4 ring-primary ring-offset-2 ring-offset-bg-base;
     outline: 3px solid #8b5cf6 !important;
     outline-offset: 3px;
     transform: scale(1.02);
     z-index: 100;
+    box-shadow: 0 0 0 4px var(--color-primary), 0 0 0 6px var(--color-bg-base);
   }
   
   /* Card-specific focus styles */
@@ -86,7 +108,8 @@
   /* Large touch targets for TV */
   @media (hover: none) and (pointer: coarse) {
     button, a {
-      @apply min-h-[44px] min-w-[44px];
+      min-height: 44px;
+      min-width: 44px;
     }
   }
 }
