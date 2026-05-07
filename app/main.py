@@ -7,6 +7,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.responses import Response, StreamingResponse, FileResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from urllib.parse import urljoin, quote
 import httpx
 import json
@@ -61,13 +62,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Routes
-app.include_router(sources_router)
-app.include_router(anime_router)
-app.include_router(shikimori_router)
+# API Routes (все под префиксом /api)
+app.include_router(sources_router, prefix="/api")
+app.include_router(anime_router, prefix="/api")
+app.include_router(shikimori_router, prefix="/api")
+
+# Static files (frontend) — только если есть build
+static_dir = Path(__file__).parent.parent / "web" / "dist"
+if static_dir.exists():
+    app.mount("/assets", StaticFiles(directory=static_dir / "assets"), name="assets")
+    app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 
-@app.get("/", tags=["health"])
+@app.get("/api/", tags=["health"])
 async def root():
     """Health check and API info."""
     names = config_loader.list_names()
@@ -77,26 +84,35 @@ async def root():
         "sources_loaded": len(names),
         "sources": names,
         "endpoints": [
-            "GET /sources",
-            "GET /sources/{name}",
-            "GET /anime/list?source=...&page=1",
-            "GET /anime/search?source=...&query=...",
-            "GET /anime/details?source=...&url=...",
-            "GET /anime/episodes?source=...&url=...",
-            "GET /anime/video?source=...&episode_url=...",
-            "GET /anime/filters?source=...",
+            "GET /api/sources",
+            "GET /api/sources/{name}",
+            "GET /api/anime/list?source=...&page=1",
+            "GET /api/anime/search?source=...&query=...",
+            "GET /api/anime/details?source=...&url=...",
+            "GET /api/anime/episodes?source=...&url=...",
+            "GET /api/anime/video?source=...&episode_url=...",
+            "GET /api/anime/filters?source=...",
         ],
     }
 
 
-@app.post("/cache/clear", tags=["admin"])
+@app.get("/", tags=["frontend"])
+async def serve_frontend():
+    """Serve the frontend index.html."""
+    index_file = static_dir / "index.html"
+    if index_file.exists():
+        return FileResponse(index_file)
+    return {"message": "API is running. Frontend not built yet."}
+
+
+@app.post("/api/cache/clear", tags=["admin"])
 async def clear_cache():
     """Clear the HTTP response cache."""
     http_client.clear_cache()
     return {"status": "ok", "message": "Cache cleared"}
 
 
-@app.get("/proxy", tags=["proxy"])
+@app.get("/api/proxy", tags=["proxy"])
 async def proxy_media(url: str, referer: str = "", headers: str = "{}"):
     """Proxy media requests to bypass CORS and Referer/Cookie checks."""
     try:
@@ -195,7 +211,7 @@ APK_VERSION = {
 
 APK_PATH = Path("android-tv-webview/app/build/outputs/apk/debug/app-debug.apk")
 
-@app.get("/version", tags=["update"])
+@app.get("/api/version", tags=["update"])
 async def get_version(request: Request):
     """Get current APK version info for auto-updater."""
     # Determine base URL from environment or request
@@ -211,11 +227,11 @@ async def get_version(request: Request):
     return {
         "version_code": APK_VERSION["version_code"],
         "version_name": APK_VERSION["version_name"],
-        "download_url": f"{base_url}/download/apk",
+        "download_url": f"{base_url}/api/download/apk",
         "changelog": APK_VERSION["changelog"]
     }
 
-@app.get("/download/apk", tags=["update"])
+@app.get("/api/download/apk", tags=["update"])
 async def download_apk():
     """Download the latest APK file."""
     apk_file = APK_PATH
@@ -235,3 +251,17 @@ async def download_apk():
         media_type="application/vnd.android.package-archive"
     )
 
+
+# SPA catch-all — все неизвестные пути возвращают index.html
+# (должен быть ПОСЛЕ всех остальных роутов)
+@app.get("/{full_path:path}", tags=["frontend"])
+async def serve_spa(full_path: str):
+    """Serve index.html for any non-API path (SPA routing)."""
+    # Проверяем что это не API путь и не assets
+    if full_path.startswith("api/") or full_path.startswith("assets/") or full_path.startswith("static/"):
+        return {"detail": "Not found"}
+
+    index_file = static_dir / "index.html"
+    if index_file.exists():
+        return FileResponse(index_file)
+    return {"message": "API is running. Frontend not built yet."}
