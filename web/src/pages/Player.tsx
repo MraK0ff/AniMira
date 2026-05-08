@@ -1,9 +1,13 @@
-import { useEffect, useRef, useState, useMemo } from 'react';
+import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import { useSearchParams, useNavigate, useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getVideoInfo } from '../api/client';
 import Hls from 'hls.js';
-import { ArrowLeft, Loader2, Settings, ChevronLeft, ChevronRight, List } from 'lucide-react';
+import { 
+  ArrowLeft, Loader2, Settings, ChevronLeft, ChevronRight, List,
+  Play, Pause, RotateCcw, RotateCw, Maximize, Minimize, 
+  Subtitles, Volume2, Type, Unlock, Lock
+} from 'lucide-react';
 import { Episode } from '../types/api';
 import clsx from 'clsx';
 
@@ -22,6 +26,16 @@ export default function Player() {
   const [error, setError] = useState<string | null>(null);
   const [showSettings, setShowSettings] = useState(false);
   const [showEpisodes, setShowEpisodes] = useState(false);
+  
+  // Video state
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(1);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [showControls, setShowControls] = useState(true);
+  const [isLocked, setIsLocked] = useState(false);
+  const controlsTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const currentIndex = useMemo(() => {
     if (!currentEpisode || !episodes) return -1;
@@ -129,130 +143,401 @@ export default function Player() {
     };
   }, [videoInfo]);
 
+  // Video event handlers
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handleTimeUpdate = () => setCurrentTime(video.currentTime);
+    const handleDurationChange = () => setDuration(video.duration);
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+
+    video.addEventListener('timeupdate', handleTimeUpdate);
+    video.addEventListener('durationchange', handleDurationChange);
+    video.addEventListener('play', handlePlay);
+    video.addEventListener('pause', handlePause);
+
+    return () => {
+      video.removeEventListener('timeupdate', handleTimeUpdate);
+      video.removeEventListener('durationchange', handleDurationChange);
+      video.removeEventListener('play', handlePlay);
+      video.removeEventListener('pause', handlePause);
+    };
+  }, []);
+
+  // Controls auto-hide
+  const resetControlsTimeout = useCallback(() => {
+    if (controlsTimeoutRef.current) {
+      clearTimeout(controlsTimeoutRef.current);
+    }
+    if (!isLocked) {
+      controlsTimeoutRef.current = setTimeout(() => {
+        setShowControls(false);
+      }, 3000);
+    }
+  }, [isLocked]);
+
+  useEffect(() => {
+    if (showControls) {
+      resetControlsTimeout();
+    }
+    return () => {
+      if (controlsTimeoutRef.current) {
+        clearTimeout(controlsTimeoutRef.current);
+      }
+    };
+  }, [showControls, resetControlsTimeout]);
+
+  // Control functions
+  const togglePlay = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) video.play();
+    else video.pause();
+  };
+
+  const skip = (seconds: number) => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.currentTime = Math.max(0, Math.min(video.duration, video.currentTime + seconds));
+  };
+
+  const seek = (time: number) => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.currentTime = time;
+  };
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+      setIsFullscreen(true);
+    } else {
+      document.exitFullscreen();
+      setIsFullscreen(false);
+    }
+  };
+
+  const formatTime = (seconds: number) => {
+    if (!seconds || isNaN(seconds)) return '00:00';
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const handleMouseMove = () => {
+    setShowControls(true);
+    resetControlsTimeout();
+  };
+
   return (
-    <div className="fixed inset-0 bg-black z-[100] flex flex-col">
+    <div 
+      className="fixed inset-0 bg-black z-[100] flex flex-col"
+      onMouseMove={handleMouseMove}
+      onClick={() => !isLocked && setShowControls(true)}
+    >
       {/* Top Bar Overlay */}
-      <div className="absolute top-0 left-0 right-0 p-6 z-10 bg-gradient-to-b from-black/80 to-transparent flex items-center justify-between opacity-0 hover:opacity-100 transition-opacity">
-        <button 
-          onClick={() => navigate(-1)}
-          className="text-white flex items-center gap-2 hover:text-primary transition-colors font-semibold drop-shadow-md"
-        >
-          <ArrowLeft size={24} /> Назад
-        </button>
-
-        <div className="flex items-center gap-4">
-          {currentEpisode?.title && (
-            <h2 className="text-white font-semibold drop-shadow-md hidden md:block">
-              {currentEpisode.title}
-            </h2>
-          )}
-          
-          {episodes && episodes.length > 1 && (
-            <div className="flex items-center bg-white/10 rounded-full p-1">
-              <button
-                disabled={currentIndex <= 0}
-                onClick={() => {
-                  const nextEp = episodes[currentIndex - 1];
-                  if (nextEp) setCurrentEpisode(nextEp);
-                }}
-                className="p-2 hover:bg-white/10 rounded-full transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-                title="Предыдущая серия"
-              >
-                <ChevronLeft size={20} className="text-white" />
-              </button>
-              
-              <button
-                onClick={() => setShowEpisodes(!showEpisodes)}
-                className="px-3 py-1.5 hover:bg-white/10 rounded-full transition-colors flex items-center gap-2 text-white text-sm font-bold"
-              >
-                <List size={18} />
-                <span className="hidden sm:inline">Серии</span>
-              </button>
-
-              <button
-                disabled={currentIndex >= episodes.length - 1}
-                onClick={() => {
-                  const nextEp = episodes[currentIndex + 1];
-                  if (nextEp) setCurrentEpisode(nextEp);
-                }}
-                className="p-2 hover:bg-white/10 rounded-full transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-                title="Следующая серия"
-              >
-                <ChevronRight size={20} className="text-white" />
-              </button>
+      <div className={clsx(
+        "absolute top-0 left-0 right-0 z-20 bg-gradient-to-b from-black/90 via-black/50 to-transparent transition-all duration-300",
+        showControls ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"
+      )}>
+        <div className="flex items-start justify-between p-4 sm:p-6">
+          {/* Left: Back + Title */}
+          <div className="flex items-start gap-4">
+            <button 
+              onClick={() => navigate(-1)}
+              className="tv-focusable text-white p-2 hover:bg-white/10 rounded-full transition-colors flex-shrink-0"
+              tabIndex={0}
+            >
+              <ArrowLeft size={28} />
+            </button>
+            
+            <div className="flex flex-col">
+              <h1 className="text-white font-semibold text-lg sm:text-xl drop-shadow-lg line-clamp-2">
+                {currentEpisode?.title || 'Плеер'}
+              </h1>
+              {episodes && episodes.length > 1 && (
+                <p className="text-white/70 text-sm mt-1">
+                  Серия {currentIndex + 1} из {episodes.length}
+                </p>
+              )}
             </div>
-          )}
+          </div>
 
-          {showEpisodes && episodes && (
-            <div className="absolute top-full right-40 mt-2 w-64 max-h-[60vh] bg-[#18181b]/95 backdrop-blur-md rounded-xl border border-white/10 shadow-2xl overflow-y-auto z-50 py-2 custom-scrollbar">
-              <div className="px-4 py-2 border-b border-white/5 mb-2">
-                <h3 className="text-white/50 text-xs font-bold uppercase tracking-wider">Список серий</h3>
-              </div>
-              {/* Show in reverse order if they are 1-N to match details page */}
-              {[...episodes].reverse().map((ep) => (
-                <button
-                  key={ep.url}
-                  onClick={() => {
-                    setCurrentEpisode(ep);
-                    setShowEpisodes(false);
-                  }}
-                  className={clsx(
-                    "w-full text-left px-4 py-2.5 text-sm font-semibold transition-colors flex items-center justify-between group",
-                    currentEpisode?.url === ep.url ? "bg-primary/20 text-primary" : "text-white/70 hover:bg-white/10 hover:text-white"
-                  )}
-                >
-                  <span className="truncate pr-4">{ep.title}</span>
-                  {currentEpisode?.url === ep.url && <div className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_8px_rgba(var(--primary-rgb),0.8)]" />}
-                </button>
-              ))}
+          {/* Right: Top Settings Bar */}
+          <div className="flex items-center gap-1 sm:gap-2">
+            {/* Subtitles */}
+            <button 
+              className="tv-focusable text-white p-2 sm:p-2.5 hover:bg-white/10 rounded-full transition-colors"
+              tabIndex={0}
+              title="Субтитры"
+            >
+              <Subtitles size={20} />
+            </button>
+            
+            {/* Quality Indicator */}
+            <div className="flex items-center gap-1 bg-white/10 rounded-full px-3 py-1.5">
+              <Type size={16} className="text-white" />
+              <span className="text-white text-sm font-semibold">
+                {qualities.find(q => q.url === activeUrl)?.name || 'HD'}
+              </span>
             </div>
-          )}
-          
-          {qualities.length > 1 && (
-            <div className="relative">
+            
+            {/* Audio/Volume */}
+            <button 
+              className="tv-focusable text-white p-2 sm:p-2.5 hover:bg-white/10 rounded-full transition-colors"
+              tabIndex={0}
+              title="Звук"
+            >
+              <Volume2 size={20} />
+            </button>
+            
+            {/* Lock */}
+            <button 
+              onClick={() => setIsLocked(!isLocked)}
+              className="tv-focusable text-white p-2 sm:p-2.5 hover:bg-white/10 rounded-full transition-colors"
+              tabIndex={0}
+              title={isLocked ? "Разблокировать" : "Заблокировать"}
+            >
+              {isLocked ? <Lock size={20} /> : <Unlock size={20} />}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Center Controls Overlay */}
+      <div 
+        className={clsx(
+          "absolute inset-0 z-10 flex items-center justify-center transition-opacity duration-300",
+          showControls ? "opacity-100" : "opacity-0 pointer-events-none"
+        )}
+        onClick={(e) => {
+          if (e.target === e.currentTarget) togglePlay();
+        }}
+      >
+        {/* Episodes Panel (if open) */}
+        {showEpisodes && episodes && (
+          <div className="absolute top-20 right-4 sm:right-6 w-72 max-h-[50vh] bg-black/90 backdrop-blur-md rounded-xl border border-white/10 shadow-2xl overflow-y-auto z-30 py-2">
+            <div className="px-4 py-2 border-b border-white/10 mb-2 flex items-center justify-between">
+              <h3 className="text-white/50 text-xs font-bold uppercase tracking-wider">Список серий</h3>
               <button 
-                onClick={() => setShowSettings(!showSettings)}
-                className="text-white p-2 hover:bg-white/10 rounded-full transition-colors flex items-center gap-2"
+                onClick={() => setShowEpisodes(false)}
+                className="text-white/50 hover:text-white p-1"
               >
-                <Settings size={24} />
-                <span className="text-sm font-semibold">{qualities.find(q => q.url === activeUrl)?.name || 'Качество'}</span>
+                <ChevronLeft size={16} />
               </button>
+            </div>
+            {[...episodes].reverse().map((ep, idx) => (
+              <button
+                key={ep.url}
+                onClick={() => {
+                  setCurrentEpisode(ep);
+                  setShowEpisodes(false);
+                }}
+                className={clsx(
+                  "w-full text-left px-4 py-3 text-sm font-semibold transition-colors flex items-center justify-between",
+                  currentEpisode?.url === ep.url 
+                    ? "bg-red-600/30 text-white border-l-2 border-red-500" 
+                    : "text-white/70 hover:bg-white/10 hover:text-white"
+                )}
+              >
+                <span className="truncate pr-4">{ep.title}</span>
+                {currentEpisode?.url === ep.url && (
+                  <div className="w-2 h-2 rounded-full bg-red-500" />
+                )}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Center Play Controls */}
+        <div className="flex items-center gap-4 sm:gap-6">
+          {/* Rewind 10s */}
+          <button
+            onClick={() => skip(-10)}
+            className="tv-focusable group relative flex flex-col items-center"
+            tabIndex={0}
+          >
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center group-hover:bg-black/70 transition-colors border border-white/20">
+              <RotateCcw size={24} className="text-white" />
+            </div>
+            <span className="text-white/70 text-xs mt-2 font-medium">10</span>
+          </button>
+
+          {/* Previous Episode */}
+          {episodes && episodes.length > 1 && (
+            <button
+              onClick={() => {
+                const prevEp = episodes[currentIndex - 1];
+                if (prevEp) setCurrentEpisode(prevEp);
+              }}
+              disabled={currentIndex <= 0}
+              className="tv-focusable w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-black/30 flex items-center justify-center hover:bg-black/50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+              tabIndex={0}
+            >
+              <ChevronLeft size={28} className="text-white" />
+            </button>
+          )}
+
+          {/* Play/Pause - Big Red Circle */}
+          <button
+            onClick={togglePlay}
+            className="tv-focusable relative group"
+            tabIndex={0}
+          >
+            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-red-600/90 flex items-center justify-center shadow-lg shadow-red-900/30 group-hover:bg-red-500 transition-all group-hover:scale-105">
+              {isPlaying ? (
+                <Pause size={36} className="text-white" />
+              ) : (
+                <Play size={36} className="text-white ml-1" />
+              )}
+            </div>
+          </button>
+
+          {/* Next Episode */}
+          {episodes && episodes.length > 1 && (
+            <button
+              onClick={() => {
+                const nextEp = episodes[currentIndex + 1];
+                if (nextEp) setCurrentEpisode(nextEp);
+              }}
+              disabled={currentIndex >= episodes.length - 1}
+              className="tv-focusable w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-black/30 flex items-center justify-center hover:bg-black/50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+              tabIndex={0}
+            >
+              <ChevronRight size={28} className="text-white" />
+            </button>
+          )}
+
+          {/* Forward 10s */}
+          <button
+            onClick={() => skip(10)}
+            className="tv-focusable group relative flex flex-col items-center"
+            tabIndex={0}
+          >
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center group-hover:bg-black/70 transition-colors border border-white/20">
+              <RotateCw size={24} className="text-white" />
+            </div>
+            <span className="text-white/70 text-xs mt-2 font-medium">10</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Bottom Controls */}
+      <div className={clsx(
+        "absolute bottom-0 left-0 right-0 z-20 bg-gradient-to-t from-black/90 via-black/50 to-transparent transition-all duration-300",
+        showControls ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
+      )}>
+        <div className="p-4 sm:p-6">
+          {/* Progress Bar */}
+          <div className="flex items-center gap-3 mb-4">
+            <span className="text-white/80 text-sm font-medium min-w-[50px]">
+              {formatTime(currentTime)}
+            </span>
+            
+            <div className="flex-1 relative group">
+              <input
+                type="range"
+                min={0}
+                max={duration || 100}
+                value={currentTime}
+                onChange={(e) => seek(Number(e.target.value))}
+                className="w-full h-1.5 bg-white/30 rounded-full appearance-none cursor-pointer accent-red-500 hover:h-2 transition-all"
+                style={{
+                  background: `linear-gradient(to right, #dc2626 ${(currentTime / (duration || 1)) * 100}%, rgba(255,255,255,0.3) ${(currentTime / (duration || 1)) * 100}%)`
+                }}
+              />
+            </div>
+            
+            <span className="text-white/80 text-sm font-medium min-w-[50px] text-right">
+              {formatTime(duration)}
+            </span>
+          </div>
+
+          {/* Bottom Actions */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              {/* Episodes Toggle */}
+              {episodes && episodes.length > 1 && (
+                <button
+                  onClick={() => setShowEpisodes(!showEpisodes)}
+                  className={clsx(
+                    "tv-focusable flex items-center gap-2 px-3 py-1.5 rounded-full transition-colors",
+                    showEpisodes ? "bg-red-600 text-white" : "bg-white/10 text-white hover:bg-white/20"
+                  )}
+                  tabIndex={0}
+                >
+                  <List size={18} />
+                  <span className="text-sm font-semibold">Серии</span>
+                </button>
+              )}
               
-              {showSettings && (
-                <div className="absolute top-full right-0 mt-2 w-32 bg-[#18181b]/95 backdrop-blur-md rounded-xl border border-white/10 shadow-2xl overflow-hidden">
-                  {qualities.map(q => (
-                    <button
-                      key={q.url}
-                      onClick={() => {
-                        setActiveUrl(q.url);
-                        setShowSettings(false);
-                      }}
-                      className={clsx(
-                        "w-full text-left px-4 py-3 text-sm font-semibold transition-colors",
-                        activeUrl === q.url ? "bg-primary text-white" : "text-white/70 hover:bg-white/10 hover:text-white"
-                      )}
-                    >
-                      {q.name}
-                    </button>
-                  ))}
+              {/* Quality Selector */}
+              {qualities.length > 1 && (
+                <div className="relative">
+                  <button 
+                    onClick={() => setShowSettings(!showSettings)}
+                    className={clsx(
+                      "tv-focusable flex items-center gap-2 px-3 py-1.5 rounded-full transition-colors",
+                      showSettings ? "bg-red-600 text-white" : "bg-white/10 text-white hover:bg-white/20"
+                    )}
+                    tabIndex={0}
+                  >
+                    <Settings size={18} />
+                    <span className="text-sm font-semibold">
+                      {qualities.find(q => q.url === activeUrl)?.name || 'Качество'}
+                    </span>
+                  </button>
+                  
+                  {showSettings && (
+                    <div className="absolute bottom-full left-0 mb-2 w-32 bg-black/95 backdrop-blur-md rounded-xl border border-white/10 shadow-2xl overflow-hidden z-30">
+                      {qualities.map(q => (
+                        <button
+                          key={q.url}
+                          onClick={() => {
+                            setActiveUrl(q.url);
+                            setShowSettings(false);
+                          }}
+                          className={clsx(
+                            "w-full text-left px-4 py-3 text-sm font-semibold transition-colors",
+                            activeUrl === q.url 
+                              ? "bg-red-600 text-white" 
+                              : "text-white/70 hover:bg-white/10 hover:text-white"
+                          )}
+                        >
+                          {q.name}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
             </div>
-          )}
+
+            {/* Fullscreen */}
+            <button
+              onClick={toggleFullscreen}
+              className="tv-focusable text-white p-2 hover:bg-white/10 rounded-full transition-colors"
+              tabIndex={0}
+            >
+              {isFullscreen ? <Minimize size={24} /> : <Maximize size={24} />}
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Video Container */}
       <div className="flex-1 relative bg-black flex items-center justify-center">
         {isLoading && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 text-white">
-            <Loader2 size={48} className="animate-spin text-primary" />
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 text-white z-10">
+            <Loader2 size={48} className="animate-spin text-red-500" />
             <p className="font-semibold text-lg">Загрузка плеера...</p>
           </div>
         )}
         
         {error && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 text-white">
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 text-white z-10">
             <div className="bg-red-500/20 text-red-500 p-4 rounded-xl border border-red-500/50 text-center max-w-md">
               <p className="font-bold mb-2">Ошибка воспроизведения</p>
               <p className="text-sm">{error}</p>
@@ -269,8 +554,7 @@ export default function Player() {
         <video
           ref={videoRef}
           className="w-full h-full"
-          controls
-          controlsList="nodownload noplaybackrate"
+          controls={false}
           disablePictureInPicture
           disableRemotePlayback
           autoPlay

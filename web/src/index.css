@@ -135,3 +135,56 @@
 .tv-mode * {
   cursor: none !important;
 }
+
+/* Video Player Progress Bar */
+input[type="range"][class*="accent-red"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+}
+
+input[type="range"][class*="accent-red"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #dc2626;
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  margin-top: -5px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+input[type="range"][class*="accent-red"]:hover::-webkit-slider-thumb,
+input[type="range"][class*="accent-red"]:focus::-webkit-slider-thumb {
+  opacity: 1;
+}
+
+input[type="range"][class*="accent-red"]::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 2px;
+}
+
+input[type="range"][class*="accent-red"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #dc2626;
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+input[type="range"][class*="accent-red"]:hover::-moz-range-thumb {
+  opacity: 1;
+}
+
+/* Player click area */
+.player-click-area {
+  cursor: pointer;
+}
