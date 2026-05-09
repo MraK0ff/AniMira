@@ -298,7 +298,7 @@ async def serve_spa(full_path: str):
     """Serve index.html for any non-API path (SPA routing)."""
     # Проверяем что это не API путь и не assets
     if full_path.startswith("api/") or full_path.startswith("assets/") or full_path.startswith("static/"):
-        return {"detail": "Not found"}
+        raise HTTPException(status_code=404, detail="Not found")
 
     index_file = static_dir / "index.html"
     if index_file.exists():
