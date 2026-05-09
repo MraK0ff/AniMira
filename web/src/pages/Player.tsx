@@ -6,7 +6,7 @@ import Hls from 'hls.js';
 import { 
   ArrowLeft, Loader2, Settings, ChevronLeft, ChevronRight, List,
   Play, Pause, RotateCcw, RotateCw, Maximize, Minimize, 
-  Subtitles, Volume2, Type, Unlock, Lock
+  Unlock, Lock
 } from 'lucide-react';
 import { Episode } from '../types/api';
 import clsx from 'clsx';
@@ -265,34 +265,8 @@ export default function Player() {
             </div>
           </div>
 
-          {/* Right: Top Settings Bar */}
+          {/* Right: Lock only */}
           <div className="flex items-center gap-1 sm:gap-2">
-            {/* Subtitles */}
-            <button 
-              className="tv-focusable text-white p-2 sm:p-2.5 hover:bg-white/10 rounded-full transition-colors"
-              tabIndex={0}
-              title="Субтитры"
-            >
-              <Subtitles size={20} />
-            </button>
-            
-            {/* Quality Indicator */}
-            <div className="flex items-center gap-1 bg-white/10 rounded-full px-3 py-1.5">
-              <Type size={16} className="text-white" />
-              <span className="text-white text-sm font-semibold">
-                {qualities.find(q => q.url === activeUrl)?.name || 'HD'}
-              </span>
-            </div>
-            
-            {/* Audio/Volume */}
-            <button 
-              className="tv-focusable text-white p-2 sm:p-2.5 hover:bg-white/10 rounded-full transition-colors"
-              tabIndex={0}
-              title="Звук"
-            >
-              <Volume2 size={20} />
-            </button>
-            
             {/* Lock */}
             <button 
               onClick={() => setIsLocked(!isLocked)}
@@ -328,7 +302,7 @@ export default function Player() {
                 <ChevronLeft size={16} />
               </button>
             </div>
-            {[...episodes].reverse().map((ep, idx) => (
+            {episodes.map((ep, idx) => (
               <button
                 key={ep.url}
                 onClick={() => {
@@ -337,14 +311,14 @@ export default function Player() {
                 }}
                 className={clsx(
                   "w-full text-left px-4 py-3 text-sm font-semibold transition-colors flex items-center justify-between",
-                  currentEpisode?.url === ep.url 
-                    ? "bg-red-600/30 text-white border-l-2 border-red-500" 
+                  currentEpisode?.url === ep.url
+                    ? "bg-gray-600/30 text-white border-l-2 border-gray-500"
                     : "text-white/70 hover:bg-white/10 hover:text-white"
                 )}
               >
                 <span className="truncate pr-4">{ep.title}</span>
                 {currentEpisode?.url === ep.url && (
-                  <div className="w-2 h-2 rounded-full bg-red-500" />
+                  <div className="w-2 h-2 rounded-full bg-gray-500" />
                 )}
               </button>
             ))}
@@ -386,7 +360,7 @@ export default function Player() {
             className="tv-focusable relative group"
             tabIndex={0}
           >
-            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-red-600/90 flex items-center justify-center shadow-lg shadow-red-900/30 group-hover:bg-red-500 transition-all group-hover:scale-105">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gray-600/90 flex items-center justify-center shadow-lg shadow-gray-900/30 group-hover:bg-gray-500 transition-all group-hover:scale-105">
               {isPlaying ? (
                 <Pause size={36} className="text-white" />
               ) : (
@@ -443,9 +417,9 @@ export default function Player() {
                 max={duration || 100}
                 value={currentTime}
                 onChange={(e) => seek(Number(e.target.value))}
-                className="w-full h-1.5 bg-white/30 rounded-full appearance-none cursor-pointer accent-red-500 hover:h-2 transition-all"
+                className="w-full h-1.5 bg-white/30 rounded-full appearance-none cursor-pointer accent-gray-500 hover:h-2 transition-all"
                 style={{
-                  background: `linear-gradient(to right, #dc2626 ${(currentTime / (duration || 1)) * 100}%, rgba(255,255,255,0.3) ${(currentTime / (duration || 1)) * 100}%)`
+                  background: `linear-gradient(to right, #6b7280 ${(currentTime / (duration || 1)) * 100}%, rgba(255,255,255,0.3) ${(currentTime / (duration || 1)) * 100}%)`
                 }}
               />
             </div>
@@ -464,7 +438,7 @@ export default function Player() {
                   onClick={() => setShowEpisodes(!showEpisodes)}
                   className={clsx(
                     "tv-focusable flex items-center gap-2 px-3 py-1.5 rounded-full transition-colors",
-                    showEpisodes ? "bg-red-600 text-white" : "bg-white/10 text-white hover:bg-white/20"
+                    showEpisodes ? "bg-gray-600 text-white" : "bg-white/10 text-white hover:bg-white/20"
                   )}
                   tabIndex={0}
                 >
@@ -480,7 +454,7 @@ export default function Player() {
                     onClick={() => setShowSettings(!showSettings)}
                     className={clsx(
                       "tv-focusable flex items-center gap-2 px-3 py-1.5 rounded-full transition-colors",
-                      showSettings ? "bg-red-600 text-white" : "bg-white/10 text-white hover:bg-white/20"
+                      showSettings ? "bg-gray-600 text-white" : "bg-white/10 text-white hover:bg-white/20"
                     )}
                     tabIndex={0}
                   >
@@ -502,7 +476,7 @@ export default function Player() {
                           className={clsx(
                             "w-full text-left px-4 py-3 text-sm font-semibold transition-colors",
                             activeUrl === q.url 
-                              ? "bg-red-600 text-white" 
+                              ? "bg-gray-600 text-white" 
                               : "text-white/70 hover:bg-white/10 hover:text-white"
                           )}
                         >
@@ -531,14 +505,14 @@ export default function Player() {
       <div className="flex-1 relative bg-black flex items-center justify-center">
         {isLoading && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 text-white z-10">
-            <Loader2 size={48} className="animate-spin text-red-500" />
+            <Loader2 size={48} className="animate-spin text-gray-500" />
             <p className="font-semibold text-lg">Загрузка плеера...</p>
           </div>
         )}
         
         {error && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 text-white z-10">
-            <div className="bg-red-500/20 text-red-500 p-4 rounded-xl border border-red-500/50 text-center max-w-md">
+            <div className="bg-gray-500/20 text-gray-400 p-4 rounded-xl border border-gray-500/50 text-center max-w-md">
               <p className="font-bold mb-2">Ошибка воспроизведения</p>
               <p className="text-sm">{error}</p>
             </div>
