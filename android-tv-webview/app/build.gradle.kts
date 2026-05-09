@@ -39,6 +39,22 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+
+    applicationVariants.all {
+        val variant = this
+        variant.outputs.all {
+            val output = this as com.android.build.gradle.internal.api.ApkVariantOutputImpl
+            output.outputFileName = "app-debug.apk"
+        }
+
+        // Копируем только APK в целевую папку после сборки
+        variant.packageApplicationProvider.get().doLast {
+            val apkFile = File(outputDir.get().asFile, "app-debug.apk")
+            val targetDir = File(rootDir.parentFile, "apk")
+            targetDir.mkdirs()
+            apkFile.copyTo(File(targetDir, "app-debug.apk"), overwrite = true)
+        }
+    }
 }
 
 dependencies {
