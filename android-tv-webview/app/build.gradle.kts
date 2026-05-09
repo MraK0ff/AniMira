@@ -14,7 +14,7 @@ android {
         versionCode = 2
         versionName = "1.1"
 
-        buildConfigField("String", "UPDATE_SERVER_URL", "\"http://192.168.2.7:8000\"")
+        buildConfigField("String", "UPDATE_SERVER_URL", "\"https://animira.onrender.com\"")
     }
 
     buildFeatures {

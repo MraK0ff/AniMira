@@ -2,7 +2,7 @@
     <string name="app_name">AniMira</string>
     <string name="settings">Настройки</string>
     <string name="site_url">URL сайта</string>
-    <string name="url_hint">http://192.168.2.7:5173</string>
+    <string name="url_hint">https://animira.onrender.com</string>
     <string name="save">Сохранить</string>
     <string name="cancel">Отмена</string>
     <string name="app_version">Версия приложения</string>

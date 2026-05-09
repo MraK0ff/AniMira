@@ -107,7 +107,7 @@ adb install app\build\outputs\apk\debug\app-debug.apk
 
 ### Настройки (кнопка Меню на пульте)
 
-- **URL сайта** — адрес web сервера (по умолчанию `http://192.168.2.7:5173`)
+- **URL сайта** — адрес web сервера (по умолчанию `https://animira.onrender.com`)
 - **Проверить обновления** — ручная проверка версии APK
 
 ## 🛠️ Разработка
@@ -176,7 +176,7 @@ app/
 ### Не работает автообновление
 - Проверь что `versionCode` и `version_name` совпадают в `build.gradle.kts` и `main.py`
 - Проверь путь к APK в `APK_PATH`
-- Проверь endpoint: `curl http://192.168.2.7:8000/api/version`
+- Проверь endpoint: `curl https://animira.onrender.com/api/version`
 
 ### Не видно фокус на элементах
 - Все интерактивные элементы должны иметь `tabIndex={0}` и класс `tv-focusable`

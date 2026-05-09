@@ -71,7 +71,7 @@ android-tv-webview/app/build/outputs/apk/debug/app-debug.apk
 ### 5. Тестирование обновления
 
 1. Запустить сервер: `python run.py` или `python -m app.main`
-2. Проверить: `curl http://192.168.2.7:8000/api/version`
+2. Проверить: `curl https://animira.onrender.com/api/version`
 3. Установить старую версию APK на TV
 4. Убедиться, что при запуске предлагает обновиться
 

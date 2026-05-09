@@ -47,7 +47,7 @@ cd android-tv-webview
 ls app/build/outputs/apk/debug/app-debug.apk
 
 # Проверь endpoint
-curl http://192.168.2.7:8000/api/version
+curl https://animira.onrender.com/api/version
 ```
 
 ## Шаг 6: Тестирование
