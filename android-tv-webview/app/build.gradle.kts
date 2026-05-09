@@ -46,14 +46,18 @@ android {
             val output = this as com.android.build.gradle.internal.api.ApkVariantOutputImpl
             output.outputFileName = "app-debug.apk"
         }
+    }
 
-        // Копируем только APK в целевую папку после сборки
-        variant.packageApplicationProvider.get().doLast {
-            val apkFile = File(outputDir.get().asFile, "app-debug.apk")
-            val targetDir = File(rootDir.parentFile, "apk")
-            targetDir.mkdirs()
-            apkFile.copyTo(File(targetDir, "app-debug.apk"), overwrite = true)
+    // Копируем APK после сборки
+    tasks.matching { it.name == "packageDebug" }.configureEach {
+        finalizedBy("copyApk")
+    }
+
+    tasks.register<Copy>("copyApk") {
+        from(layout.buildDirectory.dir("outputs/apk/debug")) {
+            include("app-debug.apk")
         }
+        into(layout.projectDirectory.dir("../apk"))
     }
 }
 
