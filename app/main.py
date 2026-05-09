@@ -225,7 +225,18 @@ APK_VERSION = {
     "changelog": "Добавлена функция автообновления"
 }
 
-APK_PATH = Path("android-tv-webview/app/build/outputs/apk/debug/app-debug.apk")
+# Check multiple possible APK locations (local build or deployed)
+APK_PATHS = [
+    Path("apk/app-debug.apk"),  # Deployed location
+    Path("android-tv-webview/app/build/outputs/apk/debug/app-debug.apk"),  # Local build
+]
+
+def find_apk_file() -> Path | None:
+    """Find APK file in known locations."""
+    for path in APK_PATHS:
+        if path.exists():
+            return path
+    return None
 
 @app.get("/api/version", tags=["update"])
 async def get_version(request: Request):
@@ -240,23 +251,35 @@ async def get_version(request: Request):
         host = request.headers.get("x-forwarded-host", request.headers.get("host", request.url.hostname))
         base_url = f"{scheme}://{host}"
 
+    # Check if APK is available
+    apk_file = find_apk_file()
+    apk_available = apk_file is not None
+
     return {
         "version_code": APK_VERSION["version_code"],
         "version_name": APK_VERSION["version_name"],
         "download_url": f"{base_url}/api/download/apk",
-        "changelog": APK_VERSION["changelog"]
+        "changelog": APK_VERSION["changelog"],
+        "apk_available": apk_available,
+        "apk_size": apk_file.stat().st_size if apk_file else None
     }
 
 @app.get("/api/download/apk", tags=["update"])
 async def download_apk():
     """Download the latest APK file."""
-    apk_file = APK_PATH
+    apk_file = find_apk_file()
 
-    if not apk_file.exists():
-        logger.error(f"APK file not found at: {apk_file.absolute()}")
+    if not apk_file:
+        logger.error("APK file not found in any location")
+        # Log what paths were checked
+        for path in APK_PATHS:
+            logger.error(f"  Checked: {path.absolute()} (exists: {path.exists()})")
         return JSONResponse(
             status_code=404,
-            content={"error": "APK file not found. Please build the app first."}
+            content={
+                "error": "APK file not found. Please build the app first.",
+                "hint": "Run: cd android-tv-webview && ./gradlew assembleDebug"
+            }
         )
 
     logger.info(f"Serving APK file: {apk_file.absolute()} ({apk_file.stat().st_size} bytes)")

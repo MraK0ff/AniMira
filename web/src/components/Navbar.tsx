@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Search, History, Heart, User } from 'lucide-react';
+import { Search, History, Heart, User, Smartphone } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { getSources } from '../api/client';
 import { useStore } from '../store/useStore';
@@ -63,6 +63,9 @@ export default function Navbar() {
       </div>
 
       <div className="flex items-center gap-2 md:gap-5 text-text-muted flex-shrink-0">
+        <Link to="/download" tabIndex={0} className="tv-focusable hover:text-white transition-colors p-2 min-w-[44px] min-h-[44px] flex items-center justify-center hidden sm:flex" title="Скачать для TV">
+          <Smartphone size={20} />
+        </Link>
         <Link to="/search" tabIndex={0} className="tv-focusable hover:text-white transition-colors p-2 min-w-[44px] min-h-[44px] flex items-center justify-center">
           <Search size={20} />
         </Link>

@@ -10,6 +10,14 @@ services:
     buildCommand: |
       pip install -r requirements.txt
       cd web && npm install && VITE_API_URL=/ npm run build
+      # Copy APK to deploy directory if it exists locally
+      if [ -f "android-tv-webview/app/build/outputs/apk/debug/app-debug.apk" ]; then
+        mkdir -p apk
+        cp android-tv-webview/app/build/outputs/apk/debug/app-debug.apk apk/app-debug.apk
+        echo "APK copied to deploy directory"
+      else
+        echo "APK not found locally - will need to be built manually"
+      fi
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PYTHON_VERSION

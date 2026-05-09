@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Search from './pages/Search';
 import AnimeDetail from './pages/AnimeDetail';
 import Player from './pages/Player';
+import Download from './pages/Download';
 import { useTVNavigation } from './hooks/useTVNavigation';
 
 function TVNavigationWrapper({ children }: { children: React.ReactNode }) {
@@ -50,6 +51,7 @@ function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/anime" element={<AnimeDetail />} />
           <Route path="/player" element={<Player />} />
+          <Route path="/download" element={<Download />} />
         </Routes>
       </main>
       </TVNavigationWrapper>
