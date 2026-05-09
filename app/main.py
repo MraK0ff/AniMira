@@ -8,6 +8,8 @@ from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import Response, StreamingResponse, FileResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.exception_handlers import http_exception_handler
+from starlette.exceptions import HTTPException as StarletteHTTPException
 from urllib.parse import urljoin, quote
 import httpx
 import json
@@ -72,21 +74,6 @@ static_dir = Path(__file__).parent.parent / "web" / "dist"
 if static_dir.exists():
     app.mount("/assets", StaticFiles(directory=static_dir / "assets"), name="assets")
     app.mount("/static", StaticFiles(directory=static_dir), name="static")
-    
-    # Serve index.html for root and all frontend routes
-    @app.get("/", tags=["frontend"])
-    async def serve_index():
-        return FileResponse(static_dir / "index.html")
-    
-    @app.get("/{path:path}", tags=["frontend"])
-    async def serve_frontend(path: str):
-        # Skip API routes
-        if path.startswith("api/"):
-            raise HTTPException(status_code=404, detail="Not found")
-        file_path = static_dir / path
-        if file_path.exists() and file_path.is_file():
-            return FileResponse(file_path)
-        return FileResponse(static_dir / "index.html")
 
 
 @app.get("/api/", tags=["health"])
@@ -291,16 +278,18 @@ async def download_apk():
     )
 
 
-# SPA catch-all — все неизвестные пути возвращают index.html
-# (должен быть ПОСЛЕ всех остальных роутов)
-@app.get("/{full_path:path}", tags=["frontend"])
-async def serve_spa(full_path: str):
-    """Serve index.html for any non-API path (SPA routing)."""
-    # Проверяем что это не API путь и не assets
-    if full_path.startswith("api/") or full_path.startswith("assets/") or full_path.startswith("static/"):
-        raise HTTPException(status_code=404, detail="Not found")
-
-    index_file = static_dir / "index.html"
-    if index_file.exists():
-        return FileResponse(index_file)
-    return {"message": "API is running. Frontend not built yet."}
+# SPA 404 handler — возвращает index.html для не-API путей (React Router)
+@app.exception_handler(StarletteHTTPException)
+async def spa_exception_handler(request: Request, exc: StarletteHTTPException):
+    """Return index.html for 404 on non-API routes (SPA routing)."""
+    # API routes should return proper 404
+    if request.url.path.startswith("/api/"):
+        return await http_exception_handler(request, exc)
+    
+    # For all other routes, return index.html for SPA routing
+    if exc.status_code == 404:
+        index_file = static_dir / "index.html"
+        if index_file.exists():
+            return FileResponse(index_file)
+    
+    return await http_exception_handler(request, exc)
