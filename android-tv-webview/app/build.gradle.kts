@@ -3,6 +3,13 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
+// Auto-increment version based on build time
+val buildTime = System.currentTimeMillis()
+val versionCodeAuto = (buildTime / 1000).toInt()  // Seconds since epoch
+val versionNameAuto = java.time.LocalDateTime.now().format(
+    java.time.format.DateTimeFormatter.ofPattern("yyyy.MM.dd.HHmm")
+)
+
 android {
     namespace = "com.animira.tv"
     compileSdk = 35
@@ -11,8 +18,8 @@ android {
         applicationId = "com.animira.tv"
         minSdk = 21
         targetSdk = 35
-        versionCode = 2
-        versionName = "1.1"
+        versionCode = versionCodeAuto
+        versionName = versionNameAuto
 
         buildConfigField("String", "UPDATE_SERVER_URL", "\"https://animira.onrender.com\"")
     }
@@ -48,9 +55,9 @@ android {
         }
     }
 
-    // Копируем APK после сборки
+    // Копируем APK после сборки и генерируем version.json
     tasks.matching { it.name == "packageDebug" }.configureEach {
-        finalizedBy("copyApk")
+        finalizedBy("copyApk", "generateVersionJson")
     }
 
     tasks.register<Copy>("copyApk") {
@@ -58,6 +65,26 @@ android {
             include("app-debug.apk")
         }
         into(layout.projectDirectory.dir("../apk"))
+    }
+    
+    // Генерируем version.json для сервера
+    tasks.register("generateVersionJson") {
+        doLast {
+            val versionFile = layout.projectDirectory.file("../apk/version.json").asFile
+            versionFile.parentFile.mkdirs()
+            
+            val json = """
+                {
+                    "version_code": $versionCodeAuto,
+                    "version_name": "$versionNameAuto",
+                    "changelog": "Сборка от ${java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"))}",
+                    "build_time": $buildTime
+                }
+            """.trimIndent()
+            
+            versionFile.writeText(json)
+            println("Generated version.json: $versionCodeAuto / $versionNameAuto")
+        }
     }
 }
 
