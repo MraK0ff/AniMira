@@ -71,6 +71,7 @@ android {
     
     // Генерируем version.json для сервера
     tasks.register("generateVersionJson") {
+        notCompatibleWithConfigurationCache("Uses project at execution time")
         doLast {
             val versionFile = layout.projectDirectory.file("../apk/version.json").asFile
             versionFile.parentFile.mkdirs()
