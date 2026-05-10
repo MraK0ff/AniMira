@@ -4,11 +4,12 @@ plugins {
 }
 
 // Auto-increment version based on build time
+import java.text.SimpleDateFormat
+import java.util.Date
+
 val buildTime = System.currentTimeMillis()
 val versionCodeAuto = (buildTime / 1000).toInt()  // Seconds since epoch
-val versionNameAuto = java.time.LocalDateTime.now().format(
-    java.time.format.DateTimeFormatter.ofPattern("yyyy.MM.dd.HHmm")
-)
+val versionNameAuto = SimpleDateFormat("yyyy.MM.dd.HHmm").format(Date(buildTime))
 
 android {
     namespace = "com.animira.tv"
@@ -78,7 +79,7 @@ android {
                 {
                     "version_code": $versionCodeAuto,
                     "version_name": "$versionNameAuto",
-                    "changelog": "Сборка от ${java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"))}",
+                    "changelog": "Сборка от ${SimpleDateFormat("dd.MM.yyyy HH:mm").format(Date(buildTime))}",
                     "build_time": $buildTime
                 }
             """.trimIndent()
