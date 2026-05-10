@@ -1,0 +1,89 @@
+ANIME4K INTEGRATION FOR MPVEx
+=============================
+
+Source: github.com/bloc97/Anime4K
+License: MIT License (Copyright bloc97 2019-2021)
+
+CONTENTS OF THIS FOLDER
+-----------------------
+
+1. shaders/ - 14 GLSL shader files (~380KB total)
+   - Clamp_Highlights (ringing prevention)
+   - AutoDownscalePre_x2 (resolution reduction)
+   - Restore_CNN_*_S/M/L (3 sizes, 2 variants: normal/soft)
+   - Upscale_CNN_x2_*_S/M/L (3 sizes)
+   - Upscale_Denoise_CNN_x2_*_S/M/L (3 sizes)
+
+2. src/domain/Anime4KManager.kt - Core shader management
+   - Initializes and copies shaders from assets
+   - Generates shader chains based on mode/quality
+   - 186 lines
+
+3. src/preferences/DecoderPreferences.kt - Preferences
+   - enable_anime4k (boolean)
+   - anime4k_mode (OFF/A/B/C/A+/B+/C+)
+   - anime4k_quality (FAST/BALANCED/HIGH)
+
+4. src/di/DomainModule.kt - Dependency injection
+   - Anime4KManager singleton
+
+5. src/ui/Anime4KUIComponents.kt - UI components (extracted)
+   - Settings toggle
+   - In-player mode/quality selector
+
+6. src/ui/MPVView_Anime4K.kt - Player integration
+   - applyAnime4KShaders() function
+   - GPU compatibility checks
+
+7. res/values/strings_anime4k.xml - String resources
+   - 22 string resources for UI
+
+8. Documentation:
+   - README.md - Full documentation
+   - FILE_STRUCTURE.md - Complete file listing
+   - SUMMARY.txt - This file
+
+ORIGINAL LOCATIONS IN PROJECT
+-----------------------------
+
+Shaders:
+  app/src/main/assets/shaders/Anime4K*.glsl (14 files)
+
+Kotlin:
+  app/src/main/java/app/marlboroadvance/mpvex/domain/anime4k/Anime4KManager.kt
+  app/src/main/java/app/marlboroadvance/mpvex/preferences/DecoderPreferences.kt
+  app/src/main/java/app/marlboroadvance/mpvex/di/DomainModule.kt
+  app/src/main/java/app/marlboroadvance/mpvex/ui/player/controls/components/sheets/MoreSheet.kt
+  app/src/main/java/app/marlboroadvance/mpvex/ui/preferences/DecoderPreferencesScreen.kt
+  app/src/main/java/app/marlboroadvance/mpvex/ui/player/MPVView.kt
+
+Resources:
+  app/src/main/res/values/strings.xml (lines 232-253)
+
+MODE DESCRIPTIONS
+-----------------
+A  - Restore → Upscale → Upscale
+B  - Restore Soft → Upscale → Upscale
+C  - Denoise + Upscale → Upscale
+A+ - Restore → Upscale → Restore → Upscale
+B+ - Restore Soft → Upscale → Restore Soft → Upscale
+C+ - Denoise → Restore → Upscale
+
+QUALITY DESCRIPTIONS
+--------------------
+S (FAST)      - Low overhead, mobile devices
+M (BALANCED)  - Medium quality, general use
+L (HIGH)      - Best quality, high-end devices
+
+GPU COMPATIBILITY
+-----------------
+- OpenGL: Uses legacy 'gpu' backend + opengl-pbo
+- Vulkan (Android 13+): Can use 'gpu-next' backend
+- gpu-next + OpenGL: Incompatible (disabled)
+
+TOTAL STATISTICS
+----------------
+Shaders:        14 files, ~10,800 lines, ~380KB
+Kotlin code:    ~1,000 lines across 6 files
+Resources:      22 strings
+Documentation:  3 files

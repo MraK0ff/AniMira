@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Feature toggle tooltip -->
+    <string name="pref_advanced_features_tooltip">Enable experimental or advanced features such as stats page and Anime4K upscaling</string>
+    
+    <!-- Main toggle -->
+    <string name="pref_anime4k_title">Anime4K upscaling (Experimental)</string>
+    <string name="pref_anime4k_summary">Enable Anime4K upscaling filter</string>
+    
+    <!-- GPU incompatibility warnings -->
+    <string name="pref_anime4k_incompatibility">Anime4K Incompatibility</string>
+    <string name="pref_anime4k_gpu_next_error">gpu-next is incompatible with Anime4K shaders. When Anime4K is enabled, the app will automatically use the legacy \'gpu\' backend for shader compatibility.</string>
+    <string name="pref_anime4k_cannot_use_with_gpu_next">Cannot use Anime4K when gpu-next is enabled</string>
+    
+    <!-- Mode/Preset selection -->
+    <string name="anime4k_mode_title">Anime4K Presets</string>
+    <string name="anime4k_mode_toast">Anime4K: Preset %1$s</string>
+    
+    <!-- Quality/Variant selection -->
+    <string name="anime4k_quality_title">Anime4K Variants</string>
+    <string name="anime4k_quality_toast">Anime4K Variant: %1$s</string>
+    
+    <!-- Anime4K Modes (Presets) -->
+    <string name="anime4k_mode_off">Off</string>
+    <string name="anime4k_mode_a">A</string>
+    <string name="anime4k_mode_b">B</string>
+    <string name="anime4k_mode_c">C</string>
+    <string name="anime4k_mode_a_plus">A+</string>
+    <string name="anime4k_mode_b_plus">B+</string>
+    <string name="anime4k_mode_c_plus">C+</string>
+    
+    <!-- Anime4K Qualities (Variants) -->
+    <string name="anime4k_quality_fast">Fast</string>
+    <string name="anime4k_quality_balanced">Balanced</string>
+    <string name="anime4k_quality_high">High</string>
+</resources>

@@ -6,10 +6,11 @@ import Hls from 'hls.js';
 import { 
   ArrowLeft, Loader2, Settings, ChevronLeft, ChevronRight, List,
   Play, Pause, RotateCcw, RotateCw, Maximize, Minimize, 
-  Unlock, Lock
+  Unlock, Lock, Sparkles
 } from 'lucide-react';
 import { Episode } from '../types/api';
 import clsx from 'clsx';
+import { useAnime4K, Anime4KMode, Anime4KQuality } from '../hooks/useAnime4K';
 
 export default function Player() {
   const [searchParams] = useSearchParams();
@@ -23,9 +24,14 @@ export default function Player() {
   
   const [currentEpisode, setCurrentEpisode] = useState<Episode | undefined>(episode);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const anime4kCanvasRef = useRef<HTMLCanvasElement>(null);
   const [error, setError] = useState<string | null>(null);
   const [showSettings, setShowSettings] = useState(false);
   const [showEpisodes, setShowEpisodes] = useState(false);
+  const [showAnime4K, setShowAnime4K] = useState(false);
+  
+  // Initialize Anime4K
+  const anime4k = useAnime4K(videoRef, anime4kCanvasRef);
   
   // Video state
   const [isPlaying, setIsPlaying] = useState(false);
@@ -36,6 +42,23 @@ export default function Player() {
   const [showControls, setShowControls] = useState(true);
   const [isLocked, setIsLocked] = useState(false);
   const controlsTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Anime4K mode/quality labels
+  const anime4kModeLabels: Record<Anime4KMode, string> = {
+    'OFF': 'Выкл',
+    'A': 'A (Восстановление)',
+    'B': 'B (Мягкое)',
+    'C': 'C (Шумоподавление)',
+    'A_PLUS': 'A+ (Улучшенное)',
+    'B_PLUS': 'B+ (Мягкое+)',
+    'C_PLUS': 'C+ (Гибридное)',
+  };
+
+  const anime4kQualityLabels: Record<Anime4KQuality, string> = {
+    'S': 'Быстро',
+    'M': 'Баланс',
+    'L': 'Качество',
+  };
 
   const currentIndex = useMemo(() => {
     if (!currentEpisode || !episodes) return -1;
@@ -230,6 +253,91 @@ export default function Player() {
     setShowControls(true);
     resetControlsTimeout();
   };
+
+  const Anime4KPanel = () => (
+    <div className="absolute bottom-20 left-4 sm:left-6 w-72 bg-black/95 backdrop-blur-md rounded-xl border border-white/10 shadow-2xl overflow-hidden z-30 py-2">
+      <div className="px-4 py-2 border-b border-white/10 mb-2 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Sparkles size={16} className="text-purple-400" />
+          <h3 className="text-white/90 text-sm font-bold uppercase tracking-wider">Anime4K</h3>
+        </div>
+        <button 
+          onClick={() => setShowAnime4K(false)}
+          className="tv-focusable text-white/50 hover:text-white p-1"
+          tabIndex={0}
+        >
+          <ChevronLeft size={16} />
+        </button>
+      </div>
+      
+      {/* Enable Toggle */}
+      <div className="px-4 py-2 border-b border-white/10">
+        <label className="flex items-center justify-between cursor-pointer group">
+          <span className="text-white/70 text-sm">Включить Anime4K</span>
+          <button
+            onClick={() => anime4k.setEnabled(!anime4k.enabled)}
+            className={clsx(
+              "w-12 h-6 rounded-full transition-colors relative",
+              anime4k.enabled ? "bg-purple-500" : "bg-white/20"
+            )}
+          >
+            <span className={clsx(
+              "absolute top-1 w-4 h-4 rounded-full bg-white transition-transform",
+              anime4k.enabled ? "left-7" : "left-1"
+            )} />
+          </button>
+        </label>
+        <p className="text-white/40 text-xs mt-1">
+          Апскейлинг аниме с помощью ИИ-шейдеров
+        </p>
+        {!anime4k.isSupported && (
+          <p className="text-red-400 text-xs mt-1">WebGL не поддерживается</p>
+        )}
+      </div>
+
+      {/* Mode Selection */}
+      <div className={clsx("px-4 py-2 border-b border-white/10", !anime4k.enabled && "opacity-50 pointer-events-none")}>
+        <p className="text-white/50 text-xs font-bold uppercase mb-2">Режим</p>
+        <div className="space-y-1 max-h-32 overflow-y-auto">
+          {(['OFF', 'A', 'B', 'C', 'A_PLUS', 'B_PLUS', 'C_PLUS'] as Anime4KMode[]).map((mode) => (
+            <button
+              key={mode}
+              onClick={() => anime4k.setMode(mode)}
+              className={clsx(
+                "w-full text-left px-3 py-2 text-sm rounded-lg transition-colors",
+                anime4k.mode === mode
+                  ? "bg-purple-500/30 text-white border border-purple-500/50"
+                  : "text-white/70 hover:bg-white/10 hover:text-white"
+              )}
+            >
+              {anime4kModeLabels[mode]}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Quality Selection */}
+      <div className={clsx("px-4 py-2", !anime4k.enabled && "opacity-50 pointer-events-none")}>
+        <p className="text-white/50 text-xs font-bold uppercase mb-2">Качество</p>
+        <div className="flex gap-2">
+          {(['S', 'M', 'L'] as Anime4KQuality[]).map((quality) => (
+            <button
+              key={quality}
+              onClick={() => anime4k.setQuality(quality)}
+              className={clsx(
+                "flex-1 px-3 py-2 text-sm rounded-lg transition-colors",
+                anime4k.quality === quality
+                  ? "bg-purple-500/30 text-white border border-purple-500/50"
+                  : "text-white/70 hover:bg-white/10 hover:text-white"
+              )}
+            >
+              {anime4kQualityLabels[quality]}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div 
@@ -435,7 +543,11 @@ export default function Player() {
               {/* Episodes Toggle */}
               {episodes && episodes.length > 1 && (
                 <button
-                  onClick={() => setShowEpisodes(!showEpisodes)}
+                  onClick={() => {
+                    setShowEpisodes(!showEpisodes);
+                    setShowAnime4K(false);
+                    setShowSettings(false);
+                  }}
                   className={clsx(
                     "tv-focusable flex items-center gap-2 px-3 py-1.5 rounded-full transition-colors",
                     showEpisodes ? "bg-gray-600 text-white" : "bg-white/10 text-white hover:bg-white/20"
@@ -451,7 +563,11 @@ export default function Player() {
               {qualities.length > 1 && (
                 <div className="relative">
                   <button 
-                    onClick={() => setShowSettings(!showSettings)}
+                    onClick={() => {
+                      setShowSettings(!showSettings);
+                      setShowEpisodes(false);
+                      setShowAnime4K(false);
+                    }}
                     className={clsx(
                       "tv-focusable flex items-center gap-2 px-3 py-1.5 rounded-full transition-colors",
                       showSettings ? "bg-gray-600 text-white" : "bg-white/10 text-white hover:bg-white/20"
@@ -487,6 +603,28 @@ export default function Player() {
                   )}
                 </div>
               )}
+
+              {/* Anime4K Toggle */}
+              <button
+                onClick={() => {
+                  setShowAnime4K(!showAnime4K);
+                  setShowEpisodes(false);
+                  setShowSettings(false);
+                }}
+                className={clsx(
+                  "tv-focusable flex items-center gap-2 px-3 py-1.5 rounded-full transition-colors",
+                  anime4k.enabled ? "bg-purple-500 text-white" : "bg-white/10 text-white hover:bg-white/20",
+                  showAnime4K && "ring-2 ring-purple-400"
+                )}
+                tabIndex={0}
+              >
+                <Sparkles size={18} />
+                <span className="text-sm font-semibold">
+                  {anime4k.enabled ? '4K' : 'Anime4K'}
+                </span>
+              </button>
+              
+              {showAnime4K && <Anime4KPanel />}
             </div>
 
             {/* Fullscreen */}
@@ -525,9 +663,21 @@ export default function Player() {
           </div>
         )}
 
+        {/* Anime4K WebGL Canvas */}
+        <canvas
+          ref={anime4kCanvasRef}
+          className={clsx(
+            "absolute inset-0 w-full h-full object-contain",
+            anime4k.enabled ? "z-[5]" : "z-0 pointer-events-none opacity-0"
+          )}
+        />
+
         <video
           ref={videoRef}
-          className="w-full h-full"
+          className={clsx(
+            "w-full h-full",
+            anime4k.enabled ? "opacity-0 absolute inset-0" : "relative z-0"
+          )}
           controls={false}
           disablePictureInPicture
           disableRemotePlayback
