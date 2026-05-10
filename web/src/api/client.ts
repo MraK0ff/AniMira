@@ -25,9 +25,6 @@ export const getAnimeList = async (source: string, page = 1, category?: string):
   const response = await api.get('/anime/list', {
     params: { source, page, category }
   });
-  console.log('[API] getAnimeList raw response:', response);
-  console.log('[API] getAnimeList data:', response.data);
-  console.log('[API] items type:', typeof response.data?.items, 'isArray:', Array.isArray(response.data?.items));
   return response.data;
 };
 

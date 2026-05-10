@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
-import { Heart, Star } from 'lucide-react';
+import { Star } from 'lucide-react';
 import { AnimeItem } from '../types/api';
-import { useStore } from '../store/useStore';
 
 interface Props {
   anime: AnimeItem;
@@ -28,9 +27,6 @@ function parseEpisodes(episodesStr?: string): { current?: number; total?: number
 }
 
 export default function AnimeCard({ anime, source }: Props) {
-  const { isFavorite, toggleFavorite } = useStore();
-  const fav = isFavorite(anime.url);
-  
   const episodes = parseEpisodes(anime.episodes_aired);
   const rating = (anime as any).rating; // Rating might be added to API later
 
@@ -57,15 +53,7 @@ export default function AnimeCard({ anime, source }: Props) {
           </div>
         )}
         
-        {/* Favorite Button */}
-        <button 
-          onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFavorite(anime); }}
-          className="absolute top-2 left-2 p-1.5 rounded-full bg-black/60 backdrop-blur-md text-white hover:bg-primary transition-colors min-w-[28px] min-h-[28px] flex items-center justify-center opacity-0 group-hover:opacity-100 focus:opacity-100"
-          aria-label={fav ? 'Remove from favorites' : 'Add to favorites'}
-        >
-          <Heart size={14} fill={fav ? 'currentColor' : 'none'} className={fav ? 'text-pink-500' : ''} />
-        </button>
-
+        
         {/* Episode progress overlay for watching anime */}
         {episodes.current && episodes.total && episodes.current > 0 && (
           <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20">

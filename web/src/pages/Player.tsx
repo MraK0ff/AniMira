@@ -3,14 +3,15 @@ import { useSearchParams, useNavigate, useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getVideoInfo } from '../api/client';
 import Hls from 'hls.js';
-import { 
+import {
   ArrowLeft, Loader2, Settings, ChevronLeft, ChevronRight, List,
-  Play, Pause, RotateCcw, RotateCw, Maximize, Minimize, 
+  Play, Pause, RotateCcw, RotateCw, Maximize, Minimize,
   Unlock, Lock, Sparkles
 } from 'lucide-react';
 import { Episode } from '../types/api';
 import clsx from 'clsx';
 import { useAnime4K, Anime4KMode, Anime4KQuality } from '../hooks/useAnime4K';
+import { initializeHLS } from '../hooks/useHLS';
 
 export default function Player() {
   const [searchParams] = useSearchParams();
@@ -114,142 +115,71 @@ export default function Player() {
     queryFn: () => getVideoInfo(source!, activeUrl),
     enabled: !!source && !!activeUrl && !isTorrserveMode
   });
-  
+
   // In TorrServe mode, we're not loading from API
   const isLoading = isTorrserveMode ? false : isApiLoading;
 
+  // Cleanup ref to track HLS destroy function
+  const hlsCleanupRef = useRef<(() => void) | null>(null);
+  const isPlayerMountedRef = useRef(true);
+
+  // Unified HLS initialization for both videoInfo and TorrServe modes
   useEffect(() => {
-    if (!videoInfo || !videoRef.current) return;
+    // Set mounted flag
+    isPlayerMountedRef.current = true;
 
-    const video = videoRef.current;
-    let hls: Hls | null = null;
+    // Determine the video URL to use
+    let videoUrl: string | null = null;
 
-    // Route everything through our proxy to avoid CORS and Referer 403 blocks
-    const headers = {
-      ...(videoInfo.headers || {}),
-      Referer: videoInfo.referer || videoInfo.headers?.Referer || ''
-    };
-    const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://animira.onrender.com';
-    const proxyUrl = `${API_BASE_URL}/api/proxy?url=${encodeURIComponent(videoInfo.url)}&headers=${encodeURIComponent(JSON.stringify(headers))}`;
-
-    // Check if it's an m3u8 stream
-    if (videoInfo.url.includes('.m3u8') || videoInfo.url.includes('m3u8')) {
-      if (Hls.isSupported()) {
-        const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://animira.onrender.com';
-        
-        // Create loader factory that patches relative URLs
-        const createPatchedLoader = () => {
-          const Loader = Hls.DefaultConfig.loader;
-          return class extends Loader {
-            load(context: { url: string; responseType: string }, config: any, callbacks: any) {
-              // Patch segment URLs that start with /api/proxy
-              if (context.url.startsWith('/api/proxy')) {
-                context.url = `${API_BASE_URL}${context.url}`;
-              }
-              
-              // Patch manifest content
-              if (context.responseType === 'text' && context.url.includes('.m3u8')) {
-                const originalOnSuccess = callbacks.onSuccess;
-                callbacks.onSuccess = (response: { data: string }, stats: unknown, ctx: unknown, networkDetails: unknown) => {
-                  if (typeof response.data === 'string') {
-                    response.data = response.data.replace(
-                      /(\n|^)\/api\/proxy\?/g,
-                      `$1${API_BASE_URL}/api/proxy?`
-                    );
-                  }
-                  originalOnSuccess(response, stats, ctx, networkDetails);
-                };
-              }
-              
-              super.load(context, config, callbacks);
-            }
-          };
-        };
-        
-        hls = new Hls({
-          loader: createPatchedLoader()
-        });
-        
-        hls.loadSource(proxyUrl);
-        hls.attachMedia(video);
-        hls.on(Hls.Events.MANIFEST_PARSED, () => {
-          video.play().catch(e => console.log('Autoplay prevented', e));
-        });
-        hls.on(Hls.Events.ERROR, (event, data) => {
-          console.error('HLS error:', event, data);
-          if (data.fatal) {
-            if (data.type === Hls.ErrorTypes.NETWORK_ERROR) {
-              setError('Ошибка сети при загрузке видео');
-            } else if (data.type === Hls.ErrorTypes.MEDIA_ERROR) {
-              setError('Ошибка декодирования видео');
-            } else {
-              setError('Ошибка загрузки потока видео');
-            }
-          }
-        });
-      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        // Native HLS support (Safari)
-        video.src = proxyUrl;
-        video.addEventListener('loadedmetadata', () => {
-          video.play().catch(e => console.log('Autoplay prevented', e));
-        });
-      }
-    } else {
-      // Direct MP4 or unknown format
-      video.src = proxyUrl;
-      video.play().catch(e => console.log('Autoplay prevented', e));
+    if (torrserveUrl) {
+      // TorrServe mode: use the URL directly
+      videoUrl = decodeURIComponent(torrserveUrl);
+    } else if (videoInfo) {
+      // API mode: route through proxy
+      const headers = {
+        ...(videoInfo.headers || {}),
+        Referer: videoInfo.referer || videoInfo.headers?.Referer || ''
+      };
+      const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://animira.onrender.com';
+      videoUrl = `${API_BASE_URL}/api/proxy?url=${encodeURIComponent(videoInfo.url)}&headers=${encodeURIComponent(JSON.stringify(headers))}`;
     }
 
-    return () => {
-      if (hls) {
-        hls.destroy();
-      }
-    };
-  }, [videoInfo]);
+    if (!videoUrl || !videoRef.current || !isPlayerMountedRef.current) {
+      return;
+    }
 
-  // Handle TorrServe URL - play directly without API
-  useEffect(() => {
-    if (!torrserveUrl || !videoRef.current) return;
-    
     const video = videoRef.current;
-    let hls: Hls | null = null;
-    
-    // For TorrServe URLs, we play directly since it's a local stream
-    // No need for proxy since TorrServe runs on local network
-    const streamUrl = decodeURIComponent(torrserveUrl);
-    
-    // Check if it's an m3u8 stream
-    if (streamUrl.includes('.m3u8') || streamUrl.includes('m3u8')) {
-      if (Hls.isSupported()) {
-        hls = new Hls();
-        hls.loadSource(streamUrl);
-        hls.attachMedia(video);
-        hls.on(Hls.Events.MANIFEST_PARSED, () => {
-          video.play().catch(e => console.log('Autoplay prevented', e));
-        });
-        hls.on(Hls.Events.ERROR, (event, data) => {
-          if (data.fatal) {
+
+    // Initialize HLS with safe lifecycle management
+    const { destroy, hls } = initializeHLS(video, videoUrl, {
+      autoplay: true,
+      onError: (err) => {
+        if (!isPlayerMountedRef.current) return;
+        if (err.fatal) {
+          if (torrserveUrl) {
             setError('Ошибка загрузки потока от TorrServe');
+          } else if (err.type === (Hls as unknown as { ErrorTypes: { NETWORK_ERROR: string } }).ErrorTypes?.NETWORK_ERROR) {
+            setError('Ошибка сети при загрузке видео');
+          } else if (err.type === (Hls as unknown as { ErrorTypes: { MEDIA_ERROR: string } }).ErrorTypes?.MEDIA_ERROR) {
+            setError('Ошибка декодирования видео');
+          } else {
+            setError('Ошибка загрузки потока видео');
           }
-        });
-      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = streamUrl;
-        video.addEventListener('loadedmetadata', () => {
-          video.play().catch(e => console.log('Autoplay prevented', e));
-        });
-      }
-    } else {
-      // Direct MP4 or other format
-      video.src = streamUrl;
-      video.play().catch(e => console.log('Autoplay prevented', e));
-    }
-    
+        }
+      },
+    });
+
+    // Store cleanup function
+    hlsCleanupRef.current = destroy;
+
     return () => {
-      if (hls) {
-        hls.destroy();
+      isPlayerMountedRef.current = false;
+      if (hlsCleanupRef.current) {
+        hlsCleanupRef.current();
+        hlsCleanupRef.current = null;
       }
     };
-  }, [torrserveUrl]);
+  }, [videoInfo, torrserveUrl]);
 
   // Video event handlers
   useEffect(() => {
@@ -297,13 +227,27 @@ export default function Player() {
     };
   }, [showControls, resetControlsTimeout]);
 
-  // Control functions
-  const togglePlay = () => {
+  // Control functions with safe async handling
+  const togglePlay = useCallback(async () => {
     const video = videoRef.current;
     if (!video) return;
-    if (video.paused) video.play();
-    else video.pause();
-  };
+
+    try {
+      if (video.paused) {
+        await video.play();
+      } else {
+        video.pause();
+      }
+    } catch (err) {
+      // Silently ignore autoplay prevention
+      if (err instanceof DOMException) {
+        if (err.name === 'NotAllowedError' || err.name === 'AbortError') {
+          return;
+        }
+      }
+      console.warn('Toggle play error:', err);
+    }
+  }, []);
 
   const skip = (seconds: number) => {
     const video = videoRef.current;
@@ -771,7 +715,6 @@ export default function Player() {
           controls={false}
           disablePictureInPicture
           disableRemotePlayback
-          autoPlay
           playsInline
           webkit-playsinline="true"
           x5-playsinline="true"

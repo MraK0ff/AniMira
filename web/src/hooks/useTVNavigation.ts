@@ -28,7 +28,7 @@ const isTVDevice = (): boolean => {
 };
 
 export function useTVNavigation(options: TVNavigationOptions = {}) {
-  const { selector = '[data-tv-focusable], .tv-focusable, button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"]), select, input, .cursor-pointer', onBack, onEnter } = options;
+  const { selector = '.tv-focusable, [data-tv-focusable]', onBack, onEnter } = options;
   const [focusedIndex, setFocusedIndex] = useState(0);
   const [isTVMode, setIsTVMode] = useState(isTVDevice);
   const containerRef = useRef<HTMLElement | null>(null);
@@ -38,7 +38,36 @@ export function useTVNavigation(options: TVNavigationOptions = {}) {
     const container = containerRef.current || document.body;
     const elements = Array.from(container.querySelectorAll(selector)) as HTMLElement[];
     
-    elementsRef.current = elements.map(el => {
+    // Filter out elements that shouldn't receive TV focus
+    const filteredElements = elements.filter(el => {
+      const style = window.getComputedStyle(el);
+      const rect = el.getBoundingClientRect();
+      
+      // Skip hidden elements
+      if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') {
+        return false;
+      }
+      
+      // Skip elements with opacity-0 class (commonly used for hover states)
+      if (el.classList.contains('opacity-0')) {
+        return false;
+      }
+      
+      // Skip elements that are not visible on screen
+      if (rect.width === 0 || rect.height === 0) {
+        return false;
+      }
+      
+      // Skip nested buttons inside TV focusable elements (like overlay controls)
+      const parentFocusable = el.closest('.tv-focusable, [data-tv-focusable]');
+      if (parentFocusable && parentFocusable !== el && el.tagName === 'BUTTON') {
+        return false;
+      }
+      
+      return true;
+    });
+    
+    elementsRef.current = filteredElements.map(el => {
       const rect = el.getBoundingClientRect();
       return {
         element: el,
