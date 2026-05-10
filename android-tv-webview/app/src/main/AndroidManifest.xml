@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
 
     <!-- TV specific features -->
     <uses-feature
@@ -87,6 +89,37 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="torrserve" />
                 <data android:scheme="intent" />
+            </intent-filter>
+
+            <!-- AniStar links handler -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" />
+                <data android:scheme="http" />
+                <data android:host="*.astar.bz" />
+                <data android:host="astar.bz" />
+                <data android:pathPattern=".*" />
+            </intent-filter>
+
+            <!-- Torrent file handler -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" />
+                <data android:scheme="http" />
+                <data android:mimeType="application/x-bittorrent" />
+                <data android:pathPattern=".*\.torrent" />
+            </intent-filter>
+
+            <!-- Magnet link handler -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="magnet" />
             </intent-filter>
         </activity>
 

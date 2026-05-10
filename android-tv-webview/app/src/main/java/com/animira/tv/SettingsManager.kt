@@ -14,6 +14,7 @@ class SettingsManager(context: Context) {
         private const val PREFS_NAME = "animira_settings"
         private const val KEY_BASE_URL = "base_url"
         private const val KEY_PENDING_MEDIA_URL = "pending_media_url"
+        private const val KEY_PENDING_ANISTAR_URL = "pending_anistar_url"
         // Default site URL - cloud server
         private const val DEFAULT_URL = "https://animira.onrender.com"
         private const val TAG = "SettingsManager"
@@ -37,6 +38,18 @@ class SettingsManager(context: Context) {
 
     fun clearPendingMediaUrl() {
         prefs.edit().remove(KEY_PENDING_MEDIA_URL).apply()
+    }
+
+    fun getPendingAnistarUrl(): String? {
+        return prefs.getString(KEY_PENDING_ANISTAR_URL, null)
+    }
+
+    fun setPendingAnistarUrl(url: String) {
+        prefs.edit().putString(KEY_PENDING_ANISTAR_URL, url).apply()
+    }
+
+    fun clearPendingAnistarUrl() {
+        prefs.edit().remove(KEY_PENDING_ANISTAR_URL).apply()
     }
 
     fun getLocalIpAddresses(): List<String> {
