@@ -10,8 +10,34 @@ import {
 } from 'lucide-react';
 import { Episode } from '../types/api';
 import clsx from 'clsx';
-import { useAnime4K, Anime4KMode, Anime4KQuality } from '../hooks/useAnime4K';
+import { useAnime4K } from '../hooks/useAnime4K';
 import { initializeHLS } from '../hooks/useHLS';
+import { usePlayerKeyboard } from '../hooks/usePlayerKeyboard';
+import EpisodeOverlay from '../components/EpisodeOverlay';
+import Anime4KPanel from '../components/Anime4KPanel';
+import { PlayerButton, QualitySelector, ProgressBar } from '../components/player';
+
+// Extract episode number from title string for sorting
+function extractEpisodeNumber(title: string): number | null {
+  const patterns = [
+    /[-\s]\s*(\d+)\s*\[/,      // " - 05 [" or "- 5 ["
+    /\s(\d{2,3})\s*\[/,         // " 05 [" or " 108 ["
+    /серия\s*(\d+)/i,           // "серия 05" or "серия 5"
+    /episode\s*(\d+)/i,        // "episode 05"
+    /ep\s*(\d+)/i,             // "ep 5"
+    /\s(\d+)\s*\.\s*(mp4|mkv|avi)/i,  // " 05.mp4"
+    /\[(\d{2,3})\]/,            // "[05]"
+  ];
+
+  for (const pattern of patterns) {
+    const match = title.match(pattern);
+    if (match) {
+      const num = parseInt(match[1], 10);
+      if (num > 0 && num < 1000) return num;
+    }
+  }
+  return null;
+}
 
 export default function Player() {
   const [searchParams] = useSearchParams();
@@ -48,27 +74,51 @@ export default function Player() {
   const [isLocked, setIsLocked] = useState(false);
   const controlsTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Anime4K mode/quality labels
-  const anime4kModeLabels: Record<Anime4KMode, string> = {
-    'OFF': 'Выкл',
-    'A': 'A (Восстановление)',
-    'B': 'B (Мягкое)',
-    'C': 'C (Шумоподавление)',
-    'A_PLUS': 'A+ (Улучшенное)',
-    'B_PLUS': 'B+ (Мягкое+)',
-    'C_PLUS': 'C+ (Гибридное)',
-  };
+  // Deduplicate episodes for consistent display
+  const uniqueEpisodes = useMemo(() => {
+    if (!episodes || episodes.length === 0) return [];
 
-  const anime4kQualityLabels: Record<Anime4KQuality, string> = {
-    'S': 'Быстро',
-    'M': 'Баланс',
-    'L': 'Качество',
-  };
+    const groups = new Map<string, Episode[]>();
+    episodes.forEach((ep) => {
+      const key = ep.uniq || ep.title;
+      if (!groups.has(key)) {
+        groups.set(key, []);
+      }
+      groups.get(key)!.push(ep);
+    });
+
+    // Select best episode from each group and sort
+    const unique: Episode[] = [];
+    groups.forEach((group) => {
+      // Prefer direct links, then 720p, then 360p
+      const sorted = group.sort((a, b) => {
+        if (a.direct_links && !b.direct_links) return -1;
+        if (!a.direct_links && b.direct_links) return 1;
+        if (a.url720 && !b.url720) return -1;
+        if (!a.url720 && b.url720) return 1;
+        if (a.url360 && !b.url360) return -1;
+        return 0;
+      });
+      unique.push(sorted[0]);
+    });
+
+    // Sort by episode number if possible
+    return unique.sort((a, b) => {
+      const numA = extractEpisodeNumber(a.uniq || a.title);
+      const numB = extractEpisodeNumber(b.uniq || b.title);
+      if (numA && numB) return numA - numB;
+      return 0;
+    });
+  }, [episodes]);
 
   const currentIndex = useMemo(() => {
-    if (!currentEpisode || !episodes) return -1;
-    return episodes.findIndex(e => e.url === currentEpisode.url);
-  }, [currentEpisode, episodes]);
+    if (!currentEpisode || uniqueEpisodes.length === 0) return -1;
+    return uniqueEpisodes.findIndex(
+      (ep) => ep.url === currentEpisode.url ||
+              (ep.uniq && ep.uniq === currentEpisode.uniq) ||
+              (ep.title === currentEpisode.title)
+    );
+  }, [currentEpisode, uniqueEpisodes]);
 
   // Build qualities array
   const qualities = useMemo(() => {
@@ -278,95 +328,42 @@ export default function Player() {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
+  // Keyboard shortcuts
+  usePlayerKeyboard({
+    onTogglePlay: togglePlay,
+    onSeekForward: skip,
+    onSeekBackward: (s) => skip(-s),
+    onToggleFullscreen: toggleFullscreen,
+    onVolumeUp: () => {
+      const video = videoRef.current;
+      if (video) video.volume = Math.min(1, video.volume + 0.1);
+    },
+    onVolumeDown: () => {
+      const video = videoRef.current;
+      if (video) video.volume = Math.max(0, video.volume - 0.1);
+    },
+    onNextEpisode: () => {
+      const nextEp = uniqueEpisodes[currentIndex + 1];
+      if (nextEp) setCurrentEpisode(nextEp);
+    },
+    onPrevEpisode: () => {
+      const prevEp = uniqueEpisodes[currentIndex - 1];
+      if (prevEp) setCurrentEpisode(prevEp);
+    },
+    onShowEpisodes: () => {
+      if (uniqueEpisodes.length > 1) {
+        setShowEpisodes(!showEpisodes);
+        setShowAnime4K(false);
+        setShowSettings(false);
+      }
+    },
+    enabled: !isLocked,
+  });
+
   const handleMouseMove = () => {
     setShowControls(true);
     resetControlsTimeout();
   };
-
-  const Anime4KPanel = () => (
-    <div className="absolute bottom-20 left-4 sm:left-6 w-72 bg-black/95 backdrop-blur-md rounded-xl border border-white/10 shadow-2xl overflow-hidden z-30 py-2">
-      <div className="px-4 py-2 border-b border-white/10 mb-2 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Sparkles size={16} className="text-purple-400" />
-          <h3 className="text-white/90 text-sm font-bold uppercase tracking-wider">Anime4K</h3>
-        </div>
-        <button 
-          onClick={() => setShowAnime4K(false)}
-          className="tv-focusable text-white/50 hover:text-white p-1"
-          tabIndex={0}
-        >
-          <ChevronLeft size={16} />
-        </button>
-      </div>
-      
-      {/* Enable Toggle */}
-      <div className="px-4 py-2 border-b border-white/10">
-        <label className="flex items-center justify-between cursor-pointer group">
-          <span className="text-white/70 text-sm">Включить Anime4K</span>
-          <button
-            onClick={() => anime4k.setEnabled(!anime4k.enabled)}
-            className={clsx(
-              "w-12 h-6 rounded-full transition-colors relative",
-              anime4k.enabled ? "bg-purple-500" : "bg-white/20"
-            )}
-          >
-            <span className={clsx(
-              "absolute top-1 w-4 h-4 rounded-full bg-white transition-transform",
-              anime4k.enabled ? "left-7" : "left-1"
-            )} />
-          </button>
-        </label>
-        <p className="text-white/40 text-xs mt-1">
-          Апскейлинг аниме с помощью ИИ-шейдеров
-        </p>
-        {!anime4k.isSupported && (
-          <p className="text-red-400 text-xs mt-1">WebGL не поддерживается</p>
-        )}
-      </div>
-
-      {/* Mode Selection */}
-      <div className={clsx("px-4 py-2 border-b border-white/10", !anime4k.enabled && "opacity-50 pointer-events-none")}>
-        <p className="text-white/50 text-xs font-bold uppercase mb-2">Режим</p>
-        <div className="space-y-1 max-h-32 overflow-y-auto">
-          {(['OFF', 'A', 'B', 'C', 'A_PLUS', 'B_PLUS', 'C_PLUS'] as Anime4KMode[]).map((mode) => (
-            <button
-              key={mode}
-              onClick={() => anime4k.setMode(mode)}
-              className={clsx(
-                "w-full text-left px-3 py-2 text-sm rounded-lg transition-colors",
-                anime4k.mode === mode
-                  ? "bg-purple-500/30 text-white border border-purple-500/50"
-                  : "text-white/70 hover:bg-white/10 hover:text-white"
-              )}
-            >
-              {anime4kModeLabels[mode]}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Quality Selection */}
-      <div className={clsx("px-4 py-2", !anime4k.enabled && "opacity-50 pointer-events-none")}>
-        <p className="text-white/50 text-xs font-bold uppercase mb-2">Качество</p>
-        <div className="flex gap-2">
-          {(['S', 'M', 'L'] as Anime4KQuality[]).map((quality) => (
-            <button
-              key={quality}
-              onClick={() => anime4k.setQuality(quality)}
-              className={clsx(
-                "flex-1 px-3 py-2 text-sm rounded-lg transition-colors",
-                anime4k.quality === quality
-                  ? "bg-purple-500/30 text-white border border-purple-500/50"
-                  : "text-white/70 hover:bg-white/10 hover:text-white"
-              )}
-            >
-              {anime4kQualityLabels[quality]}
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
 
   return (
     <div 
@@ -382,21 +379,21 @@ export default function Player() {
         <div className="flex items-start justify-between p-4 sm:p-6">
           {/* Left: Back + Title */}
           <div className="flex items-start gap-4">
-            <button 
+            <PlayerButton
               onClick={() => navigate(-1)}
-              className="tv-focusable text-white p-2 hover:bg-white/10 rounded-full transition-colors flex-shrink-0"
-              tabIndex={0}
-            >
-              <ArrowLeft size={28} />
-            </button>
+              variant="ghost"
+              size="sm"
+              icon={<ArrowLeft size={28} />}
+              className="flex-shrink-0"
+            />
             
             <div className="flex flex-col">
               <h1 className="text-white font-semibold text-lg sm:text-xl drop-shadow-lg line-clamp-2">
                 {isTorrserveMode ? 'Поток от TorrServe' : (currentEpisode?.title || 'Плеер')}
               </h1>
-              {!isTorrserveMode && episodes && episodes.length > 1 && (
+              {!isTorrserveMode && uniqueEpisodes.length > 1 && (
                 <p className="text-white/70 text-sm mt-1">
-                  Серия {currentIndex + 1} из {episodes.length}
+                  Серия {currentIndex >= 0 ? currentIndex + 1 : '?'} из {uniqueEpisodes.length}
                 </p>
               )}
               {isTorrserveMode && (
@@ -410,20 +407,34 @@ export default function Player() {
           {/* Right: Lock only */}
           <div className="flex items-center gap-1 sm:gap-2">
             {/* Lock */}
-            <button 
+            <PlayerButton
               onClick={() => setIsLocked(!isLocked)}
-              className="tv-focusable text-white p-2 sm:p-2.5 hover:bg-white/10 rounded-full transition-colors"
-              tabIndex={0}
+              variant="ghost"
+              size="sm"
+              icon={isLocked ? <Lock size={20} /> : <Unlock size={20} />}
               title={isLocked ? "Разблокировать" : "Заблокировать"}
-            >
-              {isLocked ? <Lock size={20} /> : <Unlock size={20} />}
-            </button>
+            />
           </div>
         </div>
       </div>
 
+      {/* Episode Overlay - hidden in TorrServe mode */}
+      {!isTorrserveMode && (
+        <EpisodeOverlay
+          isOpen={showEpisodes}
+          episodes={episodes || []}
+          currentEpisode={currentEpisode}
+          isPlaying={isPlaying}
+          onClose={() => setShowEpisodes(false)}
+          onSelect={(ep) => {
+            setCurrentEpisode(ep);
+            setShowEpisodes(false);
+          }}
+        />
+      )}
+
       {/* Center Controls Overlay */}
-      <div 
+      <div
         className={clsx(
           "absolute inset-0 z-10 flex items-center justify-center transition-opacity duration-300",
           showControls ? "opacity-100" : "opacity-0 pointer-events-none"
@@ -432,111 +443,55 @@ export default function Player() {
           if (e.target === e.currentTarget) togglePlay();
         }}
       >
-        {/* Episodes Panel (if open) - hidden in TorrServe mode */}
-        {showEpisodes && episodes && !isTorrserveMode && (
-          <div className="absolute top-20 right-4 sm:right-6 w-72 max-h-[50vh] bg-black/90 backdrop-blur-md rounded-xl border border-white/10 shadow-2xl overflow-y-auto z-30 py-2">
-            <div className="px-4 py-2 border-b border-white/10 mb-2 flex items-center justify-between">
-              <h3 className="text-white/50 text-xs font-bold uppercase tracking-wider">Список серий</h3>
-              <button 
-                onClick={() => setShowEpisodes(false)}
-                className="text-white/50 hover:text-white p-1"
-              >
-                <ChevronLeft size={16} />
-              </button>
-            </div>
-            {episodes.map((ep, idx) => (
-              <button
-                key={ep.url}
-                onClick={() => {
-                  setCurrentEpisode(ep);
-                  setShowEpisodes(false);
-                }}
-                className={clsx(
-                  "w-full text-left px-4 py-3 text-sm font-semibold transition-colors flex items-center justify-between",
-                  currentEpisode?.url === ep.url
-                    ? "bg-gray-600/30 text-white border-l-2 border-gray-500"
-                    : "text-white/70 hover:bg-white/10 hover:text-white"
-                )}
-              >
-                <span className="truncate pr-4">{ep.title}</span>
-                {currentEpisode?.url === ep.url && (
-                  <div className="w-2 h-2 rounded-full bg-gray-500" />
-                )}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {/* Center Play Controls */}
         <div className="flex items-center gap-4 sm:gap-6">
           {/* Rewind 10s */}
-          <button
+          <PlayerButton
             onClick={() => skip(-10)}
-            className="tv-focusable group relative flex flex-col items-center"
-            tabIndex={0}
-          >
-            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center group-hover:bg-black/70 transition-colors border border-white/20">
-              <RotateCcw size={24} className="text-white" />
-            </div>
-            <span className="text-white/70 text-xs mt-2 font-medium">10</span>
-          </button>
+            size="lg"
+            icon={<RotateCcw size={24} />}
+            sublabel="10"
+          />
 
           {/* Previous Episode - hidden in TorrServe mode */}
-          {!isTorrserveMode && episodes && episodes.length > 1 && (
-            <button
+          {!isTorrserveMode && uniqueEpisodes.length > 1 && (
+            <PlayerButton
               onClick={() => {
-                const prevEp = episodes[currentIndex - 1];
+                const prevEp = uniqueEpisodes[currentIndex - 1];
                 if (prevEp) setCurrentEpisode(prevEp);
               }}
               disabled={currentIndex <= 0}
-              className="tv-focusable w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-black/30 flex items-center justify-center hover:bg-black/50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-              tabIndex={0}
-            >
-              <ChevronLeft size={28} className="text-white" />
-            </button>
+              icon={<ChevronLeft size={28} />}
+            />
           )}
 
           {/* Play/Pause - Big Red Circle */}
-          <button
+          <PlayerButton
             onClick={togglePlay}
-            className="tv-focusable relative group"
-            tabIndex={0}
-          >
-            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gray-600/90 flex items-center justify-center shadow-lg shadow-gray-900/30 group-hover:bg-gray-500 transition-all group-hover:scale-105">
-              {isPlaying ? (
-                <Pause size={36} className="text-white" />
-              ) : (
-                <Play size={36} className="text-white ml-1" />
-              )}
-            </div>
-          </button>
+            size="xl"
+            variant="primary"
+            icon={isPlaying ? <Pause size={36} /> : <Play size={36} className="ml-1" />}
+            className="hover:scale-105"
+          />
 
           {/* Next Episode - hidden in TorrServe mode */}
-          {!isTorrserveMode && episodes && episodes.length > 1 && (
-            <button
+          {!isTorrserveMode && uniqueEpisodes.length > 1 && (
+            <PlayerButton
               onClick={() => {
-                const nextEp = episodes[currentIndex + 1];
+                const nextEp = uniqueEpisodes[currentIndex + 1];
                 if (nextEp) setCurrentEpisode(nextEp);
               }}
-              disabled={currentIndex >= episodes.length - 1}
-              className="tv-focusable w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-black/30 flex items-center justify-center hover:bg-black/50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-              tabIndex={0}
-            >
-              <ChevronRight size={28} className="text-white" />
-            </button>
+              disabled={currentIndex >= uniqueEpisodes.length - 1}
+              icon={<ChevronRight size={28} />}
+            />
           )}
 
           {/* Forward 10s */}
-          <button
+          <PlayerButton
             onClick={() => skip(10)}
-            className="tv-focusable group relative flex flex-col items-center"
-            tabIndex={0}
-          >
-            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center group-hover:bg-black/70 transition-colors border border-white/20">
-              <RotateCw size={24} className="text-white" />
-            </div>
-            <span className="text-white/70 text-xs mt-2 font-medium">10</span>
-          </button>
+            size="lg"
+            icon={<RotateCw size={24} />}
+            sublabel="10"
+          />
         </div>
       </div>
 
@@ -547,128 +502,94 @@ export default function Player() {
       )}>
         <div className="p-4 sm:p-6">
           {/* Progress Bar */}
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-white/80 text-sm font-medium min-w-[50px]">
-              {formatTime(currentTime)}
-            </span>
-            
-            <div className="flex-1 relative group">
-              <input
-                type="range"
-                min={0}
-                max={duration || 100}
-                value={currentTime}
-                onChange={(e) => seek(Number(e.target.value))}
-                className="w-full h-1.5 bg-white/30 rounded-full appearance-none cursor-pointer accent-gray-500 hover:h-2 transition-all"
-                style={{
-                  background: `linear-gradient(to right, #6b7280 ${(currentTime / (duration || 1)) * 100}%, rgba(255,255,255,0.3) ${(currentTime / (duration || 1)) * 100}%)`
-                }}
-              />
-            </div>
-            
-            <span className="text-white/80 text-sm font-medium min-w-[50px] text-right">
-              {formatTime(duration)}
-            </span>
-          </div>
+          <ProgressBar
+            currentTime={currentTime}
+            duration={duration}
+            onSeek={seek}
+            formatTime={formatTime}
+          />
 
           {/* Bottom Actions */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               {/* Episodes Toggle - hidden in TorrServe mode */}
-              {!isTorrserveMode && episodes && episodes.length > 1 && (
-                <button
+              {!isTorrserveMode && uniqueEpisodes.length > 1 && (
+                <PlayerButton
                   onClick={() => {
                     setShowEpisodes(!showEpisodes);
                     setShowAnime4K(false);
                     setShowSettings(false);
                   }}
-                  className={clsx(
-                    "tv-focusable flex items-center gap-2 px-3 py-1.5 rounded-full transition-colors",
-                    showEpisodes ? "bg-gray-600 text-white" : "bg-white/10 text-white hover:bg-white/20"
-                  )}
-                  tabIndex={0}
-                >
-                  <List size={18} />
-                  <span className="text-sm font-semibold">Серии</span>
-                </button>
+                  shape="pill"
+                  active={showEpisodes}
+                  className={showEpisodes ? 'bg-primary' : ''}
+                  icon={<List size={18} />}
+                  label="Серии"
+                />
               )}
               
               {/* Quality Selector - hidden in TorrServe mode */}
               {!isTorrserveMode && qualities.length > 1 && (
                 <div className="relative">
-                  <button 
+                  <PlayerButton
                     onClick={() => {
                       setShowSettings(!showSettings);
                       setShowEpisodes(false);
                       setShowAnime4K(false);
                     }}
-                    className={clsx(
-                      "tv-focusable flex items-center gap-2 px-3 py-1.5 rounded-full transition-colors",
-                      showSettings ? "bg-gray-600 text-white" : "bg-white/10 text-white hover:bg-white/20"
-                    )}
-                    tabIndex={0}
-                  >
-                    <Settings size={18} />
-                    <span className="text-sm font-semibold">
-                      {qualities.find(q => q.url === activeUrl)?.name || 'Качество'}
-                    </span>
-                  </button>
-                  
-                  {showSettings && (
-                    <div className="absolute bottom-full left-0 mb-2 w-32 bg-black/95 backdrop-blur-md rounded-xl border border-white/10 shadow-2xl overflow-hidden z-30">
-                      {qualities.map(q => (
-                        <button
-                          key={q.url}
-                          onClick={() => {
-                            setActiveUrl(q.url);
-                            setShowSettings(false);
-                          }}
-                          className={clsx(
-                            "w-full text-left px-4 py-3 text-sm font-semibold transition-colors",
-                            activeUrl === q.url 
-                              ? "bg-gray-600 text-white" 
-                              : "text-white/70 hover:bg-white/10 hover:text-white"
-                          )}
-                        >
-                          {q.name}
-                        </button>
-                      ))}
-                    </div>
-                  )}
+                    shape="pill"
+                    active={showSettings}
+                    icon={<Settings size={18} />}
+                    label={qualities.find(q => q.url === activeUrl)?.name || 'Качество'}
+                  />
+
+                  <QualitySelector
+                    isOpen={showSettings}
+                    qualities={qualities}
+                    activeUrl={activeUrl}
+                    onClose={() => setShowSettings(false)}
+                    onSelect={setActiveUrl}
+                  />
                 </div>
               )}
 
               {/* Anime4K Toggle */}
-              <button
+              <PlayerButton
                 onClick={() => {
                   setShowAnime4K(!showAnime4K);
                   setShowEpisodes(false);
                   setShowSettings(false);
                 }}
+                shape="pill"
+                active={showAnime4K}
                 className={clsx(
-                  "tv-focusable flex items-center gap-2 px-3 py-1.5 rounded-full transition-colors",
-                  anime4k.enabled ? "bg-purple-500 text-white" : "bg-white/10 text-white hover:bg-white/20",
+                  anime4k.enabled ? "bg-purple-500" : "",
                   showAnime4K && "ring-2 ring-purple-400"
                 )}
-                tabIndex={0}
-              >
-                <Sparkles size={18} />
-                <span className="text-sm font-semibold">
-                  {anime4k.enabled ? '4K' : 'Anime4K'}
-                </span>
-              </button>
+                icon={<Sparkles size={18} />}
+                label={anime4k.enabled ? '4K' : 'Anime4K'}
+              />
               
-              {showAnime4K && <Anime4KPanel />}
+              <Anime4KPanel
+                isOpen={showAnime4K}
+                enabled={anime4k.enabled}
+                mode={anime4k.mode}
+                quality={anime4k.quality}
+                isSupported={anime4k.isSupported}
+                onClose={() => setShowAnime4K(false)}
+                onToggle={() => anime4k.setEnabled(!anime4k.enabled)}
+                onSetMode={anime4k.setMode}
+                onSetQuality={anime4k.setQuality}
+              />
             </div>
 
             {/* Fullscreen */}
-            <button
+            <PlayerButton
               onClick={toggleFullscreen}
-              className="tv-focusable text-white p-2 hover:bg-white/10 rounded-full transition-colors"
-              tabIndex={0}
-            >
-              {isFullscreen ? <Minimize size={24} /> : <Maximize size={24} />}
-            </button>
+              variant="ghost"
+              size="sm"
+              icon={isFullscreen ? <Minimize size={24} /> : <Maximize size={24} />}
+            />
           </div>
         </div>
       </div>
