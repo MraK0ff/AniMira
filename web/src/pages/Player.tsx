@@ -18,9 +18,13 @@ export default function Player() {
   const location = useLocation();
   const source = searchParams.get('source');
   const fallbackEpisodeUrl = searchParams.get('episode_url');
+  const torrserveUrl = searchParams.get('torrserve_url');
   
   const episode = location.state?.episode as Episode | undefined;
   const episodes = location.state?.episodes as Episode[] | undefined;
+  
+  // Flag to indicate this is a TorrServe stream
+  const isTorrserveMode = !!torrserveUrl;
   
   const [currentEpisode, setCurrentEpisode] = useState<Episode | undefined>(episode);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -105,11 +109,14 @@ export default function Player() {
     }
   }, [currentEpisode, source]);
 
-  const { data: videoInfo, isLoading } = useQuery({
+  const { data: videoInfo, isLoading: isApiLoading } = useQuery({
     queryKey: ['video', source, activeUrl],
     queryFn: () => getVideoInfo(source!, activeUrl),
-    enabled: !!source && !!activeUrl
+    enabled: !!source && !!activeUrl && !isTorrserveMode
   });
+  
+  // In TorrServe mode, we're not loading from API
+  const isLoading = isTorrserveMode ? false : isApiLoading;
 
   useEffect(() => {
     if (!videoInfo || !videoRef.current) return;
@@ -165,6 +172,50 @@ export default function Player() {
       }
     };
   }, [videoInfo]);
+
+  // Handle TorrServe URL - play directly without API
+  useEffect(() => {
+    if (!torrserveUrl || !videoRef.current) return;
+    
+    const video = videoRef.current;
+    let hls: Hls | null = null;
+    
+    // For TorrServe URLs, we play directly since it's a local stream
+    // No need for proxy since TorrServe runs on local network
+    const streamUrl = decodeURIComponent(torrserveUrl);
+    
+    // Check if it's an m3u8 stream
+    if (streamUrl.includes('.m3u8') || streamUrl.includes('m3u8')) {
+      if (Hls.isSupported()) {
+        hls = new Hls();
+        hls.loadSource(streamUrl);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          video.play().catch(e => console.log('Autoplay prevented', e));
+        });
+        hls.on(Hls.Events.ERROR, (event, data) => {
+          if (data.fatal) {
+            setError('Ошибка загрузки потока от TorrServe');
+          }
+        });
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = streamUrl;
+        video.addEventListener('loadedmetadata', () => {
+          video.play().catch(e => console.log('Autoplay prevented', e));
+        });
+      }
+    } else {
+      // Direct MP4 or other format
+      video.src = streamUrl;
+      video.play().catch(e => console.log('Autoplay prevented', e));
+    }
+    
+    return () => {
+      if (hls) {
+        hls.destroy();
+      }
+    };
+  }, [torrserveUrl]);
 
   // Video event handlers
   useEffect(() => {
@@ -363,11 +414,16 @@ export default function Player() {
             
             <div className="flex flex-col">
               <h1 className="text-white font-semibold text-lg sm:text-xl drop-shadow-lg line-clamp-2">
-                {currentEpisode?.title || 'Плеер'}
+                {isTorrserveMode ? 'Поток от TorrServe' : (currentEpisode?.title || 'Плеер')}
               </h1>
-              {episodes && episodes.length > 1 && (
+              {!isTorrserveMode && episodes && episodes.length > 1 && (
                 <p className="text-white/70 text-sm mt-1">
                   Серия {currentIndex + 1} из {episodes.length}
+                </p>
+              )}
+              {isTorrserveMode && (
+                <p className="text-white/50 text-sm mt-1">
+                  Торрент-стриминг
                 </p>
               )}
             </div>
@@ -398,8 +454,8 @@ export default function Player() {
           if (e.target === e.currentTarget) togglePlay();
         }}
       >
-        {/* Episodes Panel (if open) */}
-        {showEpisodes && episodes && (
+        {/* Episodes Panel (if open) - hidden in TorrServe mode */}
+        {showEpisodes && episodes && !isTorrserveMode && (
           <div className="absolute top-20 right-4 sm:right-6 w-72 max-h-[50vh] bg-black/90 backdrop-blur-md rounded-xl border border-white/10 shadow-2xl overflow-y-auto z-30 py-2">
             <div className="px-4 py-2 border-b border-white/10 mb-2 flex items-center justify-between">
               <h3 className="text-white/50 text-xs font-bold uppercase tracking-wider">Список серий</h3>
@@ -447,8 +503,8 @@ export default function Player() {
             <span className="text-white/70 text-xs mt-2 font-medium">10</span>
           </button>
 
-          {/* Previous Episode */}
-          {episodes && episodes.length > 1 && (
+          {/* Previous Episode - hidden in TorrServe mode */}
+          {!isTorrserveMode && episodes && episodes.length > 1 && (
             <button
               onClick={() => {
                 const prevEp = episodes[currentIndex - 1];
@@ -477,8 +533,8 @@ export default function Player() {
             </div>
           </button>
 
-          {/* Next Episode */}
-          {episodes && episodes.length > 1 && (
+          {/* Next Episode - hidden in TorrServe mode */}
+          {!isTorrserveMode && episodes && episodes.length > 1 && (
             <button
               onClick={() => {
                 const nextEp = episodes[currentIndex + 1];
@@ -540,8 +596,8 @@ export default function Player() {
           {/* Bottom Actions */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              {/* Episodes Toggle */}
-              {episodes && episodes.length > 1 && (
+              {/* Episodes Toggle - hidden in TorrServe mode */}
+              {!isTorrserveMode && episodes && episodes.length > 1 && (
                 <button
                   onClick={() => {
                     setShowEpisodes(!showEpisodes);
@@ -559,8 +615,8 @@ export default function Player() {
                 </button>
               )}
               
-              {/* Quality Selector */}
-              {qualities.length > 1 && (
+              {/* Quality Selector - hidden in TorrServe mode */}
+              {!isTorrserveMode && qualities.length > 1 && (
                 <div className="relative">
                   <button 
                     onClick={() => {
