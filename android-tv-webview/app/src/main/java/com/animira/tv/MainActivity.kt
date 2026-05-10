@@ -92,12 +92,19 @@ class MainActivity : AppCompatActivity() {
             val updater = Updater(this)
             updater.checkForUpdates(
                 onUpdateAvailable = { updateInfo ->
+                    Log.d(TAG, "Update available: ${updateInfo.versionName} (${updateInfo.versionCode})")
                     updater.showUpdateDialog(
                         updateInfo,
                         onDownload = {
                             updater.downloadAndInstallApk(updateInfo.downloadUrl)
                         }
                     )
+                },
+                onNoUpdate = {
+                    Log.d(TAG, "No update available or update skipped")
+                },
+                onError = { error ->
+                    Log.e(TAG, "Update check failed: $error")
                 }
             )
         }, 5000) // Check after 5 seconds to not block app startup

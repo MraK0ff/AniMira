@@ -22,6 +22,7 @@ android {
         versionName = versionNameAuto
 
         buildConfigField("String", "UPDATE_SERVER_URL", "\"https://animira.onrender.com\"")
+        buildConfigField("long", "BUILD_TIME", "$buildTime")
     }
 
     buildFeatures {

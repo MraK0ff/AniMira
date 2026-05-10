@@ -23,6 +23,8 @@ class Updater(private val context: Context) {
     companion object {
         private const val TAG = "AniMiraUpdater"
         private const val APK_FILENAME = "animira-tv.apk"
+        private const val PREFS_NAME = "updater_prefs"
+        private const val KEY_SKIPPED_VERSION = "skipped_version_code"
     }
 
     data class UpdateInfo(
@@ -37,9 +39,12 @@ class Updater(private val context: Context) {
             try {
                 val currentVersion = BuildConfig.VERSION_CODE
                 val updateServerUrl = BuildConfig.UPDATE_SERVER_URL
+                val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                val skippedVersion = prefs.getInt(KEY_SKIPPED_VERSION, 0)
 
                 Log.d(TAG, "Checking for updates at: $updateServerUrl/api/version")
-                Log.d(TAG, "Current version: $currentVersion")
+                Log.d(TAG, "Current version: $currentVersion (Build time: ${BuildConfig.BUILD_TIME})")
+                Log.d(TAG, "Previously skipped version: $skippedVersion")
 
                 val url = URL("$updateServerUrl/api/version")
                 val connection = url.openConnection() as HttpURLConnection
@@ -59,6 +64,14 @@ class Updater(private val context: Context) {
                     val changelog = json.optString("changelog", "")
 
                     Log.d(TAG, "Server version: $serverVersionCode, Current: $currentVersion")
+                    Log.d(TAG, "APK available on server: ${json.optBoolean("apk_available", false)}")
+
+                    // Don't show update if user already skipped this version
+                    if (serverVersionCode <= skippedVersion) {
+                        Log.d(TAG, "Update skipped previously for version $serverVersionCode")
+                        context.mainExecutor.execute { onNoUpdate() }
+                        return@Thread
+                    }
 
                     if (serverVersionCode > currentVersion) {
                         val updateInfo = UpdateInfo(
@@ -71,6 +84,7 @@ class Updater(private val context: Context) {
                             onUpdateAvailable(updateInfo)
                         }
                     } else {
+                        Log.d(TAG, "No update needed: server=$serverVersionCode <= current=$currentVersion")
                         context.mainExecutor.execute {
                             onNoUpdate()
                         }
@@ -96,6 +110,7 @@ class Updater(private val context: Context) {
             if (updateInfo.changelog.isNotEmpty()) {
                 append("Изменения:\n${updateInfo.changelog}\n\n")
             }
+            append("Текущая версия: ${BuildConfig.VERSION_NAME}\n")
             append("Обновить сейчас?")
         }
 
@@ -103,13 +118,34 @@ class Updater(private val context: Context) {
             .setTitle("Обновление доступно")
             .setMessage(message)
             .setPositiveButton("Обновить") { _, _ ->
+                // Clear skipped version when user chooses to update
+                clearSkippedVersion()
                 onDownload()
             }
             .setNegativeButton("Позже") { _, _ ->
+                // Remember that user skipped this version
+                skipVersion(updateInfo.versionCode)
+                onCancel()
+            }
+            .setNeutralButton("Не напоминать") { _, _ ->
+                // Permanently skip this version until newer one appears
+                skipVersion(updateInfo.versionCode)
                 onCancel()
             }
             .setCancelable(false)
             .show()
+    }
+
+    private fun skipVersion(versionCode: Int) {
+        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        prefs.edit().putInt(KEY_SKIPPED_VERSION, versionCode).apply()
+        Log.d(TAG, "Version $versionCode marked as skipped")
+    }
+
+    private fun clearSkippedVersion() {
+        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        prefs.edit().remove(KEY_SKIPPED_VERSION).apply()
+        Log.d(TAG, "Skipped version cleared")
     }
 
     fun downloadAndInstallApk(downloadUrl: String) {

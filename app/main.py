@@ -244,26 +244,33 @@ def get_apk_version() -> dict:
                 apk_file = find_apk_file()
                 if apk_file:
                     data["apk_size"] = apk_file.stat().st_size
-                logger.info(f"Loaded version from {version_file}: {data.get('version_name')}")
+                logger.info(f"Loaded version from {version_file}: code={data.get('version_code')}, name={data.get('version_name')}, build_time={data.get('build_time')}")
                 return data
         except Exception as e:
             logger.warning(f"Failed to read version.json: {e}")
-    
-    # Fallback: get version from APK file modification time
+    else:
+        logger.warning("version.json not found in any location")
+        for path in VERSION_JSON_PATHS:
+            logger.warning(f"  Checked: {path.absolute()} (exists: {path.exists()})")
+
+    # Fallback: get version from APK file modification time (less reliable with auto-increment)
     apk_file = find_apk_file()
     if apk_file:
         stat = apk_file.stat()
-        # Use modification time as version code
+        # Use modification time as version code (only as last resort)
         version_code = int(stat.st_mtime)
         version_name = f"build.{version_code}"
+        logger.warning(f"Using APK mtime as version (fallback): code={version_code}, file={apk_file}")
+        logger.warning("This may cause version mismatch! Ensure version.json is deployed with APK.")
         return {
             "version_code": version_code,
             "version_name": version_name,
             "changelog": f"Сборка от {stat.st_mtime}",
             "apk_size": stat.st_size
         }
-    
+
     # Last fallback: return default
+    logger.error("No APK or version.json found! Using default version.")
     return DEFAULT_APK_VERSION.copy()
 
 def find_apk_file() -> Path | None:
@@ -288,12 +295,12 @@ async def get_version(request: Request):
 
     # Get dynamic version info (from version.json or APK file)
     version_info = get_apk_version()
-    
+
     # Check if APK is available
     apk_file = find_apk_file()
     apk_available = apk_file is not None
 
-    return {
+    result = {
         "version_code": version_info.get("version_code", 1),
         "version_name": version_info.get("version_name", "1.0.0"),
         "download_url": f"{base_url}/api/download/apk",
@@ -302,6 +309,9 @@ async def get_version(request: Request):
         "apk_size": version_info.get("apk_size") or (apk_file.stat().st_size if apk_file else None),
         "build_time": version_info.get("build_time")
     }
+
+    logger.info(f"/api/version response: code={result['version_code']}, name={result['version_name']}, apk_available={apk_available}")
+    return result
 
 @app.get("/api/download/apk", tags=["update"])
 async def download_apk():
