@@ -306,6 +306,22 @@ export function useAnime4K(
       0, 0, 1, 1, 1, 0
     ]), gl.STATIC_DRAW);
 
+    // Setup attributes
+    const a_position = gl.getAttribLocation(program, 'a_position');
+    const a_texCoord = gl.getAttribLocation(program, 'a_texCoord');
+
+    if (a_position >= 0) {
+      gl.enableVertexAttribArray(a_position);
+      gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+      gl.vertexAttribPointer(a_position, 2, gl.FLOAT, false, 0, 0);
+    }
+
+    if (a_texCoord >= 0) {
+      gl.enableVertexAttribArray(a_texCoord);
+      gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuffer);
+      gl.vertexAttribPointer(a_texCoord, 2, gl.FLOAT, false, 0, 0);
+    }
+
     // Create texture
     const texture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -342,6 +358,7 @@ export function useAnime4K(
 
     const render = () => {
       if (!isRunning) return;
+      if (gl.isContextLost()) return;
 
       // Resize canvas to match video
       if (canvas.width !== video.videoWidth || canvas.height !== video.videoHeight) {
@@ -351,7 +368,7 @@ export function useAnime4K(
       }
 
       // Update texture with video frame
-      if (video.readyState >= 2) {
+      if (video.readyState >= 2 && video.videoWidth > 0) {
         gl.bindTexture(gl.TEXTURE_2D, texture);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, video);
       }
