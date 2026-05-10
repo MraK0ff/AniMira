@@ -135,22 +135,56 @@ export default function Player() {
     // Check if it's an m3u8 stream
     if (videoInfo.url.includes('.m3u8') || videoInfo.url.includes('m3u8')) {
       if (Hls.isSupported()) {
+        const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://animira.onrender.com';
+        
+        // Create loader factory that patches relative URLs
+        const createPatchedLoader = () => {
+          const Loader = Hls.DefaultConfig.loader;
+          return class extends Loader {
+            load(context: { url: string; responseType: string }, config: any, callbacks: any) {
+              // Patch segment URLs that start with /api/proxy
+              if (context.url.startsWith('/api/proxy')) {
+                context.url = `${API_BASE_URL}${context.url}`;
+              }
+              
+              // Patch manifest content
+              if (context.responseType === 'text' && context.url.includes('.m3u8')) {
+                const originalOnSuccess = callbacks.onSuccess;
+                callbacks.onSuccess = (response: { data: string }, stats: unknown, ctx: unknown, networkDetails: unknown) => {
+                  if (typeof response.data === 'string') {
+                    response.data = response.data.replace(
+                      /(\n|^)\/api\/proxy\?/g,
+                      `$1${API_BASE_URL}/api/proxy?`
+                    );
+                  }
+                  originalOnSuccess(response, stats, ctx, networkDetails);
+                };
+              }
+              
+              super.load(context, config, callbacks);
+            }
+          };
+        };
+        
         hls = new Hls({
-          xhrSetup: (xhr, url) => {
-            // Apply custom headers if possible in browser environment
-            // Note: Browsers block custom headers in simple GETs usually,
-            // but we might need a proxy for full support.
-            // For now, we trust the backend provided a direct usable URL or we use the proxy
-          }
+          loader: createPatchedLoader()
         });
+        
         hls.loadSource(proxyUrl);
         hls.attachMedia(video);
         hls.on(Hls.Events.MANIFEST_PARSED, () => {
           video.play().catch(e => console.log('Autoplay prevented', e));
         });
         hls.on(Hls.Events.ERROR, (event, data) => {
+          console.error('HLS error:', event, data);
           if (data.fatal) {
-            setError('Ошибка загрузки потока видео');
+            if (data.type === Hls.ErrorTypes.NETWORK_ERROR) {
+              setError('Ошибка сети при загрузке видео');
+            } else if (data.type === Hls.ErrorTypes.MEDIA_ERROR) {
+              setError('Ошибка декодирования видео');
+            } else {
+              setError('Ошибка загрузки потока видео');
+            }
           }
         });
       } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
