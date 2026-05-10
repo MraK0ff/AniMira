@@ -10,6 +10,6 @@
 -keep class com.animira.tv.SettingsManager { *; }
 
 # WebView
--keepclassmembers class fqcn.of.javascript.interface.for.webview {
+-keepclassmembers class com.animira.tv.MainActivity$WebAppInterface {
    public *;
 }

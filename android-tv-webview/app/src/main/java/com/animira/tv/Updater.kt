@@ -8,6 +8,8 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
@@ -69,7 +71,7 @@ class Updater(private val context: Context) {
                     // Don't show update if user already skipped this version
                     if (serverVersionCode <= skippedVersion) {
                         Log.d(TAG, "Update skipped previously for version $serverVersionCode")
-                        context.mainExecutor.execute { onNoUpdate() }
+                        runOnMainThread { onNoUpdate() }
                         return@Thread
                     }
 
@@ -80,24 +82,24 @@ class Updater(private val context: Context) {
                             downloadUrl = downloadUrl,
                             changelog = changelog
                         )
-                        context.mainExecutor.execute {
+                        runOnMainThread {
                             onUpdateAvailable(updateInfo)
                         }
                     } else {
                         Log.d(TAG, "No update needed: server=$serverVersionCode <= current=$currentVersion")
-                        context.mainExecutor.execute {
+                        runOnMainThread {
                             onNoUpdate()
                         }
                     }
                 } else {
-                    context.mainExecutor.execute {
+                    runOnMainThread {
                         onError("Server returned code: $responseCode")
                     }
                 }
                 connection.disconnect()
             } catch (e: Exception) {
                 Log.e(TAG, "Error checking for updates", e)
-                context.mainExecutor.execute {
+                runOnMainThread {
                     onError(e.message ?: "Unknown error")
                 }
             }
@@ -148,6 +150,10 @@ class Updater(private val context: Context) {
         Log.d(TAG, "Skipped version cleared")
     }
 
+    private fun runOnMainThread(action: () -> Unit) {
+        Handler(Looper.getMainLooper()).post(action)
+    }
+
     fun downloadAndInstallApk(downloadUrl: String) {
         try {
             Log.d(TAG, "Starting download from: $downloadUrl")
@@ -183,7 +189,11 @@ class Updater(private val context: Context) {
                 }
             }
 
-            context.registerReceiver(receiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                context.registerReceiver(receiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE), Context.RECEIVER_NOT_EXPORTED)
+            } else {
+                context.registerReceiver(receiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+            }
 
         } catch (e: Exception) {
             Log.e(TAG, "Error starting download", e)
