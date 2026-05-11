@@ -1,14 +1,13 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { getAnimeList } from '../api/client';
 import { useStore } from '../store/useStore';
 import AnimeCard, { SkeletonCard } from '../components/AnimeCard';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
-// Categories from anistar that actually work
+// Categories from anistar.json
 const DEFAULT_FILTERS = [
-  { tag: '', name: 'Последние' },
+  { tag: 'main', name: 'Последние' },
   { tag: 'dorama', name: 'Дорамы' },
-  { tag: 'dunhua', name: 'Дунхуа' },
   { tag: 'new', name: 'Новинки' },
   { tag: 'rpg', name: 'RPG' },
   { tag: 'china', name: 'Китай' },
@@ -17,13 +16,43 @@ const DEFAULT_FILTERS = [
 export default function Home() {
   const { currentSource } = useStore();
   const [activeFilter, setActiveFilter] = useState('');
+  const loadMoreRef = useRef<HTMLDivElement>(null);
 
-  // Fetch list with selected category
-  const { data: listData, isLoading } = useQuery({
-    queryKey: ['animeList', currentSource, 1, activeFilter],
-    queryFn: () => getAnimeList(currentSource, 1, activeFilter || undefined),
-    enabled: !!currentSource
+  // Fetch list with infinite scroll
+  const {
+    data,
+    isLoading,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+  } = useInfiniteQuery({
+    queryKey: ['animeList', currentSource, activeFilter],
+    queryFn: ({ pageParam = 1 }) => getAnimeList(currentSource, pageParam, activeFilter || undefined),
+    getNextPageParam: (lastPage) => lastPage.has_next ? lastPage.page + 1 : undefined,
+    enabled: !!currentSource,
+    initialPageParam: 1,
   });
+
+  // Intersection Observer for infinite scroll
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+
+    if (loadMoreRef.current) {
+      observer.observe(loadMoreRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  // Flatten all pages into a single array
+  const allItems = data?.pages.flatMap(page => page.items) ?? [];
 
   // Always use default filters
   const filters = DEFAULT_FILTERS;
@@ -52,7 +81,7 @@ export default function Home() {
 
       {/* Section Title */}
       <h2 className="text-lg md:text-xl font-bold text-white mt-6 mb-4">
-        {listData?.categories?.[0]?.name || 'Аниме'}
+        {data?.pages?.[0]?.categories?.[0]?.name || 'Аниме'}
       </h2>
 
       {/* Loading State - Grid */}
@@ -63,16 +92,29 @@ export default function Home() {
       )}
 
       {/* Anime Grid */}
-      {!isLoading && listData && Array.isArray(listData.items) && listData.items.length > 0 && (
+      {!isLoading && allItems.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-5">
-          {listData.items.map((anime) => (
-            <AnimeCard key={anime.url} anime={anime} source={currentSource} />
+          {allItems.map((anime) => (
+            <AnimeCard key={anime.url + anime.title} anime={anime} source={currentSource} />
           ))}
         </div>
       )}
 
+      {/* Loading more indicator */}
+      <div ref={loadMoreRef} className="mt-8 flex justify-center py-4">
+        {isFetchingNextPage && (
+          <div className="flex items-center gap-2 text-text-muted">
+            <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+            <span className="text-sm">Загрузка...</span>
+          </div>
+        )}
+        {!hasNextPage && allItems.length > 0 && (
+          <span className="text-text-muted text-sm">Больше нет аниме</span>
+        )}
+      </div>
+
       {/* Empty state */}
-      {!isLoading && (!listData || !Array.isArray(listData.items) || listData.items.length === 0) && (
+      {!isLoading && allItems.length === 0 && (
         <div className="py-12 md:py-16 text-center">
           <p className="text-text-muted text-sm md:text-base">Нет аниме для источника: {currentSource}</p>
           <p className="text-text-muted text-xs md:text-sm mt-2">Попробуйте выбрать другой источник</p>

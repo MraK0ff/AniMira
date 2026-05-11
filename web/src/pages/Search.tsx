@@ -1,21 +1,56 @@
-import { useState, useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useState, useEffect, useRef } from 'react';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { searchAnime } from '../api/client';
 import { useStore } from '../store/useStore';
 import AnimeCard, { SkeletonCard } from '../components/AnimeCard';
 import { Search as SearchIcon, X } from 'lucide-react';
-import { useDebounce } from '../hooks/useDebounce'; // We need to create this hook
+import { useDebounce } from '../hooks/useDebounce';
 
 export default function Search() {
   const { currentSource } = useStore();
   const [query, setQuery] = useState('');
   const debouncedQuery = useDebounce(query, 500);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
 
-  const { data, isLoading, isFetching } = useQuery({
+  const PAGE_SIZE = 20; // Assume standard page size
+
+  const {
+    data,
+    isLoading,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+  } = useInfiniteQuery({
     queryKey: ['animeSearch', currentSource, debouncedQuery],
-    queryFn: () => searchAnime(currentSource, debouncedQuery, 1),
+    queryFn: ({ pageParam = 1 }) => searchAnime(currentSource, debouncedQuery, pageParam),
+    getNextPageParam: (lastPage: {page: number; items: unknown[]; count: number}) => {
+      // Assume there's a next page if current page has items equal to PAGE_SIZE
+      return lastPage.items.length >= PAGE_SIZE ? lastPage.page + 1 : undefined;
+    },
     enabled: !!currentSource && debouncedQuery.length > 2,
+    initialPageParam: 1,
   });
+
+  // Intersection Observer for infinite scroll
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+
+    if (loadMoreRef.current) {
+      observer.observe(loadMoreRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  // Flatten all pages into a single array
+  const allItems = data?.pages.flatMap(page => page.items) ?? [];
 
   // Clear query on ESC
   useEffect(() => {
@@ -58,7 +93,7 @@ export default function Search() {
             <h2 className="text-2xl font-bold text-white">
               Результаты по запросу «{debouncedQuery}»
             </h2>
-            {isFetching && <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />}
+            {isFetchingNextPage && <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />}
           </div>
         )}
 
@@ -70,22 +105,34 @@ export default function Search() {
         )}
 
         {/* Loaded Results */}
-        {!isLoading && data && (
-          <>
-            {data.items.length === 0 ? (
-              <div className="text-center py-20 text-text-muted">
-                <SearchIcon size={48} className="mx-auto mb-4 opacity-20" />
-                <p className="text-xl">Ничего не найдено</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-8">
-                {data.items.map((anime) => (
-                  <AnimeCard key={anime.url} anime={anime} source={currentSource} />
-                ))}
-              </div>
-            )}
-          </>
+        {!isLoading && allItems.length > 0 && (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-8">
+            {allItems.map((anime) => (
+              <AnimeCard key={anime.url} anime={anime} source={currentSource} />
+            ))}
+          </div>
         )}
+
+        {/* No Results */}
+        {!isLoading && debouncedQuery.length > 2 && allItems.length === 0 && (
+          <div className="text-center py-20 text-text-muted">
+            <SearchIcon size={48} className="mx-auto mb-4 opacity-20" />
+            <p className="text-xl">Ничего не найдено</p>
+          </div>
+        )}
+
+        {/* Infinite scroll loading indicator */}
+        <div ref={loadMoreRef} className="mt-8 flex justify-center py-4">
+          {isFetchingNextPage && (
+            <div className="flex items-center gap-2 text-text-muted">
+              <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+              <span className="text-sm">Загрузка...</span>
+            </div>
+          )}
+          {!hasNextPage && allItems.length > 0 && (
+            <span className="text-text-muted text-sm">Больше нет результатов</span>
+          )}
+        </div>
 
         {/* Initial Empty State */}
         {debouncedQuery.length <= 2 && (

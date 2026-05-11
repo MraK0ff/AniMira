@@ -28,7 +28,15 @@ export const getAnimeList = async (source: string, page = 1, category?: string):
   return response.data;
 };
 
-export const searchAnime = async (source: string, query: string, page = 1): Promise<{items: AnimeItem[]}> => {
+export interface SearchResponse {
+  source: string;
+  query: string;
+  page: number;
+  items: AnimeItem[];
+  count: number;
+}
+
+export const searchAnime = async (source: string, query: string, page = 1): Promise<SearchResponse> => {
   const { data } = await api.get('/anime/search', {
     params: { source, query, page }
   });
