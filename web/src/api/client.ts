@@ -77,3 +77,22 @@ export const getTorrentInfo = async (torrent_url: string): Promise<TorrentInfo> 
   });
   return data;
 };
+
+export interface ScheduleItem {
+  title: string;
+  url: string;
+  cover: string | null;
+  time_left: string | null;
+}
+
+export interface ScheduleResponse {
+  source: string;
+  schedule: ScheduleItem[];
+}
+
+export const getAnimeSchedule = async (source: string): Promise<ScheduleResponse> => {
+  const { data } = await api.get('/anime/schedule', {
+    params: { source }
+  });
+  return data;
+};

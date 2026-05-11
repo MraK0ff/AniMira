@@ -212,13 +212,13 @@ async def torrent_info(
 ):
     """Get metadata from torrent file including internal filename and quality."""
     http = HttpClient()
-    
+
     try:
         # Download torrent file
         torrent_data = await http.get_bytes(torrent_url)
         if not torrent_data:
             raise HTTPException(404, "Failed to download torrent")
-        
+
         info = _extract_torrent_info(torrent_data)
         return {
             "torrent_url": torrent_url,
@@ -226,3 +226,16 @@ async def torrent_info(
         }
     except Exception as e:
         raise HTTPException(500, f"Failed to parse torrent: {e}")
+
+
+@router.get("/schedule")
+async def anime_schedule(
+    source: str = Query(..., description="Parser source name"),
+):
+    """Get upcoming episodes schedule from source main page."""
+    engine = _get_engine(source)
+    schedule = await engine.parse_schedule()
+    return {
+        "source": source,
+        "schedule": schedule,
+    }

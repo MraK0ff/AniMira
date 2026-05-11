@@ -658,3 +658,102 @@ class ParserEngine:
             if cat:
                 cats.append({"tag": cat.get("tag", ""), "name": cat.get("name", "")})
         return cats
+
+    async def parse_schedule(self) -> list[dict]:
+        """Parse schedule/upcoming episodes from main page."""
+        # Fetch main page
+        url = self.resolver.resolve("$scheme$//$hostname$/")
+        try:
+            html_text = await self._fetch(url)
+        except Exception as e:
+            logger.warning("Failed to fetch schedule: %s", e)
+            return []
+
+        schedule = []
+        # Find head-body section
+        start_marker = '<div class="head-body">'
+        start_idx = html_text.find(start_marker)
+        if start_idx == -1:
+            return []
+
+        # Extract schedule section
+        end_marker = '<div class="clear clr">'
+        end_idx = html_text.find(end_marker, start_idx)
+        if end_idx == -1:
+            section = html_text[start_idx:]
+        else:
+            section = html_text[start_idx:end_idx]
+
+        # Parse each scoro (column)
+        scoro_start = '<div class="scoro">'
+        pos = 0
+        while True:
+            scoro_idx = section.find(scoro_start, pos)
+            if scoro_idx == -1:
+                break
+
+            # Find end of this scoro
+            next_scoro = section.find(scoro_start, scoro_idx + len(scoro_start))
+            if next_scoro == -1:
+                scoro_section = section[scoro_idx:]
+            else:
+                scoro_section = section[scoro_idx:next_scoro]
+
+            # Parse anime items in this column
+            cal_start = '<div class="main-cal"'
+            cal_pos = 0
+            while True:
+                cal_idx = scoro_section.find(cal_start, cal_pos)
+                if cal_idx == -1:
+                    break
+
+                # Find end of main-cal
+                next_cal = scoro_section.find(cal_start, cal_idx + len(cal_start))
+                if next_cal == -1:
+                    cal_end = len(scoro_section)
+                else:
+                    cal_end = next_cal
+
+                cal_block = scoro_section[cal_idx:cal_end]
+
+                # Extract image URL from background-image
+                img_url = None
+                bg_match = re.search(r"background-image:url\('([^']+)'\)", cal_block)
+                if bg_match:
+                    img_url = bg_match.group(1)
+                    if img_url.startswith('/'):
+                        img_url = self.resolver.resolve("$scheme$//$hostname$") + img_url
+
+                # Extract link
+                link = None
+                link_match = re.search(r'<a href="([^"]+)"', cal_block)
+                if link_match:
+                    link = link_match.group(1)
+                    if link.startswith('/'):
+                        link = self.resolver.resolve("$scheme$//$hostname$") + link
+
+                # Extract title
+                title = None
+                title_match = re.search(r'<span class="anime_title_cal[^"]*">.*?<a[^>]*>([^<]+)</a>', cal_block, re.DOTALL)
+                if title_match:
+                    title = title_match.group(1).strip()
+
+                # Extract countdown/time
+                time_left = None
+                time_match = re.search(r'<span class="newdate-clock[^"]*">.*?<span>([^<]+)</span>', cal_block, re.DOTALL)
+                if time_match:
+                    time_left = time_match.group(1).strip()
+
+                if title and link:
+                    schedule.append({
+                        "title": title,
+                        "url": link,
+                        "cover": img_url,
+                        "time_left": time_left,
+                    })
+
+                cal_pos = cal_idx + len(cal_start)
+
+            pos = scoro_idx + len(scoro_start)
+
+        return schedule

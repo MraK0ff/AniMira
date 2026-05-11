@@ -2,6 +2,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { getAnimeList } from '../api/client';
 import { useStore } from '../store/useStore';
 import AnimeCard, { SkeletonCard } from '../components/AnimeCard';
+import ScheduleWidget from '../components/ScheduleWidget';
 import { useState, useEffect, useRef } from 'react';
 
 // Categories from anistar.json
@@ -77,6 +78,11 @@ export default function Home() {
             </button>
           ))}
         </div>
+      </div>
+
+      {/* Schedule Widget */}
+      <div className="mt-6">
+        <ScheduleWidget />
       </div>
 
       {/* Section Title */}
