@@ -404,8 +404,9 @@ export default function AnimeDetail() {
                             whileHover={{ scale: 1.02 }}
                             tabIndex={0}
                             onClick={() => {
-                              // Используем прямую ссылку если доступна, иначе embed
-                              const videoUrl = selectedEp.url720 || selectedEp.url360 || selectedEp.url;
+                              // Используем 1080p (url), затем 720p, затем 480p
+                              const videoUrl = selectedEp.url || selectedEp.url720 || selectedEp.url360 || selectedEp.url;
+                              if (!videoUrl) return;
                               navigate(`/player?source=${source}&episode_url=${encodeURIComponent(videoUrl)}`, { 
                                 state: { episode: selectedEp, episodes: epData.episodes } 
                               });

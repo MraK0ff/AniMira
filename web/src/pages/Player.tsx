@@ -87,19 +87,12 @@ export default function Player() {
       groups.get(key)!.push(ep);
     });
 
-    // Select best episode from each group and sort
+    // Select first episode from each group (all have same content, different qualities)
     const unique: Episode[] = [];
     groups.forEach((group) => {
-      // Prefer direct links, then 720p, then 360p
-      const sorted = group.sort((a, b) => {
-        if (a.direct_links && !b.direct_links) return -1;
-        if (!a.direct_links && b.direct_links) return 1;
-        if (a.url720 && !b.url720) return -1;
-        if (!a.url720 && b.url720) return 1;
-        if (a.url360 && !b.url360) return -1;
-        return 0;
-      });
-      unique.push(sorted[0]);
+      if (group.length > 0) {
+        unique.push(group[0]);
+      }
     });
 
     // Sort by episode number if possible
@@ -120,18 +113,17 @@ export default function Player() {
     );
   }, [currentEpisode, uniqueEpisodes]);
 
-  // Build qualities array
+  // Build qualities array - main url is 1080p, url720 is 720p, url360 is 480p
   const qualities = useMemo(() => {
     const q: { name: string; url: string }[] = [];
+    // Main url (1080p) should be first
+    if (currentEpisode?.url) q.push({ name: '1080p', url: currentEpisode.url });
     if (currentEpisode?.url720) q.push({ name: '720p', url: currentEpisode.url720 });
-    if (currentEpisode?.url360) q.push({ name: '360p', url: currentEpisode.url360 });
+    if (currentEpisode?.url360) q.push({ name: '480p', url: currentEpisode.url360 });
     if (currentEpisode?.links) {
       currentEpisode.links.forEach(l => {
         if (!q.some(existing => existing.url === l.url)) q.push(l);
       });
-    }
-    if (q.length === 0 && currentEpisode?.url) {
-      q.push({ name: 'Default', url: currentEpisode.url });
     }
     if (q.length === 0 && fallbackEpisodeUrl) {
       q.push({ name: 'Default', url: fallbackEpisodeUrl });
