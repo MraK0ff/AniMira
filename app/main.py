@@ -20,7 +20,7 @@ from pathlib import Path
 from app.config_loader import ConfigLoader
 from app.http_client import HttpClient
 from app.shikimori import ShikimoriClient
-from app.routes import sources_router, anime_router, shikimori_router
+from app.routes import sources_router, anime_router, shikimori_router, aggregated_router
 
 # Configure logging
 logging.basicConfig(
@@ -95,6 +95,7 @@ app.add_middleware(
 app.include_router(sources_router, prefix="/api")
 app.include_router(anime_router, prefix="/api")
 app.include_router(shikimori_router, prefix="/api")
+app.include_router(aggregated_router, prefix="/api")
 
 # Static files (frontend) — только если есть build
 static_dir = Path(__file__).parent.parent / "web" / "dist"

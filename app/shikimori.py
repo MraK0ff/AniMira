@@ -21,7 +21,7 @@ from cachetools import TTLCache
 logger = logging.getLogger(__name__)
 
 # Shikimori config
-SHIKIMORI_BASE = "https://shikimori.one"
+SHIKIMORI_BASE = "https://shikimori.io"
 SHIKIMORI_API = f"{SHIKIMORI_BASE}/api"
 SHIKIMORI_GRAPHQL = f"{SHIKIMORI_API}/graphql"
 SHIKIMORI_UA = "ShikimoriXAPI Library"
@@ -239,24 +239,28 @@ class ShikimoriClient:
         h = {
             "User-Agent": SHIKIMORI_UA,
             "Content-Type": "application/json",
+            "Origin": SHIKIMORI_BASE,
         }
         if auth and self._access_token:
             h["Authorization"] = f"Bearer {self._access_token}"
         return h
 
     async def _rate_limit(self):
-        """Enforce Shikimori rate limits: 5/sec, 90/min."""
+        """Enforce Shikimori rate limits: 3/sec (conservative), 90/min."""
         now = time.monotonic()
         # Clean old timestamps
         self._request_times = [t for t in self._request_times if now - t < 60]
 
-        # Check per-second limit
+        # Check per-second limit (conservative: 3/sec to avoid 429)
         recent_1s = sum(1 for t in self._request_times if now - t < 1.0)
-        if recent_1s >= 5:
-            wait = 1.0 - (now - self._request_times[-5])
+        if recent_1s >= 3:
+            wait = 1.0 - (now - self._request_times[-3])
             if wait > 0:
                 logger.debug("Rate limit: waiting %.2fs (per-sec)", wait)
                 await asyncio.sleep(wait)
+            else:
+                # Always add small delay between requests
+                await asyncio.sleep(0.3)
 
         # Check per-minute limit
         if len(self._request_times) >= 90:

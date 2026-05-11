@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import { useSearchParams, useNavigate, useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { getVideoInfo } from '../api/client';
+import { getVideoInfo, getAggregatedDetails } from '../api/client';
 import Hls from 'hls.js';
 import {
   ArrowLeft, Loader2, Settings, ChevronLeft, ChevronRight, List,
   Play, Pause, RotateCcw, RotateCw, Maximize, Minimize,
-  Unlock, Lock, Sparkles
+  Unlock, Lock, Sparkles, Volume2
 } from 'lucide-react';
-import { Episode } from '../types/api';
+import { Episode, AggregatedEpisode } from '../types/api';
 import clsx from 'clsx';
 import { useAnime4K } from '../hooks/useAnime4K';
 import { initializeHLS } from '../hooks/useHLS';
@@ -46,14 +46,63 @@ export default function Player() {
   const source = searchParams.get('source');
   const fallbackEpisodeUrl = searchParams.get('episode_url');
   const torrserveUrl = searchParams.get('torrserve_url');
+  const shikimoriId = searchParams.get('shikimori_id');
+  const episodeQuery = searchParams.get('episode');
   
-  const episode = location.state?.episode as Episode | undefined;
+  const episode = location.state?.episode as Episode | AggregatedEpisode | undefined;
   const episodes = location.state?.episodes as Episode[] | undefined;
+  const allDubbers = location.state?.allDubbers as string[] | undefined;
+  const initialDubber = location.state?.selectedDubber as string | undefined;
+  const allVersions = location.state?.allVersions as (AggregatedEpisode & { dubber: string })[] | undefined;
+  
+  // Aggregated mode
+  const isAggregatedMode = !!shikimoriId;
+  const [selectedDubber, setSelectedDubber] = useState(initialDubber || '');
+  const [showDubberSelect, setShowDubberSelect] = useState(false);
+  
+  // Fetch aggregated data if needed
+  const { data: aggregatedData } = useQuery({
+    queryKey: ['aggregatedDetails', shikimoriId],
+    queryFn: () => getAggregatedDetails(parseInt(shikimoriId!)),
+    enabled: isAggregatedMode && !location.state?.aggregatedData
+  });
+  
+  // Get all available dubbers
+  const availableDubbers = useMemo(() => {
+    if (allDubbers) return allDubbers;
+    if (aggregatedData) return Object.keys(aggregatedData.episodes_by_dubber);
+    return [];
+  }, [allDubbers, aggregatedData]);
   
   // Flag to indicate this is a TorrServe stream
   const isTorrserveMode = !!torrserveUrl;
   
-  const [currentEpisode, setCurrentEpisode] = useState<Episode | undefined>(episode);
+  // Get current episode based on selected dubber in selected dubber's list
+  const resolvedEpisode = useMemo(() => {
+    if (!isAggregatedMode) return episode;
+    if (!episodeQuery) return episode;
+    
+    // Find episode in selected dubber's list
+    const data = location.state?.aggregatedData || aggregatedData;
+    if (data?.episodes_by_dubber?.[selectedDubber]) {
+      const found = data.episodes_by_dubber[selectedDubber].find((ep: AggregatedEpisode) => {
+        const epId = ep.uniq || ep.title || '';
+        return epId.toLowerCase().includes(episodeQuery.toLowerCase()) ||
+               episodeQuery.toLowerCase().includes(epId.toLowerCase());
+      });
+      if (found) return found;
+    }
+    
+    // Fallback to all versions
+    if (allVersions) {
+      const found = allVersions.find(v => v.dubber === selectedDubber);
+      if (found) return found;
+    }
+    
+    return episode;
+  }, [isAggregatedMode, episodeQuery, selectedDubber, episode, aggregatedData, location.state, allVersions]);
+  
+  const [currentEpisode, setCurrentEpisode] = useState<Episode | AggregatedEpisode | undefined>(resolvedEpisode || episode);
   const videoRef = useRef<HTMLVideoElement>(null);
   const anime4kCanvasRef = useRef<HTMLCanvasElement>(null);
   const [error, setError] = useState<string | null>(null);
@@ -115,13 +164,14 @@ export default function Player() {
 
   // Build qualities array - main url is 1080p, url720 is 720p, url360 is 480p
   const qualities = useMemo(() => {
+    const ep = currentEpisode || episode;
     const q: { name: string; url: string }[] = [];
     // Main url (1080p) should be first
-    if (currentEpisode?.url) q.push({ name: '1080p', url: currentEpisode.url });
-    if (currentEpisode?.url720) q.push({ name: '720p', url: currentEpisode.url720 });
-    if (currentEpisode?.url360) q.push({ name: '480p', url: currentEpisode.url360 });
-    if (currentEpisode?.links) {
-      currentEpisode.links.forEach(l => {
+    if (ep?.url) q.push({ name: '1080p', url: ep.url });
+    if (ep?.url720) q.push({ name: '720p', url: ep.url720 });
+    if (ep?.url360) q.push({ name: '480p', url: ep.url360 });
+    if (ep?.links) {
+      ep.links.forEach((l: { name: string; url: string }) => {
         if (!q.some(existing => existing.url === l.url)) q.push(l);
       });
     }
@@ -129,7 +179,7 @@ export default function Player() {
       q.push({ name: 'Default', url: fallbackEpisodeUrl });
     }
     return q;
-  }, [currentEpisode, fallbackEpisodeUrl]);
+  }, [currentEpisode, episode, fallbackEpisodeUrl]);
 
   const [activeUrl, setActiveUrl] = useState<string>(qualities[0]?.url || fallbackEpisodeUrl!);
 
@@ -142,15 +192,20 @@ export default function Player() {
 
   // Update URL params when currentEpisode changes
   useEffect(() => {
-    if (currentEpisode && source) {
+    if (currentEpisode && (source || shikimoriId)) {
       const params = new URLSearchParams(searchParams);
-      params.set('episode_url', currentEpisode.url);
+      if (currentEpisode.url) {
+        params.set('episode_url', currentEpisode.url);
+      }
+      if (shikimoriId) {
+        params.set('shikimori_id', shikimoriId);
+      }
       navigate(`/player?${params.toString()}`, { 
         state: { ...location.state, episode: currentEpisode },
         replace: true 
       });
     }
-  }, [currentEpisode, source]);
+  }, [currentEpisode, source, shikimoriId]);
 
   const { data: videoInfo, isLoading: isApiLoading } = useQuery({
     queryKey: ['video', source, activeUrl],
@@ -588,6 +643,47 @@ export default function Player() {
 
       {/* Video Container */}
       <div className="flex-1 relative bg-black flex items-center justify-center">
+        {/* Dubber Selector Overlay */}
+        {isAggregatedMode && availableDubbers.length > 0 && (
+          <div className={clsx(
+            "absolute top-20 right-4 z-30 transition-all duration-300",
+            showControls ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4 pointer-events-none"
+          )}>
+            <div className="relative">
+              <button
+                onClick={() => setShowDubberSelect(!showDubberSelect)}
+                className="flex items-center gap-2 bg-black/80 backdrop-blur-md border border-white/20 rounded-lg px-4 py-2 text-white hover:bg-black/90 transition-colors"
+              >
+                <Volume2 size={16} className="text-primary" />
+                <span className="font-medium">{selectedDubber || 'Озвучка'}</span>
+                <ChevronRight size={16} className={clsx("transition-transform", showDubberSelect ? "rotate-90" : "")} />
+              </button>
+              
+              {showDubberSelect && (
+                <div className="absolute top-full right-0 mt-2 bg-black/90 backdrop-blur-md border border-white/20 rounded-lg shadow-xl min-w-[180px] overflow-hidden">
+                  {availableDubbers.map((dubber) => (
+                    <button
+                      key={dubber}
+                      onClick={() => {
+                        setSelectedDubber(dubber);
+                        setShowDubberSelect(false);
+                      }}
+                      className={clsx(
+                        "w-full text-left px-4 py-2.5 hover:bg-white/10 transition-colors",
+                        selectedDubber === dubber 
+                          ? "text-primary font-medium bg-primary/10" 
+                          : "text-white"
+                      )}
+                    >
+                      {dubber}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+        
         {isLoading && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 text-white z-10">
             <Loader2 size={48} className="animate-spin text-gray-500" />

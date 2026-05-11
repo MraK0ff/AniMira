@@ -6,7 +6,9 @@ import {
   AnimeDetails, 
   EpisodesResponse, 
   VideoInfo,
-  AnimeItem
+  AnimeItem,
+  AggregatedSearchResponse,
+  AggregatedAnimeDetails
 } from '../types/api';
 
 // API URL: используем относительный путь для единого домена
@@ -94,5 +96,18 @@ export const getAnimeSchedule = async (source: string): Promise<ScheduleResponse
   const { data } = await api.get('/anime/schedule', {
     params: { source }
   });
+  return data;
+};
+
+// Aggregated API (Shikimori integration)
+export const aggregatedSearch = async (query: string): Promise<AggregatedSearchResponse> => {
+  const { data } = await api.get('/aggregated/search', {
+    params: { query }
+  });
+  return data;
+};
+
+export const getAggregatedDetails = async (shikimoriId: number): Promise<AggregatedAnimeDetails> => {
+  const { data } = await api.get(`/aggregated/details/${shikimoriId}`);
   return data;
 };

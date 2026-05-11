@@ -16,6 +16,7 @@ export interface AnimeItem {
   next_episode_at?: string;
   season?: string;
   uniq?: string;
+  source?: string; // For aggregated/unmatched results
 }
 
 export interface AnimeListResponse {
@@ -91,4 +92,83 @@ export interface VideoInfo {
   headers: Record<string, string>;
   referer?: string;
   direct: boolean;
+}
+
+// Shikimori types
+export interface ShikimoriAnime {
+  id: number;
+  url: string;
+  name: string;
+  russian: string;
+  english: string;
+  japanese: string;
+  kind: string;
+  rating: string;
+  score: number | string | null;
+  status: string;
+  episodes: number;
+  episodesAired: number;
+  duration: number;
+  season: string;
+  poster?: {
+    originalUrl: string;
+    mainUrl: string;
+  };
+  genres?: Array<{
+    id: number;
+    name: string;
+    russian: string;
+  }>;
+  studios?: Array<{
+    id: number;
+    name: string;
+  }>;
+  description?: string;
+}
+
+export interface AggregatedSource {
+  source: string;
+  url: string;
+  title: string;
+  additional_title?: string;
+  dubbers: string[];
+  episodes_count: number;
+}
+
+export interface AggregatedEpisode extends Episode {
+  source: string;
+  anime_url: string;
+  dubbers: string[];
+  source_title: string;
+}
+
+export interface AggregatedAnimeDetails {
+  shikimori_id: number;
+  shikimori: ShikimoriAnime;
+  sources: AggregatedSource[];
+  episodes_by_dubber: Record<string, AggregatedEpisode[]>;
+  total_episodes: number;
+  dubber_count: number;
+}
+
+export interface AggregatedSearchResult {
+  shikimori_id: number;
+  shikimori: ShikimoriAnime;
+  similarity: number;
+  sources: Array<{
+    source: string;
+    title: string;
+    url: string;
+    cover?: string;
+    episodes_aired?: string;
+  }>;
+  source_count: number;
+}
+
+export interface AggregatedSearchResponse {
+  query: string;
+  shikimori_matches: number;
+  unmatched_count: number;
+  results: AggregatedSearchResult[];
+  unmatched: AnimeItem[];
 }

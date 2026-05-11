@@ -6,6 +6,7 @@ import Search from './pages/Search';
 import AnimeDetail from './pages/AnimeDetail';
 import Player from './pages/Player';
 import Download from './pages/Download';
+import ShikimoriSearch from './pages/ShikimoriSearch';
 import { useTVNavigation } from './hooks/useTVNavigation';
 
 function TVNavigationWrapper({ children }: { children: React.ReactNode }) {
@@ -49,6 +50,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/shikimori" element={<ShikimoriSearch />} />
           <Route path="/anime" element={<AnimeDetail />} />
           <Route path="/player" element={<Player />} />
           <Route path="/download" element={<Download />} />
