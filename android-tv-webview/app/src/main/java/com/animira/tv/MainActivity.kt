@@ -11,9 +11,13 @@ import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.graphics.Bitmap
 import android.util.Log
 import android.view.KeyEvent
+import android.view.View
+import android.view.WindowManager
 import android.webkit.*
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
@@ -24,6 +28,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var settingsManager: SettingsManager
     private var downloadReceiver: BroadcastReceiver? = null
     private val pendingTorrentDownloads = mutableMapOf<Long, String>()
+    private var customView: View? = null
+    private var customViewCallback: WebChromeClient.CustomViewCallback? = null
+    private var originalOrientation: Int = 0
 
     companion object {
         private const val TAG = "AniMiraTV"
@@ -165,9 +172,15 @@ class MainActivity : AppCompatActivity() {
             javaScriptEnabled = true
             domStorageEnabled = true
             allowFileAccess = true
+            allowContentAccess = true
             mediaPlaybackRequiresUserGesture = false
             cacheMode = WebSettings.LOAD_DEFAULT
             mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+
+            // Enable media playback features
+            loadsImagesAutomatically = true
+            javaScriptCanOpenWindowsAutomatically = true
+            setSupportMultipleWindows(true)
 
             // TV optimization
             setSupportZoom(true)
@@ -200,6 +213,46 @@ class MainActivity : AppCompatActivity() {
                 Log.d(TAG, "WebView: ${message?.message()}")
                 return true
             }
+
+            override fun onShowCustomView(view: View?, callback: CustomViewCallback?) {
+                Log.d(TAG, "onShowCustomView called")
+                if (customView != null) {
+                    hideCustomView()
+                    return
+                }
+                customView = view
+                originalOrientation = requestedOrientation
+                customViewCallback = callback
+
+                // Hide WebView and show custom view
+                webView.visibility = View.GONE
+
+                // Add custom view to activity
+                val decorView = window.decorView as FrameLayout
+                decorView.addView(view, FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.MATCH_PARENT
+                ))
+
+                // Hide status bar for fullscreen
+                window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
+                Log.d(TAG, "Custom view shown for fullscreen video")
+            }
+
+            override fun onHideCustomView() {
+                Log.d(TAG, "onHideCustomView called")
+                hideCustomView()
+            }
+
+            override fun getDefaultVideoPoster(): Bitmap? {
+                // Return null to use default poster
+                return null
+            }
+
+            override fun onProgressChanged(view: WebView?, newProgress: Int) {
+                // Can be used to show/hide loading indicator
+            }
         }
 
         // Handle file downloads
@@ -215,7 +268,7 @@ class MainActivity : AppCompatActivity() {
         webView.isFocusable = true
         webView.isFocusableInTouchMode = true
     }
-    
+
     // JavaScript interface class for communication between web and Android
     inner class WebAppInterface(private val activity: MainActivity) {
         @JavascriptInterface
@@ -225,7 +278,7 @@ class MainActivity : AppCompatActivity() {
                 handleTorrentDownload(url)
             }
         }
-        
+
         @JavascriptInterface
         fun showToast(message: String) {
             Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
@@ -284,25 +337,34 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "Downloading torrent file: $url")
         Toast.makeText(this, "Скачивание torrent файла...", Toast.LENGTH_SHORT).show()
 
-        val uri = Uri.parse(url)
-        val fileName = uri.lastPathSegment ?: "download.torrent"
+        // Fetch Content-Disposition header to get proper filename
+        Thread {
+            val contentDisposition = DownloadUtils.fetchContentDisposition(url)
+            val fileName = DownloadUtils.guessFileName(url, contentDisposition, "application/x-bittorrent")
 
-        val request = DownloadManager.Request(uri).apply {
-            setTitle(fileName)
-            setDescription("Скачивание torrent файла")
-            setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
-            setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-            allowScanningByMediaScanner()
-        }
+            Log.d(TAG, "Resolved filename: $fileName (Content-Disposition: $contentDisposition)")
 
-        val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        val downloadId = downloadManager.enqueue(request)
+            runOnUiThread {
+                val uri = Uri.parse(url)
 
-        pendingTorrentDownloads[downloadId] = fileName
-        Log.d(TAG, "Started torrent download, id: $downloadId")
+                val request = DownloadManager.Request(uri).apply {
+                    setTitle(fileName)
+                    setDescription("Скачивание torrent файла")
+                    setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
+                    setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                    allowScanningByMediaScanner()
+                }
 
-        // Register receiver if not already registered
-        registerDownloadReceiver()
+                val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+                val downloadId = downloadManager.enqueue(request)
+
+                pendingTorrentDownloads[downloadId] = fileName
+                Log.d(TAG, "Started torrent download, id: $downloadId, filename: $fileName")
+
+                // Register receiver if not already registered
+                registerDownloadReceiver()
+            }
+        }.start()
     }
 
     private fun registerDownloadReceiver() {
@@ -347,10 +409,24 @@ class MainActivity : AppCompatActivity() {
     private fun openTorrentFile(uri: Uri, fileName: String) {
         Log.d(TAG, "Opening torrent file: $uri")
 
+        // Convert file:// URI to content:// URI for Android 7+ compatibility
+        val contentUri = if (uri.scheme == "file") {
+            try {
+                val file = java.io.File(uri.path!!)
+                FileProvider.getUriForFile(this, "${packageName}.fileprovider", file)
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to convert file URI to content URI", e)
+                uri
+            }
+        } else {
+            uri
+        }
+        Log.d(TAG, "Using content URI: $contentUri")
+
         try {
             // First try TorrServe
             val torrserveIntent = Intent(Intent.ACTION_VIEW).apply {
-                data = uri
+                data = contentUri
                 setPackage("ru.yourok.torrserve")
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
@@ -367,7 +443,7 @@ class MainActivity : AppCompatActivity() {
         // Try other torrent apps
         try {
             val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = uri
+                data = contentUri
                 setType("application/x-bittorrent")
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
@@ -464,6 +540,11 @@ class MainActivity : AppCompatActivity() {
 
         // Handle back button
         if (event.keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_DOWN) {
+            // If in fullscreen video, exit fullscreen first
+            if (customView != null) {
+                hideCustomView()
+                return true
+            }
             if (webView.canGoBack()) {
                 webView.goBack()
                 return true
@@ -486,6 +567,28 @@ class MainActivity : AppCompatActivity() {
         if (currentUrl != baseUrl && !currentUrl.isNullOrEmpty()) {
             loadUrl()
         }
+    }
+
+    private fun hideCustomView() {
+        Log.d(TAG, "hideCustomView called")
+        if (customView == null) return
+
+        // Show WebView again
+        webView.visibility = View.VISIBLE
+
+        // Remove custom view
+        val decorView = window.decorView as FrameLayout
+        decorView.removeView(customView)
+
+        // Restore UI
+        window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        requestedOrientation = originalOrientation
+
+        customViewCallback?.onCustomViewHidden()
+        customView = null
+        customViewCallback = null
+
+        Log.d(TAG, "Custom view hidden")
     }
 
     override fun onDestroy() {

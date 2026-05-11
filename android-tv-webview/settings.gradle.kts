@@ -21,5 +21,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "AnistarTV"
+rootProject.name = "AniMira"
 include(":app")

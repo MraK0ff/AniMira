@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import logging
+import asyncio
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request, HTTPException
@@ -41,8 +42,34 @@ async def lifespan(app: FastAPI):
     # Startup
     count = config_loader.load_all()
     logger.info("🚀 Parser Engine started — %d sources loaded", count)
+
+    # Self-ping task to keep Render service awake (free tier sleeps after 15 min inactivity)
+    keep_alive_task = None
+    if os.environ.get("ENVIRONMENT") == "production":
+        async def self_ping():
+            """Ping the /api/ endpoint every 10 minutes to prevent sleeping."""
+            base_url = os.environ.get("BASE_URL", "https://animira.onrender.com")
+            while True:
+                try:
+                    await asyncio.sleep(600)  # 10 minutes
+                    async with httpx.AsyncClient() as client:
+                        response = await client.get(f"{base_url}/api/", timeout=30)
+                        logger.debug("Self-ping status: %s", response.status_code)
+                except Exception as e:
+                    logger.warning("Self-ping failed: %s", e)
+
+        keep_alive_task = asyncio.create_task(self_ping())
+        logger.info("🔄 Self-ping task started (keep-alive for Render)")
+
     yield
+
     # Shutdown
+    if keep_alive_task:
+        keep_alive_task.cancel()
+        try:
+            await keep_alive_task
+        except asyncio.CancelledError:
+            pass
     await http_client.close()
     await shikimori_client.close()
     logger.info("🛑 Parser Engine stopped")
@@ -207,9 +234,9 @@ async def proxy_media(url: str, referer: str = "", headers: str = "{}"):
 
 # APK Update endpoints - default fallback values
 DEFAULT_APK_VERSION = {
-    "version_code": 1,
-    "version_name": "1.0.0",
-    "changelog": "Initial version"
+    "version_code": 2,
+    "version_name": "1.1",
+    "changelog": "Исправлена версия приложения, добавлена автогенерация version.json"
 }
 
 # Check multiple possible APK locations (local build or deployed)

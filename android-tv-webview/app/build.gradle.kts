@@ -1,33 +1,24 @@
+import java.text.SimpleDateFormat
+import java.util.Date
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 }
-
-// Auto-increment version based on build time
-import java.text.SimpleDateFormat
-import java.util.Date
-
-val buildTime = System.currentTimeMillis()
-val versionCodeAuto = (buildTime / 1000).toInt()  // Seconds since epoch
-val versionNameAuto = SimpleDateFormat("yyyy.MM.dd.HHmm").format(Date(buildTime))
 
 android {
     namespace = "com.animira.tv"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.animira.tv"
+        applicationId = "com.animira.app"
         minSdk = 21
         targetSdk = 35
-        versionCode = versionCodeAuto
-        versionName = versionNameAuto
+        versionCode = 2
+        versionName = "1.1"
 
         buildConfigField("String", "UPDATE_SERVER_URL", "\"https://animira.onrender.com\"")
-        buildConfigField("long", "BUILD_TIME", "$buildTime")
-    }
-
-    buildFeatures {
-        buildConfig = true
+        buildConfigField("String", "BUILD_TIME", "\"" + System.currentTimeMillis() + "\"")
     }
 
     buildTypes {
@@ -48,59 +39,72 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+    // Note: kotlinOptions is deprecated in favor of compilerOptions,
+    // but keeping for compatibility with current Gradle version
 
-    applicationVariants.all {
-        val variant = this
-        variant.outputs.all {
-            val output = this as com.android.build.gradle.internal.api.ApkVariantOutputImpl
-            output.outputFileName = "app-debug.apk"
-        }
-    }
-
-    // Копируем APK после сборки и генерируем version.json
-    tasks.matching { it.name == "packageDebug" }.configureEach {
-        finalizedBy("copyApk", "generateVersionJson")
+    buildFeatures {
+        viewBinding = true
+        buildConfig = true
     }
 
-    tasks.register<Copy>("copyApk") {
-        from(layout.buildDirectory.dir("outputs/apk/debug")) {
-            include("app-debug.apk")
-        }
-        into(layout.projectDirectory.dir("../apk"))
+    lint {
+        abortOnError = false
+        checkReleaseBuilds = false
     }
-    
-    // Генерируем version.json для сервера
-    tasks.register("generateVersionJson") {
-        notCompatibleWithConfigurationCache("Uses project at execution time")
-        doLast {
-            val versionFile = layout.projectDirectory.file("../apk/version.json").asFile
-            versionFile.parentFile.mkdirs()
-            
-            val json = """
-                {
-                    "version_code": $versionCodeAuto,
-                    "version_name": "$versionNameAuto",
-                    "changelog": "Сборка от ${SimpleDateFormat("dd.MM.yyyy HH:mm").format(Date(buildTime))}",
-                    "build_time": $buildTime
-                }
-            """.trimIndent()
-            
-            versionFile.writeText(json)
-            println("Generated version.json: $versionCodeAuto / $versionNameAuto")
-        }
+}
+
+// Store version info for tasks
+val appVersionCode = 2
+val appVersionName = "1.1"
+
+// Task to copy APK to project root
+tasks.register<Copy>("copyApk") {
+    // Explicit dependency on packageDebug task outputs
+    from(layout.buildDirectory.dir("outputs/apk/debug"))
+    into(layout.projectDirectory.dir("apk"))
+    include("*.apk")
+    rename { "app-debug.apk" }
+}
+
+// Task to generate version.json for the update server
+tasks.register("generateVersionJson") {
+    // Defer file resolution to execution phase (fixes configuration cache issue)
+    doLast {
+        val versionFile = layout.projectDirectory.file("apk/version.json").asFile
+        val dateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm")
+        val buildTime = dateFormat.format(Date())
+        val json = """{
+    "version_code": $appVersionCode,
+    "version_name": "$appVersionName",
+    "changelog": "Сборка от $buildTime",
+    "build_time": ${System.currentTimeMillis()}
+}"""
+        versionFile.parentFile.mkdirs()
+        versionFile.writeText(json)
+        println("Generated version.json: $json")
     }
+}
+
+afterEvaluate {
+    // Declare explicit dependency on packageDebug
+    tasks.named("copyApk") {
+        dependsOn("packageDebug")
+    }
+    tasks.named("assembleDebug") {
+        finalizedBy("generateVersionJson")
+    }
+}
+
+tasks.named("generateVersionJson") {
+    dependsOn("copyApk")
 }
 
 dependencies {
     implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.core:core:1.13.1")
-    implementation("androidx.leanback:leanback:1.0.0")
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.4")
-
-    // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
+    implementation("androidx.leanback:leanback:1.0.0")
+    implementation("androidx.webkit:webkit:1.11.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 }

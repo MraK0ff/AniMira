@@ -9,20 +9,18 @@ services:
     region: frankfurt
     buildCommand: |
       pip install -r requirements.txt
-      cd web && npm install && VITE_API_URL=/ npm run build
+      cd web && npm install && VITE_API_URL=/ npm run build && cd ..
       # Copy APK and version.json to deploy directory if they exist locally
+      mkdir -p apk
       if [ -f "android-tv-webview/app/build/outputs/apk/debug/app-debug.apk" ]; then
-        mkdir -p apk
         cp android-tv-webview/app/build/outputs/apk/debug/app-debug.apk apk/app-debug.apk
         echo "APK copied to deploy directory"
       fi
-      if [ -f "apk/version.json" ]; then
-        cp apk/version.json apk/version.json
-        echo "version.json is in deploy directory"
-      elif [ -f "android-tv-webview/apk/version.json" ]; then
-        mkdir -p apk
+      if [ -f "android-tv-webview/apk/version.json" ]; then
         cp android-tv-webview/apk/version.json apk/version.json
-        echo "version.json copied to deploy directory"
+        echo "version.json copied from gradle output"
+      elif [ -f "apk/version.json" ]; then
+        echo "version.json is in deploy directory"
       else
         echo "version.json not found - will use APK modification time"
       fi

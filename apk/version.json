@@ -1,0 +1,6 @@
+{
+    "version_code": 2,
+    "version_name": "1.1",
+    "changelog": "Исправлена версия приложения, добавлена автогенерация version.json",
+    "build_time": 1778434500000
+}
