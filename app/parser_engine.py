@@ -230,6 +230,88 @@ class ParserEngine:
         return await self.http.get(url, headers=merged, encoding=target_encoding,
                                    user_agent=self.config.user_agent)
 
+    def _get_json_value(self, data: dict, path: str) -> Any:
+        """Extract value from nested dict using dot-notation path like 'name.main'."""
+        parts = path.split(".")
+        current = data
+        for part in parts:
+            if isinstance(current, dict) and part in current:
+                current = current[part]
+            else:
+                return None
+        return current
+
+    def _parse_add_anime_json(self, json_data: dict, add_cfg: dict, **kw) -> list[dict]:
+        """Parse anime list from JSON API response."""
+        results = []
+        iterator = add_cfg.get("iterator", {})
+        path = iterator.get("path", "")
+        
+        # Get the array of items from the JSON path
+        items = json_data
+        if path:
+            items = self._get_json_value(json_data, path)
+        
+        if not isinstance(items, list):
+            return results
+        
+        for item_data in items:
+            if not isinstance(item_data, dict):
+                continue
+            
+            # Extract link
+            link_cfg = iterator.get("link", {})
+            link = None
+            if link_cfg:
+                link_val = self._get_json_value(item_data, link_cfg.get("from", ""))
+                if link_val:
+                    link = link_val
+                    # Apply prefix/suffix replacements
+                    replace_cfg = link_cfg.get("replace", {})
+                    if replace_cfg.get("prefix"):
+                        link = self.resolver.resolve(replace_cfg["prefix"], **kw) + link
+                    if replace_cfg.get("suffix"):
+                        link = link + replace_cfg["suffix"]
+            
+            if not link:
+                continue
+            
+            result = {"url": link}
+            
+            # Extract other fields
+            field_map = {
+                "title": "title",
+                "additional_title": "additional_title",
+                "cover": "cover",
+                "episodes_aired": "episodes_aired",
+                "uniq": "uniq"
+            }
+            
+            for cfg_key, result_key in field_map.items():
+                field_cfg = iterator.get(cfg_key)
+                if field_cfg:
+                    if isinstance(field_cfg, dict) and "from" in field_cfg:
+                        val = self._get_json_value(item_data, field_cfg["from"])
+                        if val:
+                            # Handle replace config
+                            replace_cfg = field_cfg.get("replace", {})
+                            if replace_cfg.get("prefix"):
+                                val = self.resolver.resolve(replace_cfg["prefix"], **kw) + str(val)
+                            if replace_cfg.get("suffix"):
+                                val = str(val) + replace_cfg["suffix"]
+                            if replace_cfg.get("unescape_unicode"):
+                                val = _unescape(str(val))
+                            result[result_key] = val
+                    elif isinstance(field_cfg, str):
+                        result[result_key] = field_cfg
+            
+            if "title" not in result:
+                result["title"] = link
+            
+            results.append(result)
+        
+        return results
+
     def _parse_add_anime(self, html_text: str, add_cfg: dict, **kw) -> list[dict]:
         results = []
         text = html_text
@@ -325,18 +407,63 @@ class ParserEngine:
         if target_iter.get("form_data"):
             form_data = {k: self.resolver.resolve(v, **rk) for k, v in target_iter["form_data"].items()}
         encoding = section.get("encoding")
-        html_text = await self._fetch(url, method=method, headers=headers, form_data=form_data, encoding=encoding)
-        return self._parse_add_anime(html_text, add_cfg, **rk)
+        
+        # Check if this is JSON API parsing
+        is_json = section.get("json_content", False) or add_cfg.get("json_content", False)
+        
+        response_text = await self._fetch(url, method=method, headers=headers, form_data=form_data, encoding=encoding)
+        
+        if is_json:
+            try:
+                import json
+                json_data = json.loads(response_text)
+                return self._parse_add_anime_json(json_data, add_cfg, **rk)
+            except json.JSONDecodeError:
+                logger.warning("Failed to parse JSON response from %s", url)
+                return []
+        
+        return self._parse_add_anime(response_text, add_cfg, **rk)
+
+    def _resolve_detail_url(self, url: str, section_name: str = "anime_complete") -> str:
+        """Transform URL using link_complete config if available."""
+        link_cfg = self.config.get_section("link_complete")
+        if not link_cfg:
+            return url
+        
+        # Extract uniq from URL if possible (assuming URL ends with /{uniq})
+        uniq = url.rstrip("/").split("/")[-1]
+        
+        base_url = link_cfg.get("base_url", "")
+        resolved_url = self.resolver.resolve(base_url, uniq=uniq, current_url=url)
+        return resolved_url
 
     async def parse_details(self, url: str) -> dict:
         section = self.config.get_section("anime_complete")
         if not section:
             return {"url": url, "title": ""}
+        
+        # Transform URL using link_complete if configured
+        api_url = self._resolve_detail_url(url, "anime_complete")
+        
         headers = section.get("headers")
         encoding = section.get("encoding")
-        html_text = await self._fetch(url, headers=headers, encoding=encoding)
+        
+        # Check if this is JSON API parsing
+        is_json = section.get("json_content", False)
+        
+        response_text = await self._fetch(api_url, headers=headers, encoding=encoding)
         rk = {"current_url": url}
         result: dict[str, Any] = {"url": url}
+        
+        if is_json:
+            try:
+                import json
+                json_data = json.loads(response_text)
+                return self._parse_details_json(json_data, section, **rk)
+            except json.JSONDecodeError:
+                logger.warning("Failed to parse JSON details from %s", url)
+                return result
+        
         simple_fields = ("title", "additional_title", "alt_title", "cover", "summary",
                          "production_year", "episodes", "ep_length", "country", "author", "uniq")
         for field in simple_fields:
@@ -344,15 +471,15 @@ class ParserEngine:
             if cfg and isinstance(cfg, (dict, str)):
                 if isinstance(field, str) and field.startswith("!"):
                     continue
-                val = extract_value(html_text, cfg, self.resolver, **rk)
+                val = extract_value(response_text, cfg, self.resolver, **rk)
                 if val:
                     result[field] = val
         status_cfg = section.get("status")
         if status_cfg:
-            result["status"] = resolve_status(html_text, status_cfg)
+            result["status"] = resolve_status(response_text, status_cfg)
         ct_cfg = section.get("content_type")
         if ct_cfg:
-            result["content_type"] = resolve_content_type(html_text, ct_cfg)
+            result["content_type"] = resolve_content_type(response_text, ct_cfg)
         for list_field in ("add_genre", "add_genres", "add_dubber", "add_producers"):
             cfg = section.get(list_field)
             if not cfg:
@@ -366,20 +493,20 @@ class ParserEngine:
                 result[out_key] = [cfg]
             elif isinstance(cfg, dict):
                 if "split" in cfg:
-                    result[out_key] = extract_split(html_text, cfg, self.resolver, **rk)
+                    result[out_key] = extract_split(response_text, cfg, self.resolver, **rk)
                 elif "next" in cfg:
-                    items = self._parse_iterate_simple(html_text, cfg, **rk)
+                    items = self._parse_iterate_simple(response_text, cfg, **rk)
                     result[out_key] = items
                 else:
-                    val = extract_value(html_text, cfg, self.resolver, **rk)
+                    val = extract_value(response_text, cfg, self.resolver, **rk)
                     if val:
                         result[out_key] = [val]
         is_subs = section.get("is_have_subs")
         if is_subs and isinstance(is_subs, str):
-            result["is_have_subs"] = is_subs in html_text
+            result["is_have_subs"] = is_subs in response_text
         related = section.get("related")
         if related and isinstance(related, dict):
-            val = extract_value(html_text, related, self.resolver, **rk)
+            val = extract_value(response_text, related, self.resolver, **rk)
             if val:
                 result["related"] = val
         if "title" not in result:
@@ -388,7 +515,71 @@ class ParserEngine:
         # Parse torrents if config exists
         torrents_cfg = self.config.get_section("torrents_complete")
         if torrents_cfg:
-            result["torrents"] = self._parse_torrents(html_text, torrents_cfg, **rk)
+            result["torrents"] = self._parse_torrents(response_text, torrents_cfg, **rk)
+            
+        return result
+    
+    def _parse_details_json(self, json_data: dict, section: dict, **kw) -> dict:
+        """Parse anime details from JSON API response."""
+        result: dict[str, Any] = {"url": kw.get("current_url", "")}
+        
+        simple_fields = ("title", "additional_title", "alt_title", "cover", "summary",
+                         "production_year", "episodes", "ep_length", "country", "author", "uniq")
+        for field in simple_fields:
+            cfg = section.get(field)
+            if cfg and isinstance(cfg, dict) and "from" in cfg:
+                val = self._get_json_value(json_data, cfg["from"])
+                if val:
+                    # Handle replace config
+                    replace_cfg = cfg.get("replace", {})
+                    if replace_cfg.get("prefix"):
+                        val = self.resolver.resolve(replace_cfg["prefix"], **kw) + str(val)
+                    if replace_cfg.get("suffix"):
+                        val = str(val) + replace_cfg["suffix"]
+                    if replace_cfg.get("unescape_unicode"):
+                        val = _unescape(str(val))
+                    result[field] = val
+            elif cfg and isinstance(cfg, str):
+                result[field] = cfg
+        
+        # Handle status with mapping
+        status_cfg = section.get("status")
+        if status_cfg and isinstance(status_cfg, dict):
+            if "from" in status_cfg:
+                status_val = self._get_json_value(json_data, status_cfg["from"])
+                mapping = status_cfg.get("mapping", {})
+                if status_val is not None:
+                    str_val = str(status_val).lower()
+                    result["status"] = mapping.get(str_val, "unknown")
+            elif "default" in status_cfg:
+                result["status"] = status_cfg["default"]
+        
+        # Handle content_type
+        ct_cfg = section.get("content_type")
+        if ct_cfg and isinstance(ct_cfg, dict) and "default" in ct_cfg:
+            result["content_type"] = ct_cfg["default"]
+        
+        # Handle genres and other list fields
+        for list_field in ("add_genre", "add_genres", "add_dubber", "add_producers"):
+            cfg = section.get(list_field)
+            if not cfg:
+                continue
+            out_key = list_field.replace("add_", "")
+            if out_key == "genre":
+                out_key = "genres"
+            elif out_key == "dubber":
+                out_key = "dubbers"
+            
+            if isinstance(cfg, str):
+                result[out_key] = [cfg]
+            elif isinstance(cfg, dict) and "from" in cfg:
+                items = self._get_json_value(json_data, cfg["from"])
+                if isinstance(items, list):
+                    field_name = cfg.get("field", "name")
+                    result[out_key] = [item.get(field_name, str(item)) if isinstance(item, dict) else str(item) for item in items]
+        
+        if "title" not in result:
+            result["title"] = ""
             
         return result
 
@@ -475,20 +666,53 @@ class ParserEngine:
         section = self.config.get_section("episodes_complete")
         if not section:
             return {"anime_url": url, "episodes": []}
+        
+        # Transform URL using link_complete if configured
+        api_url = self._resolve_detail_url(url, "episodes_complete")
+        
         headers = section.get("headers")
         encoding = section.get("encoding")
-        html_text = await self._fetch(url, headers=headers, encoding=encoding)
+        
+        # Check if this is JSON API parsing
+        is_json = section.get("json_content", False)
+        
+        response_text = await self._fetch(api_url, headers=headers, encoding=encoding)
         rk = {"current_url": url}
         result = {"anime_url": url, "episodes": [], "episodes_from_page": None}
+        
+        if is_json:
+            try:
+                import json
+                json_data = json.loads(response_text)
+                add_ep = section.get("add_episode", [])
+                if not add_ep:
+                    return result
+                strategies = add_ep if isinstance(add_ep, list) else [add_ep]
+                for strat in strategies:
+                    if not isinstance(strat, dict):
+                        continue
+                    try:
+                        eps = self._parse_episode_strategy_json(json_data, strat, **rk)
+                        result["episodes"].extend(eps)
+                    except Exception as e:
+                        if strat.get("may_be_null"):
+                            logger.debug("Strategy may_be_null, skipping: %s", e)
+                            continue
+                        logger.warning("Episode JSON strategy failed: %s", e)
+                return result
+            except json.JSONDecodeError:
+                logger.warning("Failed to parse JSON episodes from %s", url)
+                return result
+        
         efp_cfg = section.get("episodes_from_page")
         if efp_cfg and isinstance(efp_cfg, dict):
             efp_headers = efp_cfg.get("headers")
-            efp_url = extract_value(html_text, efp_cfg, self.resolver, **rk)
+            efp_url = extract_value(response_text, efp_cfg, self.resolver, **rk)
             if efp_url:
                 result["episodes_from_page"] = efp_url
                 try:
                     efp_encoding = efp_cfg.get("encoding")
-                    html_text = await self._fetch(efp_url, headers=efp_headers, encoding=efp_encoding)
+                    response_text = await self._fetch(efp_url, headers=efp_headers, encoding=efp_encoding)
                 except Exception as e:
                     logger.warning("Failed to fetch episodes_from_page %s: %s", efp_url, e)
         add_ep = section.get("add_episode", [])
@@ -499,7 +723,7 @@ class ParserEngine:
             if not isinstance(strat, dict):
                 continue
             try:
-                eps = self._parse_episode_strategy(html_text, strat, **rk)
+                eps = self._parse_episode_strategy(response_text, strat, **rk)
                 result["episodes"].extend(eps)
             except Exception as e:
                 if strat.get("may_be_null"):
@@ -507,6 +731,73 @@ class ParserEngine:
                     continue
                 logger.warning("Episode strategy failed: %s", e)
         return result
+    
+    def _parse_episode_strategy_json(self, json_data: dict, strat: dict, **kw) -> list[dict]:
+        """Parse episodes from JSON API response."""
+        episodes = []
+        iterator = strat.get("iterator", {})
+        path = iterator.get("path", "")
+        
+        # Get the array of episodes from the JSON path
+        items = json_data
+        if path:
+            items = self._get_json_value(json_data, path)
+        
+        if not isinstance(items, list):
+            return episodes
+        
+        direct = strat.get("direct_links", False)
+        
+        for item_data in items:
+            if not isinstance(item_data, dict):
+                continue
+            
+            # Extract link
+            link_cfg = iterator.get("link", {})
+            if not link_cfg:
+                continue
+            
+            link = self._get_json_value(item_data, link_cfg.get("from", ""))
+            if not link:
+                continue
+            
+            ep: dict[str, Any] = {"url": link, "direct_links": direct}
+            
+            # Extract title
+            title_cfg = iterator.get("title")
+            if title_cfg and isinstance(title_cfg, dict) and "from" in title_cfg:
+                title = self._get_json_value(item_data, title_cfg["from"])
+                if title:
+                    # Handle replace config
+                    replace_cfg = title_cfg.get("replace", {})
+                    if replace_cfg.get("suffix"):
+                        title = str(title) + replace_cfg["suffix"]
+                    ep["title"] = title
+            
+            # Extract uniq
+            uniq_cfg = iterator.get("uniq")
+            if uniq_cfg and isinstance(uniq_cfg, dict) and "from" in uniq_cfg:
+                uniq = self._get_json_value(item_data, uniq_cfg["from"])
+                if uniq:
+                    replace_cfg = uniq_cfg.get("replace", {})
+                    if replace_cfg.get("suffix"):
+                        uniq = str(uniq) + replace_cfg["suffix"]
+                    ep["uniq"] = uniq
+            
+            # Extract additional quality URLs (url360, url720)
+            for quality_field in ("url360", "url720"):
+                quality_cfg = iterator.get(quality_field)
+                if quality_cfg and isinstance(quality_cfg, dict) and "from" in quality_cfg:
+                    quality_url = self._get_json_value(item_data, quality_cfg["from"])
+                    if quality_url:
+                        ep[quality_field] = quality_url
+            
+            if "title" not in ep:
+                ep["title"] = link
+            
+            episodes.append(ep)
+        
+        return episodes
 
     def _parse_episode_strategy(self, html_text: str, strat: dict, **kw) -> list[dict]:
         text = html_text

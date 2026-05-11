@@ -32,7 +32,7 @@ function EpisodeCardInternal({
 
   // Extract episode number from title for display
   const episodeNumber = index + 1;
-  const displayTitle = episode.uniq || episode.title;
+  const displayTitle = episode.title || episode.uniq;
 
   return (
     <button

@@ -1,11 +1,10 @@
 {
     "id": 20001,
-    "version": 2,
+    "version": 4,
     "title": "AniLibria (new site)",
     "host": "https://anilibria.top",
     "public_link": "https://anilibria.top",
-    "api": "anilibria_top",
-    "api_endpoint": "https://anilibria.top/api/v1/",
+    "api_endpoint": "https://anilibria.top/api/v1",
     "hash_tag": "anilibria",
     "folder": "anilibria_top",
     "name": "anilibria_top",
@@ -43,14 +42,6 @@
                     {
                         "name": "По новизне",
                         "value": "FRESH_AT_DESC"
-                    },
-                    {
-                        "name": "По году (новые)",
-                        "value": "YEAR_DESC"
-                    },
-                    {
-                        "name": "По году (старые)",
-                        "value": "YEAR_ASC"
                     }
                 ]
             },
@@ -143,52 +134,15 @@
                 "filter_type": "get_query",
                 "query_name": "f[status]",
                 "values": [
-                    {
-                        "name": "Анонс",
-                        "value": "ANNOUNCE"
-                    },
-                    {
-                        "name": "Онгоинг",
-                        "value": "ONGOING"
-                    },
-                    {
-                        "name": "Завершён",
-                        "value": "FINISHED"
-                    }
-                ]
-            },
-            "5_types": {
-                "name": "Тип",
-                "choice_mode": "multiple",
-                "filter_type": "get_query",
-                "query_name": "f[types]",
-                "values": [
-                    {
-                        "name": "TV",
-                        "value": "TV"
-                    },
-                    {
-                        "name": "OVA",
-                        "value": "OVA"
-                    },
-                    {
-                        "name": "ONA",
-                        "value": "ONA"
-                    },
-                    {
-                        "name": "Фильм",
-                        "value": "MOVIE"
-                    },
-                    {
-                        "name": "Спецвыпуск",
-                        "value": "SPECIAL"
-                    }
+                    {"n_v": "ANNOUNCE"},
+                    {"n_v": "ONGOING"},
+                    {"n_v": "FINISHED"}
                 ]
             }
         }
     },
     "anime_search_complete": {
-        "search_link": "$api_endpoint$app/search/releases?search=$query$&limit=20",
+        "search_link": "$api_endpoint$/app/search/releases?search=$query$&limit=20",
         "query_type": "GET",
         "json_content": true,
         "add_anime": {
@@ -207,7 +161,10 @@
                     "from": "name.english"
                 },
                 "cover": {
-                    "from": "poster.src"
+                    "from": "poster.src",
+                    "replace": {
+                        "prefix": "$host$"
+                    }
                 },
                 "uniq": {
                     "from": "alias"
@@ -221,12 +178,7 @@
                 "tag": "main",
                 "name": "Каталог"
             },
-            "base_url": "$api_endpoint$anime/catalog/releases?page=$page$&limit=20",
-            "append_nums": {
-                "from": 1,
-                "to": 50,
-                "step": 1
-            }
+            "base_url": "$api_endpoint$/anime/catalog/releases?page=$page$&limit=20"
         },
         "json_content": true,
         "add_anime": {
@@ -245,7 +197,10 @@
                     "from": "name.english"
                 },
                 "cover": {
-                    "from": "poster.src"
+                    "from": "poster.src",
+                    "replace": {
+                        "prefix": "$host$"
+                    }
                 },
                 "episodes_aired": {
                     "from": "episodes_total"
@@ -256,32 +211,38 @@
             }
         }
     },
+    "link_complete": {
+        "base_url": "$api_endpoint$/anime/releases/$uniq$",
+        "method": "GET"
+    },
     "anime_complete": {
-        "link": "$api_endpoint$anime/releases/$alias$?include=episodes",
         "json_content": true,
         "title": {
-            "from": "data.name.main"
+            "from": "name.main"
         },
         "additional_title": {
-            "from": "data.name.english"
+            "from": "name.english"
         },
         "uniq": {
-            "from": "data.alias"
+            "from": "alias"
         },
         "cover": {
-            "from": "data.poster.src"
+            "from": "poster.src",
+            "replace": {
+                "prefix": "$host$"
+            }
         },
         "production_year": {
-            "from": "data.year"
+            "from": "year"
         },
         "episodes": {
-            "from": "data.episodes_total"
+            "from": "episodes_total"
         },
         "summary": {
-            "from": "data.description"
+            "from": "description"
         },
         "status": {
-            "from": "data.is_ongoing",
+            "from": "is_ongoing",
             "mapping": {
                 "true": "ongoing",
                 "false": "complete"
@@ -291,7 +252,7 @@
             "default": "anime"
         },
         "add_genre": {
-            "from": "data.genres",
+            "from": "genres",
             "field": "name"
         }
     },
@@ -306,59 +267,24 @@
         "add_episode": [
             {
                 "iterator": {
-                    "path": "data.episodes",
+                    "path": "episodes",
                     "title": {
-                        "from": "name"
-                    },
-                    "link": {
-                        "from": "hls_720"
-                    },
-                    "uniq": {
-                        "from": "id"
-                    }
-                },
-                "direct_links": true
-            },
-            {
-                "may_be_null": true,
-                "iterator": {
-                    "path": "data.episodes",
-                    "title": {
-                        "from": "name",
+                        "from": "sort_order",
                         "replace": {
-                            "suffix": " (1080p)"
+                            "prefix": "Серия "
                         }
                     },
                     "link": {
                         "from": "hls_1080"
                     },
                     "uniq": {
-                        "from": "id",
-                        "replace": {
-                            "suffix": "_1080"
-                        }
-                    }
-                },
-                "direct_links": true
-            },
-            {
-                "may_be_null": true,
-                "iterator": {
-                    "path": "data.episodes",
-                    "title": {
-                        "from": "name",
-                        "replace": {
-                            "suffix": " (480p)"
-                        }
+                        "from": "id"
                     },
-                    "link": {
+                    "url720": {
+                        "from": "hls_720"
+                    },
+                    "url360": {
                         "from": "hls_480"
-                    },
-                    "uniq": {
-                        "from": "id",
-                        "replace": {
-                            "suffix": "_480"
-                        }
                     }
                 },
                 "direct_links": true

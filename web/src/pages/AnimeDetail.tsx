@@ -417,7 +417,7 @@ export default function AnimeDetail() {
                                 <Play size={20} className="text-white group-hover:text-primary ml-1" />
                               </div>
                               <div className="overflow-hidden flex-1">
-                                <h4 className="text-white font-semibold truncate" title={uniq}>{uniq}</h4>
+                                <h4 className="text-white font-semibold truncate" title={selectedEp.title || uniq}>{selectedEp.title || uniq}</h4>
                                 {selectedEp.service && <p className="text-xs text-text-muted mt-1">{selectedEp.service}</p>}
                               </div>
                             </div>

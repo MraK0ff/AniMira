@@ -8,17 +8,20 @@ interface Props {
 }
 
 // Parse episodes string like "12/24" or "12 из 24" to get current/total
-function parseEpisodes(episodesStr?: string): { current?: number; total?: number } {
+function parseEpisodes(episodesStr?: string | number): { current?: number; total?: number } {
   if (!episodesStr) return {};
   
+  // Convert to string if number
+  const str = String(episodesStr);
+  
   // Try "12/24" or "12 из 24" format
-  const match = episodesStr.match(/(\d+)[\/\sиз]+(\d+)/);
+  const match = str.match(/(\d+)[\/\sиз]+(\d+)/);
   if (match) {
     return { current: parseInt(match[1]), total: parseInt(match[2]) };
   }
   
   // Try single number
-  const single = episodesStr.match(/(\d+)/);
+  const single = str.match(/(\d+)/);
   if (single) {
     return { total: parseInt(single[1]) };
   }

@@ -25,6 +25,8 @@ class VariableResolver:
         self._hostname = parsed.hostname or ""         # e.g. "www.anilibria.tv"
         self._host = host.rstrip("/")                  # e.g. "https://www.anilibria.tv"
         self._port = parsed.port
+        # Support api_endpoint if defined in config
+        self._api_endpoint = config.get("api_endpoint", "")
 
     def resolve(
         self,
@@ -34,6 +36,7 @@ class VariableResolver:
         query: str | None = None,
         filter_value: str | None = None,
         current_url: str | None = None,
+        uniq: str | None = None,
     ) -> str:
         """Replace all template variables in a string.
 
@@ -43,6 +46,7 @@ class VariableResolver:
             query: Search query for $query$.
             filter_value: Active filter for $filter$.
             current_url: Current page URL for %%url%% replacement.
+            uniq: Anime unique identifier for $uniq$.
 
         Returns:
             String with all known variables substituted.
@@ -56,6 +60,7 @@ class VariableResolver:
         result = result.replace("$scheme$", f"{self._scheme}:")
         result = result.replace("$hostname$", self._hostname)
         result = result.replace("$host$", self._host)
+        result = result.replace("$api_endpoint$", self._api_endpoint)
 
         # Pagination
         if page is not None:
@@ -72,6 +77,10 @@ class VariableResolver:
         # Current URL (used in episode link construction)
         if current_url is not None:
             result = result.replace("%%url%%", current_url)
+
+        # Uniq identifier (for detail URL construction)
+        if uniq is not None:
+            result = result.replace("$uniq$", str(uniq))
 
         return result
 
