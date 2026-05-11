@@ -1,9 +1,11 @@
 {
     "id": 20001,
-    "version": 1,
+    "version": 2,
     "title": "AniLibria (new site)",
     "host": "https://anilibria.top",
     "public_link": "https://anilibria.top",
+    "api": "anilibria_top",
+    "api_endpoint": "https://anilibria.top/api/v1/",
     "hash_tag": "anilibria",
     "folder": "anilibria_top",
     "name": "anilibria_top",
@@ -31,24 +33,32 @@
             "0_sort": {
                 "name": "Сортировка",
                 "choice_mode": "single",
-                "filter_type": "form_data",
-                "form_data_name": "sort",
+                "filter_type": "get_query",
+                "query_name": "sort",
                 "values": [
                     {
                         "name": "По популярности",
-                        "value": "2"
+                        "value": "RATING_DESC"
                     },
                     {
                         "name": "По новизне",
-                        "value": "1"
+                        "value": "FRESH_AT_DESC"
+                    },
+                    {
+                        "name": "По году (новые)",
+                        "value": "YEAR_DESC"
+                    },
+                    {
+                        "name": "По году (старые)",
+                        "value": "YEAR_ASC"
                     }
                 ]
             },
             "1_genres": {
                 "name": "Жанры",
                 "choice_mode": "multiple",
-                "filter_type": "form_data",
-                "form_data_name": "search->genre",
+                "filter_type": "get_query",
+                "query_name": "f[genres]",
                 "values": [
                     {"n_v": "боевые искусства"},
                     {"n_v": "вампиры"},
@@ -84,8 +94,8 @@
             "2_years": {
                 "name": "Года",
                 "choice_mode": "multiple",
-                "filter_type": "form_data",
-                "form_data_name": "search->year",
+                "filter_type": "get_query",
+                "query_name": "f[years]",
                 "values": [
                     {"n_v": "2026"},
                     {"n_v": "2025"},
@@ -118,8 +128,8 @@
             "3_seasons": {
                 "name": "Сезоны",
                 "choice_mode": "multiple",
-                "filter_type": "form_data",
-                "form_data_name": "search->season",
+                "filter_type": "get_query",
+                "query_name": "f[season]",
                 "values": [
                     {"n_v": "зима"},
                     {"n_v": "весна"},
@@ -127,64 +137,82 @@
                     {"n_v": "осень"}
                 ]
             },
-            "9_finish": {
-                "name": "Статус релиза",
+            "4_status": {
+                "name": "Статус",
                 "choice_mode": "multiple",
-                "filter_type": "form_data",
-                "form_data_name": "search->year",
+                "filter_type": "get_query",
+                "query_name": "f[status]",
                 "values": [
                     {
-                        "name": "Все",
-                        "value": "1"
+                        "name": "Анонс",
+                        "value": "ANNOUNCE"
                     },
                     {
-                        "name": "Релиз завершен",
-                        "value": "2"
+                        "name": "Онгоинг",
+                        "value": "ONGOING"
+                    },
+                    {
+                        "name": "Завершён",
+                        "value": "FINISHED"
+                    }
+                ]
+            },
+            "5_types": {
+                "name": "Тип",
+                "choice_mode": "multiple",
+                "filter_type": "get_query",
+                "query_name": "f[types]",
+                "values": [
+                    {
+                        "name": "TV",
+                        "value": "TV"
+                    },
+                    {
+                        "name": "OVA",
+                        "value": "OVA"
+                    },
+                    {
+                        "name": "ONA",
+                        "value": "ONA"
+                    },
+                    {
+                        "name": "Фильм",
+                        "value": "MOVIE"
+                    },
+                    {
+                        "name": "Спецвыпуск",
+                        "value": "SPECIAL"
                     }
                 ]
             }
         }
     },
     "anime_search_complete": {
-        "search_link": "$scheme$//$hostname$/anime/catalog?search=$query$",
+        "search_link": "$api_endpoint$app/search/releases?search=$query$&limit=20",
         "query_type": "GET",
+        "json_content": true,
         "add_anime": {
-            "start": "window.__NUXT__",
-            "next": "\"id\":",
-            "link": {
-                "skip": "\"alias\":\"",
-                "token1": "\"alias\":\"",
-                "token2": "\"",
-                "replace": {
-                    "prefix": "$scheme$//$hostname$/anime/releases/release/",
-                    "unescape_unicode": true
+            "iterator": {
+                "path": "data",
+                "link": {
+                    "from": "alias",
+                    "replace": {
+                        "prefix": "$scheme$//$hostname$/anime/releases/release/"
+                    }
+                },
+                "title": {
+                    "from": "name.main"
+                },
+                "additional_title": {
+                    "from": "name.english"
+                },
+                "cover": {
+                    "from": "poster.src"
+                },
+                "uniq": {
+                    "from": "alias"
                 }
-            },
-            "title": {
-                "skip": "\"main\":\"",
-                "token1": "\"main\":\"",
-                "token2": "\"",
-                "replace": {
-                    "unescape_unicode": true
-                }
-            },
-            "additional_title": {
-                "skip": "\"english\":\"",
-                "token1": "\"english\":\"",
-                "token2": "\"",
-                "replace": {
-                    "unescape_unicode": true
-                }
-            },
-            "cover": {
-                "skip": "\"poster\":",
-                "token1": "\"src\":\"",
-                "token2": "\"",
-                "replace": {
-                    "unescape_unicode": true
-                }
-            },
-            "end": "</script>"
+            }
         }
     },
     "anime_list_complete": {
@@ -193,140 +221,78 @@
                 "tag": "main",
                 "name": "Каталог"
             },
-            "base_url": "$scheme$//$hostname$/anime/catalog?page=$page$",
+            "base_url": "$api_endpoint$anime/catalog/releases?page=$page$&limit=20",
             "append_nums": {
                 "from": 1,
                 "to": 50,
                 "step": 1
             }
         },
+        "json_content": true,
         "add_anime": {
-            "start": "window.__NUXT__",
-            "next": "\"id\":",
-            "link": {
-                "skip": "\"alias\":\"",
-                "token1": "\"alias\":\"",
-                "token2": "\"",
-                "replace": {
-                    "prefix": "$scheme$//$hostname$/anime/releases/release/",
-                    "unescape_unicode": true
+            "iterator": {
+                "path": "data",
+                "link": {
+                    "from": "alias",
+                    "replace": {
+                        "prefix": "$scheme$//$hostname$/anime/releases/release/"
+                    }
+                },
+                "title": {
+                    "from": "name.main"
+                },
+                "additional_title": {
+                    "from": "name.english"
+                },
+                "cover": {
+                    "from": "poster.src"
+                },
+                "episodes_aired": {
+                    "from": "episodes_total"
+                },
+                "uniq": {
+                    "from": "alias"
                 }
-            },
-            "title": {
-                "skip": "\"main\":\"",
-                "token1": "\"main\":\"",
-                "token2": "\"",
-                "replace": {
-                    "unescape_unicode": true
-                }
-            },
-            "additional_title": {
-                "skip": "\"english\":\"",
-                "token1": "\"english\":\"",
-                "token2": "\"",
-                "replace": {
-                    "unescape_unicode": true
-                }
-            },
-            "cover": {
-                "skip": "\"poster\":",
-                "token1": "\"src\":\"",
-                "token2": "\"",
-                "replace": {
-                    "unescape_unicode": true
-                }
-            },
-            "episodes_aired": {
-                "skip": "\"episodesTotal\":",
-                "token1": "\"episodesTotal\":",
-                "token2": ",",
-                "replace": {
-                    "unescape_unicode": true
-                }
-            },
-            "end": "</script>"
+            }
         }
     },
     "anime_complete": {
+        "link": "$api_endpoint$anime/releases/$alias$?include=episodes",
+        "json_content": true,
         "title": {
-            "start": "window.__NUXT__",
-            "token1": "\"main\":\"",
-            "token2": "\"",
-            "replace": {
-                "unescape_unicode": true
-            }
+            "from": "data.name.main"
         },
         "additional_title": {
-            "start": "window.__NUXT__",
-            "skip": "\"english\":\"",
-            "token1": "\"english\":\"",
-            "token2": "\"",
-            "replace": {
-                "unescape_unicode": true
-            }
+            "from": "data.name.english"
         },
         "uniq": {
-            "start": "window.__NUXT__",
-            "skip": "\"alias\":\"",
-            "token1": "\"alias\":\"",
-            "token2": "\"",
-            "replace": {
-                "unescape_unicode": true
-            }
+            "from": "data.alias"
         },
         "cover": {
-            "start": "window.__NUXT__",
-            "skip": "\"poster\":",
-            "token1": "\"src\":\"",
-            "token2": "\"",
-            "replace": {
-                "unescape_unicode": true
-            }
+            "from": "data.poster.src"
         },
         "production_year": {
-            "start": "window.__NUXT__",
-            "skip": "\"year\":",
-            "token1": "\"year\":",
-            "token2": ",",
-            "replace": {
-                "unescape_unicode": true
-            }
+            "from": "data.year"
         },
         "episodes": {
-            "start": "window.__NUXT__",
-            "skip": "\"episodesTotal\":",
-            "token1": "\"episodesTotal\":",
-            "token2": ",",
-            "replace": {
-                "unescape_unicode": true
-            }
+            "from": "data.episodes_total"
         },
         "summary": {
-            "start": "window.__NUXT__",
-            "skip": "\"description\":\"",
-            "token1": "\"description\":\"",
-            "token2": "\"",
-            "replace": {
-                "unescape_unicode": true,
-                "match": "\\\\r\\\\n",
-                "text": " "
-            }
+            "from": "data.description"
         },
         "status": {
-            "ongoing": "\"isOngoing\":true",
-            "default": "complete"
+            "from": "data.is_ongoing",
+            "mapping": {
+                "true": "ongoing",
+                "false": "complete"
+            }
         },
         "content_type": {
-            "anime": "TV",
             "default": "anime"
         },
         "add_genre": {
-            "start": "window.__NUXT__",
-            "skip": "\"genres\":[",
-            "token1": "\"name\":\"",
-            "token2": "\"",
-            "split": ",",
-            "end": "]"
+            "from": "data.genres",
+            "field": "name"
         }
     },
     "seasons_complete": {
@@ -336,105 +302,65 @@
         "get_episodes": true
     },
     "episodes_complete": {
+        "json_content": true,
         "add_episode": [
             {
-                "start": "window.__NUXT__",
-                "next": "\"episodes\":[",
-                "link": {
-                    "skip": "\"hls720\":\"",
-                    "token1": "\"hls720\":\"",
-                    "token2": "\"",
-                    "replace": {
-                        "unescape_unicode": true
+                "iterator": {
+                    "path": "data.episodes",
+                    "title": {
+                        "from": "name"
+                    },
+                    "link": {
+                        "from": "hls_720"
+                    },
+                    "uniq": {
+                        "from": "id"
                     }
                 },
-                "title": {
-                    "skip": "\"name\":\"",
-                    "token1": "\"name\":\"",
-                    "token2": "\"",
-                    "replace": {
-                        "unescape_unicode": true,
-                        "match": "^$",
-                        "text": "Серия"
-                    }
-                },
-                "uniq": {
-                    "skip": "\"id\":",
-                    "token1": "\"id\":",
-                    "token2": ",",
-                    "replace": {
-                        "unescape_unicode": true
-                    }
-                },
-                "end": "]",
                 "direct_links": true
             },
             {
                 "may_be_null": true,
-                "start": "window.__NUXT__",
-                "next": "\"episodes\":[",
-                "link": {
-                    "skip": "\"hls1080\":\"",
-                    "token1": "\"hls1080\":\"",
-                    "token2": "\"",
-                    "replace": {
-                        "unescape_unicode": true
+                "iterator": {
+                    "path": "data.episodes",
+                    "title": {
+                        "from": "name",
+                        "replace": {
+                            "suffix": " (1080p)"
+                        }
+                    },
+                    "link": {
+                        "from": "hls_1080"
+                    },
+                    "uniq": {
+                        "from": "id",
+                        "replace": {
+                            "suffix": "_1080"
+                        }
                     }
                 },
-                "title": {
-                    "skip": "\"name\":\"",
-                    "token1": "\"name\":\"",
-                    "token2": "\"",
-                    "replace": {
-                        "unescape_unicode": true,
-                        "match": "^$",
-                        "text": "Серия (1080p)"
-                    }
-                },
-                "uniq": {
-                    "skip": "\"id\":",
-                    "token1": "\"id\":",
-                    "token2": ",",
-                    "replace": {
-                        "unescape_unicode": true,
-                        "suffix": "_1080"
-                    }
-                },
-                "end": "]",
                 "direct_links": true
             },
             {
                 "may_be_null": true,
-                "start": "window.__NUXT__",
-                "next": "\"episodes\":[",
-                "link": {
-                    "skip": "\"hls480\":\"",
-                    "token1": "\"hls480\":\"",
-                    "token2": "\"",
-                    "replace": {
-                        "unescape_unicode": true
+                "iterator": {
+                    "path": "data.episodes",
+                    "title": {
+                        "from": "name",
+                        "replace": {
+                            "suffix": " (480p)"
+                        }
+                    },
+                    "link": {
+                        "from": "hls_480"
+                    },
+                    "uniq": {
+                        "from": "id",
+                        "replace": {
+                            "suffix": "_480"
+                        }
                     }
                 },
-                "title": {
-                    "skip": "\"name\":\"",
-                    "token1": "\"name\":\"",
-                    "token2": "\"",
-                    "replace": {
-                        "unescape_unicode": true,
-                        "match": "^$",
-                        "text": "Серия (480p)"
-                    }
-                },
-                "uniq": {
-                    "skip": "\"id\":",
-                    "token1": "\"id\":",
-                    "token2": ",",
-                    "replace": {
-                        "unescape_unicode": true,
-                        "suffix": "_480"
-                    }
-                },
-                "end": "]",
                 "direct_links": true
             }
         ]
