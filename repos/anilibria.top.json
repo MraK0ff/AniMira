@@ -1,0 +1,477 @@
+{
+    "id": 20001,
+    "version": 1,
+    "title": "AniLibria (new site)",
+    "host": "https://anilibria.top",
+    "public_link": "https://anilibria.top",
+    "hash_tag": "anilibria",
+    "folder": "anilibria_top",
+    "name": "anilibria_top",
+    "language": "ru",
+    "content_type": "anime",
+    "episodes_order": true,
+    "icon_link": "https://cdn.anilibria.top/static/favicon-96x96.png",
+    "self_link": "https://api.anilabx.xyz/v3/parser/get?type=anime&parser=anilibria_top",
+    "author": {
+        "name": "AniLabX Team",
+        "email": "anilabx.supp@gmail.com"
+    },
+    "custom_settings": {
+        "is_allow_host_mirroring": true,
+        "mirrors": [
+            {
+                "name": "Основное",
+                "url": "https://anilibria.top"
+            }
+        ]
+    },
+    "anime_list_filters_complete": {
+        "base_link": "$scheme$//$hostname$",
+        "filters": {
+            "0_sort": {
+                "name": "Сортировка",
+                "choice_mode": "single",
+                "filter_type": "form_data",
+                "form_data_name": "sort",
+                "values": [
+                    {
+                        "name": "По популярности",
+                        "value": "2"
+                    },
+                    {
+                        "name": "По новизне",
+                        "value": "1"
+                    }
+                ]
+            },
+            "1_genres": {
+                "name": "Жанры",
+                "choice_mode": "multiple",
+                "filter_type": "form_data",
+                "form_data_name": "search->genre",
+                "values": [
+                    {"n_v": "боевые искусства"},
+                    {"n_v": "вампиры"},
+                    {"n_v": "демоны"},
+                    {"n_v": "детектив"},
+                    {"n_v": "драма"},
+                    {"n_v": "игры"},
+                    {"n_v": "исторический"},
+                    {"n_v": "комедия"},
+                    {"n_v": "магия"},
+                    {"n_v": "меха"},
+                    {"n_v": "мистика"},
+                    {"n_v": "музыка"},
+                    {"n_v": "повседневность"},
+                    {"n_v": "приключения"},
+                    {"n_v": "психологическое"},
+                    {"n_v": "романтика"},
+                    {"n_v": "сверхъестественное"},
+                    {"n_v": "сейнен"},
+                    {"n_v": "спорт"},
+                    {"n_v": "супер сила"},
+                    {"n_v": "сёдзе"},
+                    {"n_v": "сёнен"},
+                    {"n_v": "триллер"},
+                    {"n_v": "ужасы"},
+                    {"n_v": "фантастика"},
+                    {"n_v": "фэнтези"},
+                    {"n_v": "школа"},
+                    {"n_v": "экшен"},
+                    {"n_v": "этти"}
+                ]
+            },
+            "2_years": {
+                "name": "Года",
+                "choice_mode": "multiple",
+                "filter_type": "form_data",
+                "form_data_name": "search->year",
+                "values": [
+                    {"n_v": "2026"},
+                    {"n_v": "2025"},
+                    {"n_v": "2024"},
+                    {"n_v": "2023"},
+                    {"n_v": "2022"},
+                    {"n_v": "2021"},
+                    {"n_v": "2020"},
+                    {"n_v": "2019"},
+                    {"n_v": "2018"},
+                    {"n_v": "2017"},
+                    {"n_v": "2016"},
+                    {"n_v": "2015"},
+                    {"n_v": "2014"},
+                    {"n_v": "2013"},
+                    {"n_v": "2012"},
+                    {"n_v": "2011"},
+                    {"n_v": "2010"},
+                    {"n_v": "2009"},
+                    {"n_v": "2008"},
+                    {"n_v": "2007"},
+                    {"n_v": "2006"},
+                    {"n_v": "2005"},
+                    {"n_v": "2004"},
+                    {"n_v": "2003"},
+                    {"n_v": "2001"},
+                    {"n_v": "1996"}
+                ]
+            },
+            "3_seasons": {
+                "name": "Сезоны",
+                "choice_mode": "multiple",
+                "filter_type": "form_data",
+                "form_data_name": "search->season",
+                "values": [
+                    {"n_v": "зима"},
+                    {"n_v": "весна"},
+                    {"n_v": "лето"},
+                    {"n_v": "осень"}
+                ]
+            },
+            "9_finish": {
+                "name": "Статус релиза",
+                "choice_mode": "multiple",
+                "filter_type": "form_data",
+                "form_data_name": "search->year",
+                "values": [
+                    {
+                        "name": "Все",
+                        "value": "1"
+                    },
+                    {
+                        "name": "Релиз завершен",
+                        "value": "2"
+                    }
+                ]
+            }
+        }
+    },
+    "anime_search_complete": {
+        "search_link": "$scheme$//$hostname$/anime/catalog?search=$query$",
+        "query_type": "GET",
+        "add_anime": {
+            "start": "window.__NUXT__",
+            "next": "\"id\":",
+            "link": {
+                "skip": "\"alias\":\"",
+                "token1": "\"alias\":\"",
+                "token2": "\"",
+                "replace": {
+                    "prefix": "$scheme$//$hostname$/anime/releases/release/",
+                    "unescape_unicode": true
+                }
+            },
+            "title": {
+                "skip": "\"main\":\"",
+                "token1": "\"main\":\"",
+                "token2": "\"",
+                "replace": {
+                    "unescape_unicode": true
+                }
+            },
+            "additional_title": {
+                "skip": "\"english\":\"",
+                "token1": "\"english\":\"",
+                "token2": "\"",
+                "replace": {
+                    "unescape_unicode": true
+                }
+            },
+            "cover": {
+                "skip": "\"poster\":",
+                "token1": "\"src\":\"",
+                "token2": "\"",
+                "replace": {
+                    "unescape_unicode": true
+                }
+            },
+            "end": "</script>"
+        }
+    },
+    "anime_list_complete": {
+        "iterator": {
+            "category": {
+                "tag": "main",
+                "name": "Каталог"
+            },
+            "base_url": "$scheme$//$hostname$/anime/catalog?page=$page$",
+            "append_nums": {
+                "from": 1,
+                "to": 50,
+                "step": 1
+            }
+        },
+        "add_anime": {
+            "start": "window.__NUXT__",
+            "next": "\"id\":",
+            "link": {
+                "skip": "\"alias\":\"",
+                "token1": "\"alias\":\"",
+                "token2": "\"",
+                "replace": {
+                    "prefix": "$scheme$//$hostname$/anime/releases/release/",
+                    "unescape_unicode": true
+                }
+            },
+            "title": {
+                "skip": "\"main\":\"",
+                "token1": "\"main\":\"",
+                "token2": "\"",
+                "replace": {
+                    "unescape_unicode": true
+                }
+            },
+            "additional_title": {
+                "skip": "\"english\":\"",
+                "token1": "\"english\":\"",
+                "token2": "\"",
+                "replace": {
+                    "unescape_unicode": true
+                }
+            },
+            "cover": {
+                "skip": "\"poster\":",
+                "token1": "\"src\":\"",
+                "token2": "\"",
+                "replace": {
+                    "unescape_unicode": true
+                }
+            },
+            "episodes_aired": {
+                "skip": "\"episodesTotal\":",
+                "token1": "\"episodesTotal\":",
+                "token2": ",",
+                "replace": {
+                    "unescape_unicode": true
+                }
+            },
+            "end": "</script>"
+        }
+    },
+    "anime_complete": {
+        "title": {
+            "start": "window.__NUXT__",
+            "token1": "\"main\":\"",
+            "token2": "\"",
+            "replace": {
+                "unescape_unicode": true
+            }
+        },
+        "additional_title": {
+            "start": "window.__NUXT__",
+            "skip": "\"english\":\"",
+            "token1": "\"english\":\"",
+            "token2": "\"",
+            "replace": {
+                "unescape_unicode": true
+            }
+        },
+        "uniq": {
+            "start": "window.__NUXT__",
+            "skip": "\"alias\":\"",
+            "token1": "\"alias\":\"",
+            "token2": "\"",
+            "replace": {
+                "unescape_unicode": true
+            }
+        },
+        "cover": {
+            "start": "window.__NUXT__",
+            "skip": "\"poster\":",
+            "token1": "\"src\":\"",
+            "token2": "\"",
+            "replace": {
+                "unescape_unicode": true
+            }
+        },
+        "production_year": {
+            "start": "window.__NUXT__",
+            "skip": "\"year\":",
+            "token1": "\"year\":",
+            "token2": ",",
+            "replace": {
+                "unescape_unicode": true
+            }
+        },
+        "episodes": {
+            "start": "window.__NUXT__",
+            "skip": "\"episodesTotal\":",
+            "token1": "\"episodesTotal\":",
+            "token2": ",",
+            "replace": {
+                "unescape_unicode": true
+            }
+        },
+        "summary": {
+            "start": "window.__NUXT__",
+            "skip": "\"description\":\"",
+            "token1": "\"description\":\"",
+            "token2": "\"",
+            "replace": {
+                "unescape_unicode": true,
+                "match": "\\\\r\\\\n",
+                "text": " "
+            }
+        },
+        "status": {
+            "ongoing": "\"isOngoing\":true",
+            "default": "complete"
+        },
+        "content_type": {
+            "anime": "TV",
+            "default": "anime"
+        },
+        "add_genre": {
+            "start": "window.__NUXT__",
+            "skip": "\"genres\":[",
+            "token1": "\"name\":\"",
+            "token2": "\"",
+            "split": ",",
+            "end": "]"
+        }
+    },
+    "seasons_complete": {
+        "get_translations": true
+    },
+    "translations_complete": {
+        "get_episodes": true
+    },
+    "episodes_complete": {
+        "add_episode": [
+            {
+                "start": "window.__NUXT__",
+                "next": "\"episodes\":[",
+                "link": {
+                    "skip": "\"hls720\":\"",
+                    "token1": "\"hls720\":\"",
+                    "token2": "\"",
+                    "replace": {
+                        "unescape_unicode": true
+                    }
+                },
+                "title": {
+                    "skip": "\"name\":\"",
+                    "token1": "\"name\":\"",
+                    "token2": "\"",
+                    "replace": {
+                        "unescape_unicode": true,
+                        "match": "^$",
+                        "text": "Серия"
+                    }
+                },
+                "uniq": {
+                    "skip": "\"id\":",
+                    "token1": "\"id\":",
+                    "token2": ",",
+                    "replace": {
+                        "unescape_unicode": true
+                    }
+                },
+                "end": "]",
+                "direct_links": true
+            },
+            {
+                "may_be_null": true,
+                "start": "window.__NUXT__",
+                "next": "\"episodes\":[",
+                "link": {
+                    "skip": "\"hls1080\":\"",
+                    "token1": "\"hls1080\":\"",
+                    "token2": "\"",
+                    "replace": {
+                        "unescape_unicode": true
+                    }
+                },
+                "title": {
+                    "skip": "\"name\":\"",
+                    "token1": "\"name\":\"",
+                    "token2": "\"",
+                    "replace": {
+                        "unescape_unicode": true,
+                        "match": "^$",
+                        "text": "Серия (1080p)"
+                    }
+                },
+                "uniq": {
+                    "skip": "\"id\":",
+                    "token1": "\"id\":",
+                    "token2": ",",
+                    "replace": {
+                        "unescape_unicode": true,
+                        "suffix": "_1080"
+                    }
+                },
+                "end": "]",
+                "direct_links": true
+            },
+            {
+                "may_be_null": true,
+                "start": "window.__NUXT__",
+                "next": "\"episodes\":[",
+                "link": {
+                    "skip": "\"hls480\":\"",
+                    "token1": "\"hls480\":\"",
+                    "token2": "\"",
+                    "replace": {
+                        "unescape_unicode": true
+                    }
+                },
+                "title": {
+                    "skip": "\"name\":\"",
+                    "token1": "\"name\":\"",
+                    "token2": "\"",
+                    "replace": {
+                        "unescape_unicode": true,
+                        "match": "^$",
+                        "text": "Серия (480p)"
+                    }
+                },
+                "uniq": {
+                    "skip": "\"id\":",
+                    "token1": "\"id\":",
+                    "token2": ",",
+                    "replace": {
+                        "unescape_unicode": true,
+                        "suffix": "_480"
+                    }
+                },
+                "end": "]",
+                "direct_links": true
+            }
+        ]
+    },
+    "torrents_complete": {},
+    "episode_complete": {
+        "headers": {
+            "Referer": "$scheme$//$hostname$"
+        }
+    },
+    "test": [
+        {
+            "proc": "anime_list_complete",
+            "testpages": 2,
+            "assert": {
+                "animes": [
+                    {
+                        "title": "@^(\\w+)",
+                        "link": "@https://anilibria.top/anime/releases/release/",
+                        "uniq": "@^(\\w+)"
+                    }
+                ],
+                "animes_count": ">=10"
+            }
+        },
+        {
+            "proc": "anime_complete",
+            "link": "https://anilibria.top/anime/releases/release/needy-girl-overdose",
+            "assert": {
+                "title": "Зависимая девушка: Передозировка",
+                "additional_title": "Needy Girl Overdose",
+                "uniq": "needy-girl-overdose",
+                "cover": "@https://cdn.anilibria.top/",
+                "year": "2026",
+                "content_type": "anime",
+                "status": "ongoing"
+            }
+        }
+    ]
+}
